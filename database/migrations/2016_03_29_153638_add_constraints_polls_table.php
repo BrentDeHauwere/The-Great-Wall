@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateChannelsTable extends Migration
+class AddConstraintsPollsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,9 +12,8 @@ class CreateChannelsTable extends Migration
      */
     public function up()
     {
-        Schema::create('channels', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
+        Schema::table('polls', function (Blueprint $table) {
+            //
         });
     }
 
@@ -25,6 +24,8 @@ class CreateChannelsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('channels');
+        Schema::table('polls', function (Blueprint $table) {
+            //
+        });
     }
 }

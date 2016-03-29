@@ -14,7 +14,9 @@ class CreateWallsTable extends Migration
     {
         Schema::create('walls', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
+            $table->integer('user_id')->unsigned();
+            $table->string('name');
+            $table->string('password')->nullable();
         });
     }
 

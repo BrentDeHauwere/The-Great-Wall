@@ -14,7 +14,9 @@ class CreatePollsTable extends Migration
     {
         Schema::create('polls', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
+            $table->integer('wall_id')->unsigned();
+            $table->longText('question');
+            $table->boolean('addable');
         });
     }
 

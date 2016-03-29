@@ -14,7 +14,9 @@ class CreatePollChoicesTable extends Migration
     {
         Schema::create('poll_choices', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
+            $table->integer('poll_id')->unsigned();
+            $table->longText('text');
+            $table->integer('count')->unsigned();
         });
     }
 
