@@ -22,8 +22,8 @@ class CreateMessagesTable extends Migration
             $table->longText('text');
             $table->dateTime('created_at');
             $table->boolean('anonymous');
-            $table->tinyInteger('moderation_level');
-            $table->integer('count')->unsigned();
+            $table->tinyInteger('moderation_level')->default(0);
+            $table->integer('count')->unsigned()->default(0);
         });
     }
 

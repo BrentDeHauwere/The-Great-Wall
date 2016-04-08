@@ -11,6 +11,9 @@ class ChannelsTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('channels')->insert([
+            ['name' => 'Web'],
+            ['name' => 'Twitter']
+        ]);
     }
 }

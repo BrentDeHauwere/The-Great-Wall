@@ -13,7 +13,7 @@ class CreatePollVotesTable extends Migration
     public function up()
     {
         Schema::create('poll_votes', function (Blueprint $table) {
-            $table->increments('id');
+            $table->integer('choice_id')->unsigned();
             $table->integer('user_id')->unsigned();
         });
     }

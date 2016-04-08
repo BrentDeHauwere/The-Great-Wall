@@ -11,6 +11,11 @@ class MessageVotesTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('message_votes')->insert([
+            ['message_id' => 1, 'user_id' => 1],
+            ['message_id' => 2, 'user_id' => 2],
+            ['message_id' => 1, 'user_id' => 3],
+            ['message_id' => 3, 'user_id' => 1]
+        ]);
     }
 }

@@ -13,8 +13,8 @@ class CreateMessageVotesTable extends Migration
     public function up()
     {
         Schema::create('message_votes', function (Blueprint $table) {
-            $table->integer('user_id')->unsigned();
             $table->integer('message_id')->unsigned();
+            $table->integer('user_id')->unsigned();
         });
     }
 

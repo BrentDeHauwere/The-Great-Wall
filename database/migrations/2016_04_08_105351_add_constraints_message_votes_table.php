@@ -25,7 +25,7 @@ class AddConstraintsMessageVotesTable extends Migration
     public function down()
     {
         Schema::table('message_votes', function (Blueprint $table) {
-            $table->dropForeign('messages_message_id_foreign');
+            $table->dropForeign('message_votes_message_id_foreign');
         });
     }
 }

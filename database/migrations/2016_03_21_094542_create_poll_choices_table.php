@@ -16,7 +16,7 @@ class CreatePollChoicesTable extends Migration
             $table->increments('id');
             $table->integer('poll_id')->unsigned();
             $table->longText('text');
-            $table->integer('count')->unsigned();
+            $table->integer('count')->unsigned()->default(0);
         });
     }
 
