@@ -13,7 +13,7 @@ class AddConstraintsPollVotesTable extends Migration
     public function up()
     {
         Schema::table('poll_votes', function (Blueprint $table) {
-            $table->foreign('choice_id')->references('id')->on('poll_choices')->onDelete('cascade');
+            $table->foreign('poll_choice_id')->references('id')->on('poll_choices')->onDelete('cascade');
         });
     }
 
@@ -25,7 +25,7 @@ class AddConstraintsPollVotesTable extends Migration
     public function down()
     {
         Schema::table('poll_votes', function (Blueprint $table) {
-            $table->dropForeign('poll_votes_choice_id_foreign');
+            $table->dropForeign('poll_votes_poll_choice_id_foreign');
         });
     }
 }
