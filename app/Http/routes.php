@@ -16,6 +16,8 @@ Route::get('/', function () {
 });
 
 Route::get('walls', 'WallsController@index');
+Route::get('walls/{wall}', 'WallsController@show');
+Route::get('/walls/{wall}/enter', 'WallsController@enter');
 
 /*
 |--------------------------------------------------------------------------

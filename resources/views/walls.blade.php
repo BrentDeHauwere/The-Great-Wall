@@ -8,7 +8,7 @@
         <div class="container">
           <ul>
             @foreach ($walls as $wall)
-              <li>{{ $wall->name }} </li>
+              <li><a href="/walls/{{ $wall->id }}">{{ $wall->name }} </a></li>
             @endforeach
           </ul>
         </div>
