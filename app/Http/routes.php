@@ -28,6 +28,11 @@ Route::get('walls', 'WallsController@index');
 |
 */
 
-Route::group(['middleware' => ['web']], function () {
+Route::group(['prefix' => 'messagewall','middleware' => ['web']], function () {
+    //
+    Route::get('questions/{wall_id}','WallController@questions');
+    Route::post('message/new','WallController@newMessage');
+    Route::post('message/vote','WallController@voteMessage');
+    Route::post('poll/vote','WallController@votePoll');
 
 });
