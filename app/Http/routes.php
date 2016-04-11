@@ -15,10 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('walls', 'WallsController@index');
-Route::get('walls/{wall}', 'WallsController@show');
-Route::get('/walls/{wall}/enter', 'WallsController@enter');
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -31,5 +27,7 @@ Route::get('/walls/{wall}/enter', 'WallsController@enter');
 */
 
 Route::group(['middleware' => ['web']], function () {
-
+  Route::get('walls', 'WallsController@index');
+  Route::get('walls/{wall}', 'WallsController@show');
+  Route::get('/walls/{wall}/enter', 'WallsController@enter');
 });

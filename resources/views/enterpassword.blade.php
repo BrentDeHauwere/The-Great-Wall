@@ -6,7 +6,7 @@
     </head>
     <body>
         <div class="container">
-          <form method="GET" action="/walls/{wall}/enter">
+          <form method="GET" action="/walls/{{ $wall->id }}/enter">
             {{ csrf_field() }}
             <label for="password">Please provide the wall password:</label>
             <input type="text" id="password" name="password" required>

@@ -24,6 +24,6 @@ class WallsController extends Controller
       if ($request->password == $wall->password){
         return $wall;
       }
-      return view('enterpassword', compact('wall'));
+      return back();
     }
 }
