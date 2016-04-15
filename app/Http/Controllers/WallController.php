@@ -149,7 +149,7 @@ class WallController extends Controller
 
     }
 
-    public function ModeratorDecline(Request $request){
+    public function ModeratorDecline(ModeratorMessageHandleRequest $request){
       $userid = 1 //getfromloggedinuser
       $message_id = $request->input("message_id");
       $message = Message::where("moderator_id","=",$user_id)->where("id","=",$message_id)->first();
