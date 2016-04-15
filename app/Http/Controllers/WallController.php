@@ -21,10 +21,10 @@ class WallController extends Controller
 	 */
 	public function openWall($wall_id)
 	{
-		$questions = Message::with('votes')->where('wall_id', '=', $wall_id)->get();
+		$messages = Message::with('votes')->where('wall_id', '=', $wall_id)->get();
 		$polls = Poll::with('choices.votes')->where('wall_id', '=', $wall_id)->get();
 
-		return view('wall')->with('questions', $questions)->with('polls', $polls);
+		return view('session')->with('messages', $messages)->with('polls', $polls);
 	}
 	
 	/**
@@ -219,9 +219,9 @@ class WallController extends Controller
 		$wall_id = $request->input("wall_id");
 		$wall = Wall::where("wall_id","=",$wall_id)->where("password","=",$password)->first();
 		if($wall){
-			$questions = Message::with('votes')->where('wall_id', '=', $wall_id)->get();
+			$messages = Message::with('votes')->where('wall_id', '=', $wall_id)->get();
 			$polls = Poll::with('choices.votes')->with('poll_choices_votes')->where('wall_id', '=', $wall_id)->get();
-			return view("wall")->with('questions', $questions)->with('polls', $polls);
+			return view("messagewall")->with('messages', $messages)->with('polls', $polls);
 		}
 		else{
 			redirect()->back()->with("error","Could not enter the wall with this password");
