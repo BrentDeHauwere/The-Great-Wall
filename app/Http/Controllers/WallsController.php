@@ -19,11 +19,4 @@ class WallsController extends Controller
       }
       return $wall;
     }
-
-    public function enter(Request $request, Wall $wall){
-      if ($request->password == $wall->password){
-        return $wall;
-      }
-      return back();
-    }
 }
