@@ -20,8 +20,8 @@ class WallController extends Controller
 	 */
 	public function questions($wall_id)
 	{
-		$questions = Message::with('message_votes')->where('wall_id', '=', $wall_id)->get();
-		$polls = Poll::with('poll_choices')->with('poll_choices_votes')->where('wall_id', '=', $wall_id)->get();
+		$questions = Message::with('votes')->where('wall_id', '=', $wall_id)->get();
+		$polls = Poll::with('choices.votes')->with('poll_choices_votes')->where('wall_id', '=', $wall_id)->get();
 
 		return view('wall')->with('questions', $questions)->with('polls', $polls);
 	}
@@ -138,10 +138,10 @@ class WallController extends Controller
 	public function ModeratorQuestions($wall_id)
 	{
 		$userid = 1; //getfromloggedinuser
-		$messages = Message::where("moderation_level", "=", NULL)->where("wall_id", "=", $wall_id)->get();
-		$polls = Poll::with("poll_choices")->where("wall_id", "=", $wall_id)->get();
+		$messages = Message::with("votes")->where("moderation_level", "=", 0)->where("wall_id", "=", $wall_id)->get();
+		$polls = Poll::with("choices.votes")->where("wall_id", "=", $wall_id)->get();
 
-		return view("moderator")->with("messages", $messages);
+		return $messages;
 	}
 	
 	/**
@@ -157,7 +157,7 @@ class WallController extends Controller
 		$message = Message::where("id", "=", $message_id)->first();
 		if ($message)
 		{
-			$message->moderation_level = 0;
+			$message->moderation_level = 1;
 			$message->moderator_id = $userid;
 			$saved = $message->save();
 			if ($saved)
@@ -189,7 +189,7 @@ class WallController extends Controller
 		$message = Message::where("id", "=", $message_id)->first();
 		if ($message)
 		{
-			$message->moderation_level = 1;
+			$message->moderation_level = 2;
 			$message->moderator_id = $userid;
 			$saved = $message->save();
 			if ($saved)
