@@ -110,4 +110,62 @@ class WallController extends Controller
       }
 
     }
+
+    /**
+    * Get the messages for a moderator
+    *
+    * @param $wall_id
+    * @return Response
+    */
+    public function ModeratorQuestions($wall_id){
+        $userid = 1 //getfromloggedinuser
+        $messages = Message::where("moderator_id","=",$user_id)->where("wall_id","=",$wall_id)->get();
+        return view("moderator")->with("messages",$messages);
+    }
+
+    /**
+    * Handle an accepted message
+    *
+    * @param $wall_id
+    * @return Response
+    */
+    public function ModeratorAccept(Request $request){
+      $userid = 1 //getfromloggedinuser
+      $message_id = $request->input("message_id");
+      $message = Message::where("moderator_id","=",$user_id)->where("id","=",$message_id)->first();
+      if($message){
+        $message->moderation_level = 0;
+        $saved = $message->save();
+        if($saved){
+          return redirect()->back()->with("success","Message was accepted");
+        }
+        else{
+          return redirect()->back()->with("error","Message could not be saved");
+        }
+      }
+      else{
+        return redirect()->back()->with("error","No message found with this id to be moderated by you");
+      }
+
+    }
+
+    public function ModeratorDecline(Request $request){
+      $userid = 1 //getfromloggedinuser
+      $message_id = $request->input("message_id");
+      $message = Message::where("moderator_id","=",$user_id)->where("id","=",$message_id)->first();
+      if($message){
+        $message->moderation_level = 1;
+        $saved = $message->save();
+        if($saved){
+          return redirect()->back()->with("success","Message was declined");
+        }
+        else{
+          return redirect()->back()->with("error","Message could not be saved");
+        }
+      }
+      else{
+        return redirect()->back()->with("error","No message found with this id to be moderated by you");
+      }
+    }
+
 }
