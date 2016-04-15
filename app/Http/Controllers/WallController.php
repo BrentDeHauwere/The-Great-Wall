@@ -13,21 +13,23 @@ use App\PollVote;
 
 class WallController extends Controller
 {
-    //expecting wall_id
+    /**
+    * Select all questions and polls for  a wall
+    *
+    * @param int $wall_id
+    * @return Response
+    */
     public function questions($wall_id){
       $questions = Message::where('wall_id','=',$wall_id)->get();
       $polls = Poll::where('wall_id','=',$wall_id)->get();
       return view('wall')->with('questions',$questions)->with('polls',$polls);
     }
 
-    /*
-      expecting user_id
-      expecting wall_id
-      expecting channel_id
-      expecting text
-      expecting anonymous
-      might have question_id
-      might have moderator_id
+    /**
+    * Handle a new message
+    *
+    * @param StoreMessageRequest
+    * @return Response
     */
     public function newMessage(StoreMessageRequest $request){
       $message = new Message();
@@ -52,9 +54,11 @@ class WallController extends Controller
       }
     }
 
-    /*
-      expecting message_id
-      expecting user_id
+    /**
+    * Handle a vote on a message
+    *
+    * @param VoteMessageRequest
+    * @return Response
     */
     public function voteMessage(VoteMessageRequest $request){
       $message_vote = new MessageVote();
@@ -78,11 +82,13 @@ class WallController extends Controller
       }
     }
 
-    /*
-      expecting poll_choice_id
-      expecting user_id
+    /**
+    * Handle a vote on a poll
+    *
+    * @param VotePollRequest
+    * @return Response
     */
-    public function votePoll(votePollRequest $request){
+    public function votePoll(VotePollRequest $request){
       $poll_vote = new PollVote();
       $poll_vote->poll_choice_id = $request->input('poll_choice_id');
       $poll_vote->user_id = $request->input('user_id');
