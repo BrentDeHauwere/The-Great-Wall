@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('walls', 'WallsController@index');
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -32,4 +34,5 @@ Route::group(['prefix' => 'messagewall','middleware' => ['web']], function () {
     Route::post('message/new','WallController@newMessage');
     Route::post('message/vote','WallController@voteMessage');
     Route::post('poll/vote','WallController@votePoll');
+
 });
