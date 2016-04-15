@@ -24,6 +24,5 @@
 
 Route::group(['middleware' => ['web']], function () {
   Route::get('/', 'WallsController@index');
-  Route::get('/walls/{wall}', 'WallsController@show');
-  Route::get('/walls/{wall}/enter', 'WallsController@enter');
+  Route::post('/walls/{wall}', 'WallsController@show');
 });

@@ -22,6 +22,7 @@
               @endif
             </span>
             <form action="/walls/{{ $wall->id }}" method="POST">
+              {{ csrf_field() }}
               <input type="text" class="form-control" placeholder="Password">
               <span class="input-group-btn">
                 <button class="btn btn-secondary btn-block" type="button">Enter</button>
@@ -32,6 +33,7 @@
         @else
         <div class="col-sm-2 col-sm-offset-7">
           <form action="/walls/{{ $wall->id }}" method="POST">
+            {{ csrf_field() }}
             <button class="btn btn-secondary btn-block" type="submit">Enter</button>
           </endform>
         </div>

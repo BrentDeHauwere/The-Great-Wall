@@ -14,9 +14,6 @@ class WallsController extends Controller
     }
 
     public function show(Wall $wall){
-      if (!empty($wall->password)){
-        return view('enterpassword', compact('wall'));
-      }
       return $wall;
     }
 }
