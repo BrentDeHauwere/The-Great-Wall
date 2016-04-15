@@ -21,10 +21,17 @@ class WallController extends Controller
 	 */
 	public function openWall($wall_id)
 	{
-		$messages = Message::with('votes')->where('wall_id', '=', $wall_id)->get();
-		$polls = Poll::with('choices.votes')->where('wall_id', '=', $wall_id)->get();
+		$wall = Wall::find($wall_id);
+		if(isEmpty($wall->password)){
+			$messages = Message::with('votes')->where('wall_id', '=', $wall_id)->get();
+			$polls = Poll::with('choices.votes')->where('wall_id', '=', $wall_id)->get();
 
-		return view('session')->with('messages', $messages)->with('polls', $polls);
+			return view('session')->with('messages', $messages)->with('polls', $polls);
+		}
+		else{
+			redirect()->back()->with("error","No password was provided");
+		}
+
 	}
 	
 	/**
