@@ -129,7 +129,7 @@ class WallController extends Controller
     * @param $wall_id
     * @return Response
     */
-    public function ModeratorAccept(Request $request){
+    public function ModeratorAccept(ModeratorMessageHandleRequest $request){
       $userid = 1 //getfromloggedinuser
       $message_id = $request->input("message_id");
       $message = Message::where("moderator_id","=",$user_id)->where("id","=",$message_id)->first();
