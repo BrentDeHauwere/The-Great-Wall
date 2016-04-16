@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use App\Http\Requests\ModeratorMessageHandleRequest;
 use App\Wall;
 use App\Message;
 use App\MessageVote;
@@ -22,7 +23,7 @@ class WallController extends Controller
 	public function openWall($wall_id)
 	{
 		$wall = Wall::find($wall_id);
-		if(isEmpty($wall->password)){
+		if(empty($wall->password)){
 			$messages = Message::with('votes')->where('wall_id', '=', $wall_id)->get();
 			$polls = Poll::with('choices.votes')->where('wall_id', '=', $wall_id)->get();
 
@@ -146,10 +147,10 @@ class WallController extends Controller
 	public function ModeratorQuestions($wall_id)
 	{
 		$userid = 1; //getfromloggedinuser
-		$messages = Message::with("votes")->where("moderation_level", "=", 0)->where("wall_id", "=", $wall_id)->get();
+		$messages = Message::with("votes")->where("wall_id", "=", $wall_id)->get();
 		$polls = Poll::with("choices.votes")->where("wall_id", "=", $wall_id)->get();
 
-		return $messages;
+		return view("moderator")->with("messages",$messages)->with("polls",$polls);
 	}
 	
 	/**
@@ -165,7 +166,7 @@ class WallController extends Controller
 		$message = Message::where("id", "=", $message_id)->first();
 		if ($message)
 		{
-			$message->moderation_level = 1;
+			$message->moderation_level = 0;
 			$message->moderator_id = $userid;
 			$saved = $message->save();
 			if ($saved)
@@ -197,7 +198,7 @@ class WallController extends Controller
 		$message = Message::where("id", "=", $message_id)->first();
 		if ($message)
 		{
-			$message->moderation_level = 2;
+			$message->moderation_level = 1;
 			$message->moderator_id = $userid;
 			$saved = $message->save();
 			if ($saved)
