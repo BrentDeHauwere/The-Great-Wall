@@ -11,12 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('walls', 'WallsController@index');
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -27,7 +21,6 @@ Route::get('walls', 'WallsController@index');
 | kernel and includes session state, CSRF protection, and more.
 |
 */
-
 Route::group(['prefix' => 'messagewall','middleware' => ['web']], function () {
     Route::get('wall/{wall_id}','WallController@openWall');
     Route::post('message/new','WallController@newMessage');
@@ -37,4 +30,7 @@ Route::group(['prefix' => 'messagewall','middleware' => ['web']], function () {
     Route::post('moderator/message/accept','WallController@ModeratorAccept');
     Route::post('moderator/message/decline','WallController@ModeratorDecline');
     Route::post('wall/enter','WallController@enterWallWithPassword');
+    Route::get('/', 'WallsController@index');
+    Route::get('/walls/{wall}', 'WallsController@show');
+    Route::get('/walls/{wall}/enter', 'WallsController@enter');
 });
