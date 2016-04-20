@@ -24,5 +24,7 @@
 
 Route::group(['middleware' => ['web']], function () {
   Route::get('/', 'WallsController@index');
+  Route::get('/walls/new', 'RedirectController@createWall');
+  Route::post('/walls/createWall', 'WallsController@create');
   Route::post('/walls/{wall}', 'WallsController@show');
 });

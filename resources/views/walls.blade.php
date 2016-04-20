@@ -3,6 +3,13 @@
 @section('title', 'Walls')
 
 @section('content')
+
+  @if (session('error'))
+      <div class="alert alert-danger">
+          {{ session('error') }}
+      </div>
+  @endif
+
   @foreach ($walls as $wall)
   <div class="panel panel-default">
     <div class="panel-body">
@@ -13,13 +20,8 @@
         @if (!empty($wall->password))
         <div class="col-sm-offset-3 col-sm-6">
           <div class="input-group">
-            @if (empty($error))
             <span class="input-group-addon">
               <span class="glyphicon glyphicon-lock"></span>
-            @else
-            <span class="input-group-addon alert-danger">
-              <span class="glyphicon glyphicon-remove "></span>
-              @endif
             </span>
             <form action="/walls/{{ $wall->id }}" method="POST">
               {{ csrf_field() }}
@@ -42,4 +44,8 @@
     </div>
   </div>
   @endforeach
+  <form method="GET" action="/walls/new">
+    <button type="submit" class="btn btn-primary">Create Wall</button>
+  </form>
+  <p>Pas deze button aan wanneer we een user kunnen checken via CAPI.</p>
 @stop
