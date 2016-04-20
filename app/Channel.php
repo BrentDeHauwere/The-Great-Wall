@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Channel extends Model
 {
+    public $timestamps = false;
     /**
      * Get the messages of the channel.
      */

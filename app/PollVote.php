@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PollVote extends Model
 {
+    public $timestamps = false;
     /**
      * Get the choice that owns the vote.
      */
