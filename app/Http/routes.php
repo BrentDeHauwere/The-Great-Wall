@@ -26,6 +26,6 @@ Route::get('/', function () {
 |
 */
 
-Route::group(['middleware' => ['web']], function () {
-    //
+Route::group(['prefix' => 'TheGreatWall', 'middleware' => ['web']], function () {
+    Route::resource('sessions', 'SessionController');
 });
