@@ -30,8 +30,8 @@
 		</div>
 
 		<div class="form-group">
-			<label for="conf_password">Confirm password</label>
-			<input id="conf_password" type="password" name="conf_password" class="form-control">
+			<label for="password_confirmation">Confirm password</label>
+			<input id="password_confirmation" type="password" name="password_confirmation" class="form-control">
 		</div>
 
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">

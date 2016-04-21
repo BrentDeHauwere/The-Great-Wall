@@ -23,7 +23,7 @@ class SessionController extends Controller
 	 */
 	public function index()
 	{
-		$walls = Wall::all();
+		$walls = Wall::orderBy('name')->get();
 
 		return View::make('sessions.index')
 			->with('walls', $walls);
@@ -48,8 +48,9 @@ class SessionController extends Controller
 	{
 		// Server-side validation
 		$this->validate($request, [
-			'user_id' => 'required|numeric|min:1',
-			'name'    => 'required',
+			'user_id' 	=> 'required|numeric|min:1',
+			'name'    	=> 'required',
+			'password'	=> 'confirmed',
 		]);
 
 		$wall = new Wall;
@@ -104,31 +105,31 @@ class SessionController extends Controller
 	 * @return Response
 	 */
 	public
-	function update($id)
+	function update(Request $request, $id)
 	{
-		$rules = array(
-			'user_id' => 'required',
-			'name'    => 'required',
-		);
-		$validator = Validator::make(Input::all(), $rules);
+		// Server-side validation
+		$this->validate($request, [
+			'user_id' 	=> 'required|numeric|min:1',
+			'name'    	=> 'required',
+			'password'	=> 'confirmed',
+		]);
 
-		if ($validator->fails())
+		$wall = Wall::find($id);
+		$wall->user_id = $request->input('user_id');
+		$wall->name = $request->input('name');
+		if ($request->has('password'))
 		{
-			return Redirect::to("sessions/{$id}/edit")
-				->withErrors($validator)
-				->withInput(Input::except('password'));
+			$wall->password = Hash::make($request->input('password'));
 		}
 		else
 		{
-			$wall = Wall::find($id);
-			$wall->user_id = Input::get('user_id');
-			$wall->name = Input::get('name');
-			$wall->save();
-
-			Session::flash('message', 'Successfully updated wall.');
-
-			return Redirect::to('sessions');
+			$wall->password = null;
 		}
+		$wall->save();
+
+		$request->session()->put('message', 'Successfully updated wall.');
+
+		return Redirect::to('TheGreatWall/sessions');
 	}
 
 	/**
@@ -145,6 +146,6 @@ class SessionController extends Controller
 
 		Session::flash('message', 'Successfully deleted the wall.');
 
-		return Redirect::to('sessions');
+		return Redirect::to('TheGreatWall/sessions');
 	}
 }
