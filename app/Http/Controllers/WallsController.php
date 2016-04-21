@@ -27,12 +27,16 @@ class WallsController extends Controller
       return $wall;
     }
 
+    public function create(){
+      return view('wall_create');
+    }
+
     /**
-    * Creates a wall
+    * Stores a wall in the database
     *
     * return view walls.blade.php when succesfull, error when failed
     */
-    public function create(Request $request){
+    public function store(Request $request){
       $wall = new Wall;
       $wall->name = $request->input('name');
       if (!empty($request->input('password'))){

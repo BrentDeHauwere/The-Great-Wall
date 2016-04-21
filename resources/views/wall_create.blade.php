@@ -3,7 +3,7 @@
 @section('title', 'Create a Wall')
 
 @section('content')
-<form action="/walls/createWall" method="POST">
+<form action="/walls/store" method="POST">
   {{ csrf_field() }}
   <div class="form-group">
     <label for="name">Name</label>
