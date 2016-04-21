@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
+use Validator;
+
 class SessionController extends Controller
 {
 	/**
@@ -23,7 +25,7 @@ class SessionController extends Controller
 		$walls = Wall::all();
 
 		return View::make('sessions.index')
-			->with('sessions', $walls);
+			->with('walls', $walls);
 	}
 
 	/**
@@ -45,24 +47,30 @@ class SessionController extends Controller
 	{
 		// Server-side validation
 		$rules = array(
-			'name'		=> 'required'
+			'user_id'	=> 'required|numeric|min:1',
+			'name'		=> 'required',
 		);
 		$validator = Validator::make(Input::all(), $rules);
 
 		if ($validator->fails())
 		{
-			return Redirect::to('sessions/create')
+			return Redirect::to('TheGreatWall/sessions/create')
 				->withErrors($validator)
 				->withInput(Input::except('password'));
 		}
 		else
 		{
 			$wall = new Wall;
+			$wall->user_id = Input::get('user_id');
 			$wall->name = Input::get('name');
+			if (Input::has('password'))
+			{
+				$wall->password = Hash::make(Input::get('password'));
+			}
 			$wall->save();
 
 			Session::flash('message', 'Successfully created wall.');
-			return Redirect::to('sesions');
+			return Redirect::to('TheGreatWall/sessions');
 		}
 	}
 
@@ -103,7 +111,8 @@ class SessionController extends Controller
 	public function update($id)
 	{
 		$rules = array(
-			'name'       => 'required',
+			'user_id'	=> 'required',
+			'name'      => 'required',
 		);
 		$validator = Validator::make(Input::all(), $rules);
 
@@ -116,6 +125,7 @@ class SessionController extends Controller
 		else
 		{
 			$wall = Wall::find($id);
+			$wall->user_id = Input::get('user_id');
 			$wall->name = Input::get('name');
 			$wall->save();
 
