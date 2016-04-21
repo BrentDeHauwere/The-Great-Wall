@@ -49,7 +49,7 @@ class SessionController extends Controller
 		// Server-side validation
 		$this->validate($request, [
 			'user_id' => 'required|numeric|min:1',
-			'name'    => 'required|unique:walls',
+			'name'    => 'required',
 		]);
 
 		$wall = new Wall;
@@ -67,84 +67,84 @@ class SessionController extends Controller
 	}
 
 
-/**
- * Display the specified wall.
- *
- * @param  int $id
- * @return Response
- */
-public
-function show($id)
-{
-	$wall = Wall::find($id);
-
-	return View::make('sessions.show')
-		->with('wall', $wall);
-}
-
-/**
- * Show the form for editing the specified wall.
- *
- * @param  int $id
- * @return Response
- */
-public
-function edit($id)
-{
-	$wall = Wall::find($id);
-
-	return View::make('sessions.edit')
-		->with('wall', $wall);
-}
-
-/**
- * Update the specified wall in storage.
- *
- * @param  int $id
- * @return Response
- */
-public
-function update($id)
-{
-	$rules = array(
-		'user_id' => 'required',
-		'name'    => 'required',
-	);
-	$validator = Validator::make(Input::all(), $rules);
-
-	if ($validator->fails())
-	{
-		return Redirect::to("sessions/{$id}/edit")
-			->withErrors($validator)
-			->withInput(Input::except('password'));
-	}
-	else
+	/**
+	 * Display the specified wall.
+	 *
+	 * @param  int $id
+	 * @return Response
+	 */
+	public
+	function show($id)
 	{
 		$wall = Wall::find($id);
-		$wall->user_id = Input::get('user_id');
-		$wall->name = Input::get('name');
-		$wall->save();
 
-		Session::flash('message', 'Successfully updated wall.');
+		return View::make('sessions.show')
+			->with('wall', $wall);
+	}
+
+	/**
+	 * Show the form for editing the specified wall.
+	 *
+	 * @param  int $id
+	 * @return Response
+	 */
+	public
+	function edit($id)
+	{
+		$wall = Wall::find($id);
+
+		return View::make('sessions.edit')
+			->with('wall', $wall);
+	}
+
+	/**
+	 * Update the specified wall in storage.
+	 *
+	 * @param  int $id
+	 * @return Response
+	 */
+	public
+	function update($id)
+	{
+		$rules = array(
+			'user_id' => 'required',
+			'name'    => 'required',
+		);
+		$validator = Validator::make(Input::all(), $rules);
+
+		if ($validator->fails())
+		{
+			return Redirect::to("sessions/{$id}/edit")
+				->withErrors($validator)
+				->withInput(Input::except('password'));
+		}
+		else
+		{
+			$wall = Wall::find($id);
+			$wall->user_id = Input::get('user_id');
+			$wall->name = Input::get('name');
+			$wall->save();
+
+			Session::flash('message', 'Successfully updated wall.');
+
+			return Redirect::to('sessions');
+		}
+	}
+
+	/**
+	 * Remove (inactive) the specified wall from storage.
+	 *
+	 * @param  int $id
+	 * @return Response
+	 */
+	public
+	function destroy($id)
+	{
+		$wall = Wall::find($id);
+		$wall->delete();
+
+		Session::flash('message', 'Successfully deleted the wall.');
 
 		return Redirect::to('sessions');
 	}
-}
-
-/**
- * Remove (inactive) the specified wall from storage.
- *
- * @param  int $id
- * @return Response
- */
-public
-function destroy($id)
-{
-	$wall = Wall::find($id);
-	$wall->delete();
-
-	Session::flash('message', 'Successfully deleted the wall.');
-
-	return Redirect::to('sessions');
-}
 }

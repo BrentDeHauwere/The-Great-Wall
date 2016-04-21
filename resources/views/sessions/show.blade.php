@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', 'Wall ' . $wall->name)
+@section('title', 'Wall: ' . $wall->name)
 
 @section('content')
 	<div class="jumbotron text-center">
