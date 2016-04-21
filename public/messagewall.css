@@ -1,0 +1,49 @@
+.messagesContainer {
+    width:80%;
+}
+
+.message .panel-heading h4 {
+    margin: 0;
+}
+
+.message .panel-body {
+
+}
+
+.message .panel {
+    margin-bottom: 10px;
+}
+
+.message form {
+    margin:0;
+}
+
+.message input {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 3px;
+}
+
+.message form button {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 3px;
+    margin:0;
+}
+
+.message .list-group {
+    margin: 0;
+}
+
+.options {
+    maring:0;
+    width: 100%;
+}
+
+/*
+    Color constants
+
+    Darkgreyred:    #382426;
+    Hazelnut Brown: #e2b579
+    Candy Apple:    #ED1F24
+    Cloudy:         #f0f5f7
+    Snow:           #fff
+*/
