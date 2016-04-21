@@ -17,6 +17,7 @@ class CreateWallsTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->string('name');
             $table->string('password')->nullable();
+            $table->softDeletes();
         });
     }
 
