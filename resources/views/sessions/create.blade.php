@@ -29,6 +29,11 @@
 			<input id="password" type="password" name="password" class="form-control">
 		</div>
 
+		<div class="form-group">
+			<label for="conf_password">Confirm password</label>
+			<input id="conf_password" type="password" name="conf_password" class="form-control">
+		</div>
+
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 		<input type="submit" value="Create the wall" class="btn btn-primary">

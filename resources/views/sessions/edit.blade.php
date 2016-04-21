@@ -15,7 +15,7 @@
 		</div>
 	@endif
 
-	<form action="{{action('SessionController@store')}}" method="post">
+	<form action="{{action('SessionController@update')}}" method="post">
 		<div class="form-group">
 			<label for="user_id">UserID</label>
 			<input id="user_id" type="number" name="user_id" class="form-control" value="{{ $wall->user_id }}">
@@ -37,6 +37,8 @@
 		</div>
 
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+		<input type="hidden" name="_method" value="put">
 
 		<input type="submit" value="Edit the wall" class="btn btn-primary">
 	</form>
