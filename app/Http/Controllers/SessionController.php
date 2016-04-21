@@ -43,29 +43,29 @@ class SessionController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store(Request $request)
 	{
 		// Server-side validation
 		$rules = array(
 			'user_id'	=> 'required|numeric|min:1',
-			'name'		=> 'required',
+			'name'		=> 'required|unique:walls',
 		);
 		$validator = Validator::make(Input::all(), $rules);
 
 		if ($validator->fails())
 		{
-			return Redirect::to('TheGreatWall/sessions/create')
+			return redirect('TheGreatWall/sessions/create')
 				->withErrors($validator)
-				->withInput(Input::except('password'));
+				->withInput($request->except('password'));
 		}
 		else
 		{
 			$wall = new Wall;
-			$wall->user_id = Input::get('user_id');
-			$wall->name = Input::get('name');
-			if (Input::has('password'))
+			$wall->user_id = $request->input('user_id');
+			$wall->name = $request->input('name');
+			if ($request->has('password'))
 			{
-				$wall->password = Hash::make(Input::get('password'));
+				$wall->password = Hash::make($request->input('password'));
 			}
 			$wall->save();
 

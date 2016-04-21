@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Wall extends Model
 {
     /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+    
+    /**
      * Get the messages of the wall.
      */
     public function messages()

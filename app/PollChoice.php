@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class PollChoice extends Model
 {
     /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+    
+    /**
      * Get the votes for the choice.
      */
     public function votes()
