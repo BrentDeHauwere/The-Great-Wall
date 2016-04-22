@@ -25,8 +25,7 @@
                   <span class="glyphicon glyphicon-lock"></span>
                 </span>
               {{ csrf_field() }}
-              <input type="password" class="form-control" name="password" placeholder="Password">
-
+              <input type="password" class="form-control" name="password" placeholder="Password" required>
               <input type="hidden" name="wall_id" value="{{$wall->id}}">
               <span class="input-group-btn">
                 <button class="btn btn-secondary btn-block" type="submit">Enter</button>
