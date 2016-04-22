@@ -19,11 +19,11 @@
         </div>
         @if (!empty($wall->password))
         <div class="col-sm-offset-3 col-sm-6">
-          <div class="input-group">
-            <span class="input-group-addon">
-              <span class="glyphicon glyphicon-lock"></span>
-            </span>
             <form action="/TheGreatWall/wall/enter" method="POST">
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-lock"></span>
+                </span>
               {{ csrf_field() }}
               <input type="password" class="form-control" name="password" placeholder="Password">
               <input type="hidden" name="wall_id" value="{{$wall->id}}">
