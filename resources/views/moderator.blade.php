@@ -24,7 +24,7 @@
 			<div class="col-md-12">
 				<div class="list-group">
 					@foreach($result as $row)
-						@if($row['moderation_level'] == "M")
+						@if($row['M'] == "M")
 							@if($row['moderation_level'] == 1)
 								<div class="list-group-item list-group-item-danger">
 							@elseif($row['moderation_level'] == 0)
@@ -88,7 +88,7 @@
 							</div>
 							<h4 class="list-group-item-heading">User {{ $row['M'].' '.$row['created_at'] }}</h4>
 							<p class="list-group-item-text">
-								{{ $row['content'] }}
+								{{ $row['text'] }}
 							</p>
 						@endif
 					</div>
