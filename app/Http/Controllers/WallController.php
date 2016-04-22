@@ -36,7 +36,7 @@ class WallController extends Controller
 		}
 
 	}
-	
+
 	/**
 	 * Handle a new message
 	 *
@@ -59,7 +59,7 @@ class WallController extends Controller
 		{
 			$message->moderator_id = $request->input('moderator_id');
 		}
-		
+
 		$saved = $message->save();
 		if ($saved)
 		{
@@ -70,7 +70,7 @@ class WallController extends Controller
 			return redirect()->back()->with('error', 'Message could not be saved');
 		}
 	}
-	
+
 	/**
 	 * Handle a vote on a message
 	 *
@@ -104,7 +104,7 @@ class WallController extends Controller
 			return redirect()->back()->with('error', 'New message vote could not be saved');
 		}
 	}
-	
+
 	/**
 	 * Handle a vote on a poll
 	 *
@@ -137,9 +137,9 @@ class WallController extends Controller
 		{
 			return redirect()->back()->with('error', 'New poll vote could not be saved');
 		}
-		
+
 	}
-	
+
 	/**
 	 * Get the messages for a moderator
 	 *
@@ -156,7 +156,7 @@ class WallController extends Controller
 
 		return view("moderator")->with("messages",$messages)->with("polls",$polls)->with("result",json_decode(json_encode($result),true));
 	}
-	
+
 	/**
 	 * Handle an accepted message
 	 *
@@ -186,9 +186,9 @@ class WallController extends Controller
 		{
 			return redirect()->back()->with("error", "No message found with this id to be moderated by you");
 		}
-		
+
 	}
-	
+
 	/**
 	 * Handle a declined message
 	 *
@@ -239,5 +239,9 @@ class WallController extends Controller
 			redirect()->back()->with("error","Could not enter the wall with this password");
 		}
 	}
-	
+
+	public function create(){
+		return view('wall_create');
+	}
+
 }
