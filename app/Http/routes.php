@@ -13,7 +13,6 @@
 
 Route::group(['prefix' => 'TheGreatWall', 'middleware' => ['web']], function () {
   Route::resource('sessions', 'SessionController');
-  Route::get('walls', 'WallsController@index');
 	Route::get('wall/{wall_id}','WallController@openWall');
 	Route::post('message/new','WallController@newMessage');
 	Route::post('message/vote','WallController@voteMessage');
@@ -22,7 +21,5 @@ Route::group(['prefix' => 'TheGreatWall', 'middleware' => ['web']], function () 
 	Route::post('moderator/message/accept','WallController@ModeratorAccept');
 	Route::post('moderator/message/decline','WallController@ModeratorDecline');
 	Route::post('/wall/enter','WallController@enterWallWithPassword');
-	Route::get('/', 'WallsController@index');
-	Route::get('/walls/{wall}', 'WallsController@show');
-	Route::post('/walls/{wall}/enter', 'WallController@openWall');
+	Route::get('/', 'WallController@index');
 });
