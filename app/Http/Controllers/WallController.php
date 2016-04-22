@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DB;
 use App\Http\Requests;
 use App\Http\Requests\ModeratorMessageHandleRequest;
+use App\Http\Requests\WallPasswordRequest;
 use App\Wall;
 use App\Message;
 use App\MessageVote;
@@ -12,6 +13,7 @@ use App\Poll;
 use App\PollChoice;
 use App\PollVote;
 use Illuminate\Http\Request;
+use Hash;
 
 class WallController extends Controller
 {
@@ -30,6 +32,7 @@ class WallController extends Controller
 
 			//$result = DB::select(DB::raw("SELECT id,created_at,'M' FROM messages UNION SELECT id,created_at,'P' FROM polls ORDER BY created_at"));
 			return view('sessions.show')->with('messages', $messages)->with('polls', $polls);//->with('result',$result);
+
 		}
 		else{
 			redirect()->back()->with("error","No password was provided");
@@ -227,16 +230,17 @@ class WallController extends Controller
 	 * @return Response
 	 */
 	public function enterWallWithPassword(WallPasswordRequest $request){
-		$password = $request->input("password");
 		$wall_id = $request->input("wall_id");
-		$wall = Wall::where("wall_id","=",$wall_id)->where("password","=",$password)->first();
-		if($wall){
+		$wall = Wall::find($wall_id);
+
+		if(Hash::check($request->input("password"), $wall->password)){
 			$messages = Message::with('votes')->where('wall_id', '=', $wall_id)->get();
 			$polls = Poll::with('choices.votes')->with('poll_choices_votes')->where('wall_id', '=', $wall_id)->get();
-			return view("messagewall")->with('messages', $messages)->with('polls', $polls);
+			//return view("messagewall")->with('messages', $messages)->with('polls', $polls);
+			return $wall;
 		}
 		else{
-			redirect()->back()->with("error","Could not enter the wall with this password");
+			return redirect('TheGreatWall/')->with('error', "Wrong password. Please try again." . $password);
 		}
 	}
 

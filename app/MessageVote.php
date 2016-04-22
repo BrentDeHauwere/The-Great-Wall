@@ -12,7 +12,7 @@ class MessageVote extends Model
      * @var bool
      */
     public $timestamps = false;
-    
+
     /**
      * Get the message that owns the vote.
      */

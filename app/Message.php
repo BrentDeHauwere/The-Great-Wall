@@ -6,13 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
 {
-    public $timestamps = false;
     /**
      * Indicates if the model should be timestamped.
      *
      * @var bool
      */
+<<<<<<< HEAD
+    public $timestamps = false;
+
+=======
     
+>>>>>>> origin/master
     /**
      * Get the wall that owns the message.
      */

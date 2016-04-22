@@ -12,7 +12,7 @@ class User extends Authenticatable
      * @var bool
      */
     public $timestamps = false;
-    
+
     /**
      * The attributes that are mass assignable.
      *
