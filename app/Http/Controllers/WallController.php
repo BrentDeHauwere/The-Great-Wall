@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\Http\Requests\ModeratorMessageHandleRequest;
+use App\Http\Requests\WallPasswordRequest;
 use App\Wall;
 use App\Message;
 use App\MessageVote;
@@ -27,7 +28,8 @@ class WallController extends Controller
 			$messages = Message::with('votes')->where('wall_id', '=', $wall_id)->get();
 			$polls = Poll::with('choices.votes')->where('wall_id', '=', $wall_id)->get();
 
-			return view('session')->with('messages', $messages)->with('polls', $polls);
+			//return view('sessions.index')->with('messages', $messages)->with('polls', $polls);
+			return $wall;
 		}
 		else{
 			redirect()->back()->with("error","No password was provided");
@@ -225,14 +227,15 @@ class WallController extends Controller
 	public function enterWallWithPassword(WallPasswordRequest $request){
 		$password = $request->input("password");
 		$wall_id = $request->input("wall_id");
-		$wall = Wall::where("wall_id","=",$wall_id)->where("password","=",$password)->first();
+		$wall = Wall::where("id","=",$wall_id)->where("password","=",$password)->first();
 		if($wall){
 			$messages = Message::with('votes')->where('wall_id', '=', $wall_id)->get();
 			$polls = Poll::with('choices.votes')->with('poll_choices_votes')->where('wall_id', '=', $wall_id)->get();
-			return view("messagewall")->with('messages', $messages)->with('polls', $polls);
+			//return view("messagewall")->with('messages', $messages)->with('polls', $polls);
+			return "Entered, yarr!";
 		}
 		else{
-			redirect()->back()->with("error","Could not enter the wall with this password");
+			redirect()->back()->with('error',"Wrong password, please try again.");
 		}
 	}
 
