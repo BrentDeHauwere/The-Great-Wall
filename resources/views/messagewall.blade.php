@@ -63,7 +63,7 @@
 						</h4>
 					</div>
 					<div class="panel-body messageBody">
-						Dit is de diepste vraag ter wereld?
+						<p>Dit is de diepste vraag ter wereld?</p>
 					</div>
 
 					<!-- verschillende antwoorden -->
@@ -142,48 +142,63 @@
 				</div>
 			</div>
 
+
+			<!-- input group -->
+			<div class="btn-group">
+				<button type="button" class="btn btn-default">Bericht</button>
+				<button type="button" class="btn btn-default">Poll</button>
+			</div>
+
 			<!-- Voorbeeld Form om nieuwe message aan te maken -->
 			<div class="message messageForm">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h4>Eli Boeye</h4>
-					</div>
-					<div class="panel-body messageBody">
-						<form>
+				<form>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4>Eli Boeye</h4>
+						</div>
+						<div class="panel-body messageBody">
+
 							<textarea class="form-control" name="" id="" cols="30" rows="5" placeholder="Plaats hier uw vraag"></textarea>
-						</form>
-						<div class="buttons pull-right submitButton" role="group">
-							<input type="submit" class="btn btn-default">
+							<input type="checkbox" name="anonymous" value="anonymous"> Anoniem
+							<div class="buttons pull-right submitButton" role="group">
+								<input type="submit" class="btn btn-default">
+							</div>
 						</div>
 					</div>
-				</div>
+				</form>
+
 			</div>
+
 
 			<!-- Form om nieuwe poll aan te maken -->
 			<div class="message pollForm">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h4>Eli Boeye</h4>
-					</div>
-					<form action="">
+				<form action="">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4>Eli Boeye</h4>
+						</div>
 						<div class="panel-body messageBody">
-							Waarom zijn de bananen krom
-
-							<hr>
+							<p>Waarom zijn de bananen krom</p>
 
 							<ul class="list-group">
-								<li class="list-group-item">Cras justo odio</li>
-								<li class="list-group-item">Dapibus ac facilisis in</li>
-									<textarea class="form-control" name="" id="" cols="30" rows="10" placeholder="Plaats hier uw optie"></textarea>
+								<li class="list-group-item">
+									Cras justo odio
+									<a><span class="glyphicon glyphicon-remove pull-right"></span></a>
+								</li>
+								<li class="list-group-item">
+									Dapibus ac facilisis in
+									<a><span class="glyphicon glyphicon-remove pull-right"></span></a>
+								</li>
+								<textarea class="form-control" name="" id="" cols="30" rows="5" placeholder="Plaats hier uw optie"></textarea>
+								<input type="checkbox" name="anonymous" value="anonymous"> Anoniem
 								<div class="buttons pull-right submitButton" role="group">
 									<input type="submit" class="btn btn-default">
 								</div>
 							</ul>
-					</form>
-				</div>
+						</div>
+					</div>
+				</form>
 			</div>
-		</div>
-
 		</div>
 	</body>
 </html>
