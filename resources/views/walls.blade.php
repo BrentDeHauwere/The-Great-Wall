@@ -37,7 +37,7 @@
           <form action="/walls/{{ $wall->id }}" method="POST">
             {{ csrf_field() }}
             <button class="btn btn-secondary btn-block" type="submit">Enter</button>
-          </endform>
+          </form>
         </div>
         @endif
       </div>
