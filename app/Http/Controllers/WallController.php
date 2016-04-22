@@ -28,7 +28,8 @@ class WallController extends Controller
 			$messages = Message::with('votes')->where('wall_id', '=', $wall_id)->get();
 			$polls = Poll::with('choices.votes')->where('wall_id', '=', $wall_id)->get();
 
-			return view('session')->with('messages', $messages)->with('polls', $polls);
+			$result = DB::select(DB::raw("SELECT id,'M' FROM messages UNION SELECT id,'P' FROM polls ORDER BY created_at"));
+			return view('session')->with('messages', $messages)->with('polls', $polls)->with('result',$results);
 		}
 		else{
 			redirect()->back()->with("error","No password was provided");
@@ -151,7 +152,7 @@ class WallController extends Controller
 		$messages = Message::with("votes")->where("wall_id", "=", $wall_id)->get();
 		$polls = Poll::with("choices.votes")->where("wall_id", "=", $wall_id)->get();
 
-		$result = DB::select( DB::raw("SELECT id,text,moderation_level,'M' FROM messages UNION SELECT id,question,moderation_level,'P' FROM polls ORDER BY created_at"));
+		$result = DB::select(DB::raw("SELECT id,text,moderation_level,'M' FROM messages UNION SELECT id,question,moderation_level,'P' FROM polls ORDER BY created_at"));
 
 		return view("moderator")->with("messages",$messages)->with("polls",$polls)->with("result",$result);
 	}
