@@ -20,6 +20,7 @@ class CreatePollsTable extends Migration
             $table->longText('question');
             $table->boolean('addable');
             $table->tinyInteger('moderation_level')->default(0);
+            $table->dateTime('created_at');
         });
     }
 
