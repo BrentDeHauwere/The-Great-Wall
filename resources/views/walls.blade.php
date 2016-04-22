@@ -26,12 +26,19 @@
                 </span>
               {{ csrf_field() }}
               <input type="password" class="form-control" name="password" placeholder="Password">
+
               <input type="hidden" name="wall_id" value="{{$wall->id}}">
               <span class="input-group-btn">
                 <button class="btn btn-secondary btn-block" type="submit">Enter</button>
               </span>
             </form>
+
           </div>
+          @if( $errors->has('password'))
+            <span class="help-block">
+                    <strong>{{ $errors->first('password') }}</strong>
+                </span>
+          @endif
         </div>
         @else
         <div class="col-sm-2 col-sm-offset-7">
