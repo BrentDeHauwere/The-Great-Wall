@@ -13,6 +13,7 @@
 
 Route::group(['prefix' => 'TheGreatWall', 'middleware' => ['web']], function () {
   Route::resource('sessions', 'SessionController');
+  Route::resource('blacklist', 'BlacklistController');
 	Route::get('wall/{wall_id}','WallController@openWall');
 	Route::post('message/new','WallController@newMessage');
 	Route::post('message/vote','WallController@voteMessage');
