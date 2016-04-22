@@ -22,7 +22,7 @@ class Wall extends Model
      * @var bool
      */
     public $timestamps = false;
-    
+
     /**
      * Get the messages of the wall.
      */

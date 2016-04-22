@@ -34,7 +34,7 @@
         </div>
         @else
         <div class="col-sm-2 col-sm-offset-7">
-          <form action="/walls/{{ $wall->id }}" method="POST">
+          <form action="/TheGreatWall/walls/{{ $wall->id }}/enter" method="POST">
             {{ csrf_field() }}
             <button class="btn btn-secondary btn-block" type="submit">Enter</button>
           </form>
