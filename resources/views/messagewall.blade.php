@@ -10,10 +10,7 @@
 		<div class="messagesContainer center-block">
 			<h3>Messagewall ¯\_(ツ)_/¯</h3>
 
-			<!-- een bunch messages -->
-			@for($i=0;$i<1;$i++)
-
-				<!-- Voorbeeld message -->
+			<!-- Voorbeeld message -->
 			<div class="message">
 				<div class="panel panel-default">
 					<div class="panel-heading">
@@ -58,7 +55,7 @@
 			</div>
 
 			<!-- Voorbeeld poll -->
-			<div class="message">
+			<div class="message poll">
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h4>Eli Boeye
@@ -75,6 +72,9 @@
 
 							<div class="row">
 								<div class="col-md-3 col-sm-3 col-xs-3">
+									<button type="button" class="btn btn-default vote">
+										<span class="glyphicon glyphicon-ok" area-hidden="true"></span>
+									</button>
 									<span class="progress-opt">Patat</span>
 								</div>
 								<div class="col-md-8 col-sm-8 col-xs-7">
@@ -90,6 +90,9 @@
 							</div>
 							<div class="row">
 								<div class="col-md-3 col-sm-3 col-xs-3">
+									<button type="button" class="btn btn-default vote">
+										<span class="glyphicon glyphicon-ok" area-hidden="true"></span>
+									</button>
 									<span class="progress-opt">Wortel</span>
 								</div>
 								<div class="col-md-8 col-sm-8 col-xs-7">
@@ -105,6 +108,9 @@
 							</div>
 							<div class="row">
 								<div class="col-md-3 col-sm-3 col-xs-3">
+									<button type="button" class="btn btn-default vote">
+										<span class="glyphicon glyphicon-ok" area-hidden="true"></span>
+									</button>
 									<span class="progress-opt">Tomaat</span>
 								</div>
 								<div class="col-md-8 col-sm-8 col-xs-7">
@@ -135,8 +141,48 @@
 					</form>
 				</div>
 			</div>
-			@endfor
 
+			<!-- Voorbeeld Form om nieuwe message aan te maken -->
+			<div class="message messageForm">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4>Eli Boeye</h4>
+					</div>
+					<div class="panel-body messageBody">
+						<form>
+							<textarea class="form-control" name="" id="" cols="30" rows="5" placeholder="Plaats hier uw vraag"></textarea>
+						</form>
+						<div class="buttons pull-right submitButton" role="group">
+							<input type="submit" class="btn btn-default">
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Form om nieuwe poll aan te maken -->
+			<div class="message pollForm">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4>Eli Boeye</h4>
+					</div>
+					<form action="">
+						<div class="panel-body messageBody">
+							Waarom zijn de bananen krom
+
+							<hr>
+
+							<ul class="list-group">
+								<li class="list-group-item">Cras justo odio</li>
+								<li class="list-group-item">Dapibus ac facilisis in</li>
+									<textarea class="form-control" name="" id="" cols="30" rows="10" placeholder="Plaats hier uw optie"></textarea>
+								<div class="buttons pull-right submitButton" role="group">
+									<input type="submit" class="btn btn-default">
+								</div>
+							</ul>
+					</form>
+				</div>
+			</div>
+		</div>
 
 		</div>
 	</body>

@@ -38,6 +38,30 @@
     width: 100%;
 }
 
+.vote {
+    padding: 5px;
+}
+
+textarea {
+    resize: none;
+}
+
+.pollForm textarea {
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+}
+
+.submitButton {
+    margin-top: 5px;
+}
+
+.submitButton {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 3px;
+    margin:0;
+}
+
+
 /*
     Color constants
 
