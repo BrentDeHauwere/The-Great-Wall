@@ -33,14 +33,14 @@
 								<div class="list-group-item list-group-item-blocked">
 							@endif
 							<div class="pull-right">
-								<form class="btn-group" method="POST" action="/messagewall/moderator/message/accept">
+								<form class="btn-group" method="POST" action="/TheGreatWall/moderator/message/accept">
 									<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
 									<input type="hidden" class="btn">
 									<input type="hidden" class="btn">
 									<input type="hidden" name="_token" value="{{ csrf_token() }}">
 									<input type="hidden" name="message_id" value="{{ $row['id'] }}"/>
 								</form>
-								<form class="btn-group" method="POST" action="/messagewall/moderator/message/decline">
+								<form class="btn-group" method="POST" action="/TheGreatWall/moderator/message/decline">
 									<input type="hidden" class="btn">
 									<button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
 									<input type="hidden" class="btn">
@@ -66,14 +66,14 @@
 								<div class="list-group-item list-group-item-blocked">
 							@endif
 							<div class="pull-right">
-								<form class="btn-group" method="POST" action="/messagewall/moderator/poll/accept">
+								<form class="btn-group" method="POST" action="/TheGreatWall/moderator/poll/accept">
 									<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
 									<input type="hidden" class="btn">
 									<input type="hidden" class="btn">
 									<input type="hidden" name="_token" value="{{ csrf_token() }}">
 									<input type="hidden" name="message_id" value="{{ $row['id'] }}"/>
 								</form>
-								<form class="btn-group" method="POST" action="/messagewall/moderator/poll/decline">
+								<form class="btn-group" method="POST" action="/TheGreatWall/moderator/poll/decline">
 									<input type="hidden" class="btn">
 									<button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
 									<input type="hidden" class="btn">
