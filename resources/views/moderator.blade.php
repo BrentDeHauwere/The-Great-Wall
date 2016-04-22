@@ -53,7 +53,7 @@
 									<button type="submit" class="btn greybtn"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></button>
 								</form>
 							</div>
-							<h4 class="list-group-item-heading">User {{ $row['M'].' '.$row['created_at'] }}</h4>
+							<h4 class="list-group-item-heading">User <!-- Ophalen van CAPI--></h4>
 							<p class="list-group-item-text">
 								{{ $row['text'] }}
 							</p>
@@ -86,7 +86,7 @@
 									<button type="submit" class="btn greybtn"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></button>
 								</form>
 							</div>
-							<h4 class="list-group-item-heading">User {{ $row['M'].' '.$row['created_at'] }}</h4>
+							<h4 class="list-group-item-heading">User  <!-- Ophalen van CAPI--></h4>
 							<p class="list-group-item-text">
 								{{ $row['text'] }}
 							</p>

@@ -12,7 +12,7 @@ class PollVote extends Model
      * @var bool
      */
     public $timestamps = false;
-    
+
     /**
      * Get the choice that owns the vote.
      */
