@@ -63,41 +63,76 @@
 		<div class="container">
 			<div class="col-md-12">
 				<div class="list-group">
-					@foreach($messages as $message)
-						@if($message->moderation_level == 1)
-						<div class="list-group-item list-group-item-danger">
-						@elseif($message->moderation_level == 0)
-						<div class="list-group-item list-group-item-success">
-						@else
-						<div class="list-group-item list-group-item-blocked">
+					{{ json_encode($result) }}
+					@foreach($result as $row)
+						@if($row[3] == "M")
+							@if($row[2] == 1)
+								<div class="list-group-item list-group-item-danger">
+							@elseif($row[2] == 0)
+								<div class="list-group-item list-group-item-success">
+							@else
+								<div class="list-group-item list-group-item-blocked">
+							@endif
+							<div class="pull-right">
+								<form class="btn-group" method="POST" action="/messagewall/moderator/message/accept">
+									<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+									<input type="hidden" class="btn">
+									<input type="hidden" class="btn">
+									<input type="hidden" name="_token" value="{{ csrf_token() }}">
+									<input type="hidden" name="message_id" value="{{ $row[0] }}"/>
+								</form>
+								<form class="btn-group" method="POST" action="/messagewall/moderator/message/decline">
+									<input type="hidden" class="btn">
+									<button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+									<input type="hidden" class="btn">
+									<input type="hidden" name="_token" value="{{ csrf_token() }}">
+									<input type="hidden" name="message_id" value="{{ $row[0] }}"/>
+								</form>
+								<form class="btn-group" method="POST" action="">
+									<input type="hidden" class="btn">
+									<input type="hidden" class="btn">
+									<button type="submit" class="btn greybtn"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></button>
+								</form>
+							</div>
+							<h4 class="list-group-item-heading">User</h4>
+							<p class="list-group-item-text">
+								{{ $row[1] }}
+							</p>
+						@elseif($row[3] == "P")
+							@if($row[2] == 1)
+								<div class="list-group-item list-group-item-danger">
+							@elseif($row[2] == 0)
+								<div class="list-group-item list-group-item-success">
+							@else
+								<div class="list-group-item list-group-item-blocked">
+							@endif
+							<div class="pull-right">
+								<form class="btn-group" method="POST" action="/messagewall/moderator/poll/accept">
+									<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+									<input type="hidden" class="btn">
+									<input type="hidden" class="btn">
+									<input type="hidden" name="_token" value="{{ csrf_token() }}">
+									<input type="hidden" name="message_id" value="{{ $row[0] }}"/>
+								</form>
+								<form class="btn-group" method="POST" action="/messagewall/moderator/poll/decline">
+									<input type="hidden" class="btn">
+									<button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+									<input type="hidden" class="btn">
+									<input type="hidden" name="_token" value="{{ csrf_token() }}">
+									<input type="hidden" name="message_id" value="{{ $row[0] }}"/>
+								</form>
+								<form class="btn-group" method="POST" action="">
+									<input type="hidden" class="btn">
+									<input type="hidden" class="btn">
+									<button type="submit" class="btn greybtn"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></button>
+								</form>
+							</div>
+							<h4 class="list-group-item-heading">User</h4>
+							<p class="list-group-item-text">
+								{{ $row[1] }}
+							</p>
 						@endif
-
-						<div class="pull-right">
-							<form class="btn-group" method="POST" action="/messagewall/moderator/message/accept">
-								<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
-								<input type="hidden" class="btn">
-								<input type="hidden" class="btn">
-								<input type="hidden" name="_token" value="{{ csrf_token() }}">
-								<input type="hidden" name="message_id" value="{{ $message->id }}"/>
-							</form>
-							<form class="btn-group" method="POST" action="/messagewall/moderator/message/decline">
-								<input type="hidden" class="btn">
-								<button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-								<input type="hidden" class="btn">
-								<input type="hidden" name="_token" value="{{ csrf_token() }}">
-								<input type="hidden" name="message_id" value="{{ $message->id }}"/>
-							</form>
-							<form class="btn-group" method="POST" action="">
-								<input type="hidden" class="btn">
-								<input type="hidden" class="btn">
-								<button type="submit" class="btn greybtn"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></button>
-							</form>
-						</div>
-						<h4 class="list-group-item-heading">User</h4>
-						<p class="list-group-item-text">
-							{{ $message->text }}
-						</p>
-						</div>
+					</div>
 					@endforeach
 				</div>
 			</div>
