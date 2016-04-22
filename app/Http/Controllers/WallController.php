@@ -236,7 +236,7 @@ class WallController extends Controller
 			return $wall;
 		}
 		else{
-			return redirect('TheGreatWall/')->with('error', "Wrong password. Please try again." . $password);
+			return redirect('TheGreatWall/')->with('error', "Wrong password. Please try again.");
 		}
 	}
 
