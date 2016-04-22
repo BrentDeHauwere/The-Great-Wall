@@ -44,7 +44,7 @@
     </div>
   </div>
   @endforeach
-  <form method="GET" action="/walls/create">
+  <form method="GET" action="/messagewall/walls/create">
     <button type="submit" class="btn btn-primary">Create Wall</button>
   </form>
   <p>Pas deze button aan wanneer we een user kunnen checken via CAPI.</p>
