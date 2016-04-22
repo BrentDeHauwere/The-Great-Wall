@@ -8,6 +8,13 @@ class PollChoice extends Model
 {
     public $timestamps = false;
     /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+    
+    /**
      * Get the votes for the choice.
      */
     public function votes()
