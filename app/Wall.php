@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Wall extends Model
 {
+    public $timestamps = false;
     /**
      * Get the messages of the wall.
      */

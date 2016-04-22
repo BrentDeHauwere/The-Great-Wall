@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class MessageVote extends Model
 {
+    public $timestamps = false;
     /**
      * Get the message that owns the vote.
      */
