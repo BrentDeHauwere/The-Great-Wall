@@ -31,6 +31,7 @@ Route::group(['prefix' => 'messagewall','middleware' => ['web']], function () {
     Route::post('moderator/message/decline','WallController@ModeratorDecline');
     Route::post('wall/enter','WallController@enterWallWithPassword');
     Route::get('/', 'WallsController@index');
+    Route::get('/walls/create', 'WallController@create');
     Route::get('/walls/{wall}', 'WallsController@show');
     Route::get('/walls/{wall}/enter', 'WallsController@enter');
 });
