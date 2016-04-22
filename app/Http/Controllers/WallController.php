@@ -232,7 +232,7 @@ class WallController extends Controller
 		$wall = Wall::where("wall_id","=",$wall_id)->where("password","=",$password)->first();
 		if($wall){
 			$messages = Message::with('votes')->where('wall_id', '=', $wall_id)->get();
-			$polls = Poll::with('choices.votes')->with('poll_choices_votes')->where('wall_id', '=', $wall_id)->get();
+			$polls = Poll::with('choices.votes')->where('wall_id', '=', $wall_id)->get();
 			return view("messagewall")->with('messages', $messages)->with('polls', $polls);
 		}
 		else{
