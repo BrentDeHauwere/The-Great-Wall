@@ -1,3 +1,6 @@
+html{
+	padding:0 !important;
+}
 .btn-group {margin-left: -5px; !important;}
 
 .greybtn{

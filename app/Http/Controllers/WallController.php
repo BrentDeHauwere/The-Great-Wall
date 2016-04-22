@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Http\Requests;
 use App\Http\Requests\ModeratorMessageHandleRequest;
 use App\Http\Requests\WallPasswordRequest;
@@ -29,8 +30,9 @@ class WallController extends Controller
 			$messages = Message::with('votes')->where('wall_id', '=', $wall_id)->get();
 			$polls = Poll::with('choices.votes')->where('wall_id', '=', $wall_id)->get();
 
-			//return view('sessions.index')->with('messages', $messages)->with('polls', $polls);
-			return $wall;
+			//$result = DB::select(DB::raw("SELECT id,created_at,'M' FROM messages UNION SELECT id,created_at,'P' FROM polls ORDER BY created_at"));
+			return view('sessions.show')->with('messages', $messages)->with('polls', $polls);//->with('result',$result);
+
 		}
 		else{
 			redirect()->back()->with("error","No password was provided");
@@ -153,7 +155,9 @@ class WallController extends Controller
 		$messages = Message::with("votes")->where("wall_id", "=", $wall_id)->get();
 		$polls = Poll::with("choices.votes")->where("wall_id", "=", $wall_id)->get();
 
-		return view("moderator")->with("messages",$messages)->with("polls",$polls);
+		$result = DB::select(DB::raw("SELECT id,text,moderation_level,created_at,'M' FROM messages UNION SELECT id,question,moderation_level,created_at,'P' FROM polls ORDER BY created_at desc"));
+
+		return view("moderator")->with("messages",$messages)->with("polls",$polls)->with("result",json_decode(json_encode($result),true));
 	}
 
 	/**

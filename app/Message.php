@@ -11,8 +11,12 @@ class Message extends Model
      *
      * @var bool
      */
+<<<<<<< HEAD
     public $timestamps = false;
 
+=======
+    
+>>>>>>> origin/master
     /**
      * Get the wall that owns the message.
      */
