@@ -6,7 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Channel extends Model
 {
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
     public $timestamps = false;
+
     /**
      * Get the messages of the channel.
      */

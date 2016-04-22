@@ -6,7 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Poll extends Model
 {
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
     public $timestamps = false;
+
     /**
      * Get the wall that owns the poll.
      */

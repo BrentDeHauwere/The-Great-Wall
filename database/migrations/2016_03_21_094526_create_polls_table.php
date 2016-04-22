@@ -15,8 +15,12 @@ class CreatePollsTable extends Migration
         Schema::create('polls', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('wall_id')->unsigned();
+            // Moderation_level: 0 = Accepted, 1 = Declined, 2 = User blokked
+            $table->integer('moderator_id')->unsigned()->nullable();
             $table->longText('question');
             $table->boolean('addable');
+            $table->tinyInteger('moderation_level')->default(0);
+            $table->dateTime('created_at');
         });
     }
 
