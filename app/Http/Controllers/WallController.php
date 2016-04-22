@@ -17,6 +17,17 @@ use Hash;
 
 class WallController extends Controller
 {
+
+	/**
+  * Displays all the available walls
+  *
+  * return view walls.blade.php with walls
+  */
+    public function index(){
+      $walls = Wall::all();
+      return view('walls', compact('walls'));
+    }
+		
 	/**
 	 * Select all questions and polls for  a wall
 	 *
