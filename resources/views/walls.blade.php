@@ -1,16 +1,43 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Laravel</title>
-        <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
-    </head>
-    <body>
-        <div class="container">
-          <ul>
-            @foreach ($walls as $wall)
-              <li>{{ $wall->name }} </li>
-            @endforeach
-          </ul>
+@extends('masterlayout')
+
+@section('title', 'Walls')
+
+@section('content')
+  @foreach ($walls as $wall)
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-sm-3">
+          <p>{{ $wall->name }}</p>
         </div>
-    </body>
-</html>
+        @if (!empty($wall->password))
+        <div class="col-sm-offset-3 col-sm-6">
+          <div class="input-group">
+            @if (empty($error))
+            <span class="input-group-addon">
+              <span class="glyphicon glyphicon-lock"></span>
+            @else
+            <span class="input-group-addon alert-danger">
+              <span class="glyphicon glyphicon-remove "></span>
+              @endif
+            </span>
+            <form action="/walls/{{ $wall->id }}" method="POST">
+              <input type="text" class="form-control" placeholder="Password">
+              <span class="input-group-btn">
+                <button class="btn btn-secondary btn-block" type="button">Enter</button>
+              </span>
+            </form>
+          </div>
+        </div>
+        @else
+        <div class="col-sm-2 col-sm-offset-7">
+          <form action="/walls/{{ $wall->id }}" method="POST">
+            <button class="btn btn-secondary btn-block" type="submit">Enter</button>
+          </endform>
+        </div>
+        @endif
+      </div>
+    </div>
+  </div>
+  @endforeach
+@stop
