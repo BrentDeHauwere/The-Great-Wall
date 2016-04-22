@@ -22,6 +22,7 @@ class CreateMessagesTable extends Migration
             $table->longText('text');
             $table->dateTime('created_at');
             $table->boolean('anonymous');
+            // Moderation_level: 0 = Accepted, 1 = Declined, 2 = User blokked
             $table->tinyInteger('moderation_level')->default(0);
             $table->integer('count')->unsigned()->default(0);
         });

@@ -8,6 +8,13 @@ class Message extends Model
 {
     public $timestamps = false;
     /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+    
+    /**
      * Get the wall that owns the message.
      */
     public function wall()
