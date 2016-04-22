@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Channel extends Model
 {
-    public $timestamps = false;
     /**
      * Indicates if the model should be timestamped.
      *
