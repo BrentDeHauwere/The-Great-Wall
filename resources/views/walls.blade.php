@@ -25,7 +25,7 @@
             </span>
             <form action="/TheGreatWall/wall/enter" method="POST">
               {{ csrf_field() }}
-              <input type="text" class="form-control" name="password" placeholder="Password">
+              <input type="password" class="form-control" name="password" placeholder="Password">
               <input type="hidden" name="wall_id" value="{{$wall->id}}">
               <span class="input-group-btn">
                 <button class="btn btn-secondary btn-block" type="submit">Enter</button>
