@@ -17,6 +17,17 @@ use Hash;
 
 class WallController extends Controller
 {
+
+	/**
+  * Displays all the available walls
+  *
+  * return view walls.blade.php with walls
+  */
+    public function index(){
+      $walls = Wall::all();
+      return view('walls', compact('walls'));
+    }
+		
 	/**
 	 * Select all questions and polls for  a wall
 	 *
@@ -230,10 +241,11 @@ class WallController extends Controller
 	 * @return Response
 	 */
 	public function enterWallWithPassword(WallPasswordRequest $request){
+		$password = $request->input("password");
 		$wall_id = $request->input("wall_id");
 		$wall = Wall::find($wall_id);
 
-		if(Hash::check($request->input("password"), $wall->password)){
+		if(Hash::check($password, $wall->password)){
 			$messages = Message::with('votes')->where('wall_id', '=', $wall_id)->get();
 			$polls = Poll::with('choices.votes')->with('poll_choices_votes')->where('wall_id', '=', $wall_id)->get();
 			//return view("messagewall")->with('messages', $messages)->with('polls', $polls);
