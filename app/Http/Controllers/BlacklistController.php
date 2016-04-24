@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Blacklist;
 use DB;
 use Session;
+use DateTime;
 
 class BlacklistController extends Controller
 {
@@ -21,6 +22,55 @@ class BlacklistController extends Controller
 		$blacklistedUsers = Blacklist::orderBy('created_at')->get();
 
 		return view('blacklist.index')->with('blacklistedUsers', $blacklistedUsers);
+	}
+
+  /**
+	 * Show the form for blacklisting a user.
+	 *
+	 * @return Response
+	 */
+	public function create(Request $request)
+	{
+    //The request gets oftewel a message_id or a poll_id, depending on the button which was pressed
+    $message_id = $request->input('message_id');
+    $poll_id = $request->input('poll_id');
+
+
+    if(!empty($message_id)){
+
+      $user_id = DB::table('messages')->select('user_id')->where('id', $request->input('message_id'))->first();
+
+    } else {
+
+      $user_id = DB::table('polls')->select('user_id')->where('id', $request->input('poll_id'))->first();
+    }
+
+    //$user_id is a stdClass class for some reason...
+		return view('blacklist.create')->with('user_id', $user_id->user_id);
+	}
+
+  /**
+	 * Store a user in the blacklist.
+	 *
+	 * @return Response
+	 */
+	public function store(Request $request)
+	{
+		// Server-side validation
+		$this->validate($request, [
+			'user_id' 	=> 'required|numeric|min:1',
+      'reason'    => 'required'
+		]);
+
+    $db = DB::table('blacklists')->insert(['user_id' => $request->input('user_id'), 'reason' => $request->input('reason'), 'created_at' => new DateTime()]);
+
+    if ($db){
+      $request->session()->put('message', 'Successfully banned user.');
+    } else {
+      $request->session()->put('message', 'Could not ban user.');
+    }
+
+		return redirect('TheGreatWall/blacklist');
 	}
 
   /**

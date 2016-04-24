@@ -34,4 +34,7 @@
 			@endforeach
 		</tbody>
 	</table>
+	@if (empty($blacklistedUsers))
+		<p class="alert alert-info">No blacklisted users.</p>
+	@endif
 @endsection
