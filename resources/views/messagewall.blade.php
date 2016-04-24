@@ -7,8 +7,6 @@
 
 @section('content')
 
-
-
 	<div class="messagesContainer center-block">
 		<h3>Messagewall ¯\_(ツ)_/¯</h3>
 
