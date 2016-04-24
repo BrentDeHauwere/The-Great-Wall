@@ -3,13 +3,18 @@
  */
 $('document').ready(function() {
 
-	$("#pollButton").click(function(){
+	$('.vote').click(function(){
+		$(this).closest('.poll').find('.vote').removeClass('active');
+		$(this).addClass('active');
+	});
+
+	$('#pollButton').click(function(){
 		$("#messageForm").hide();
 		$("#pollForm").show();
 	});
 
-	$("#messageButton").click(function(){
-		$("#pollForm").hide();
-		$("#messageForm").show();
+	$('#messageButton').click(function(){
+		$('#pollForm').hide();
+		$('#messageForm').show();
 	});
 });

@@ -26,20 +26,16 @@
 .message form button {
     border-top-right-radius: 0;
     border-bottom-right-radius: 3px;
-    margin:0;
+    margin: auto;
+    margin-right: -1px;
 }
 
 .message .list-group {
     margin: 0;
 }
 
-.options {
-    maring:0;
-    width: 100%;
-}
-
-.vote {
-    padding: 5px;
+.btn.vote {
+    padding: 4px;
 }
 
 textarea {

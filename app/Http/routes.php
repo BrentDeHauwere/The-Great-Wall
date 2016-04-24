@@ -18,12 +18,6 @@ Route::get('/', function ()
 
 Route::get('walls', 'WallsController@index');
 
-/* TEST KAMIEL */
-Route::get('wall', function ()
-{
-	return view('messagewall');
-});
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes

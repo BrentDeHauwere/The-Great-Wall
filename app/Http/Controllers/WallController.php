@@ -42,13 +42,11 @@ class WallController extends Controller
 			$polls = Poll::with('choices.votes')->where('wall_id', '=', $wall_id)->get();
 
 			//$result = DB::select(DB::raw("SELECT id,created_at,'M' FROM messages UNION SELECT id,created_at,'P' FROM polls ORDER BY created_at"));
-			return view('sessions.show')->with('messages', $messages)->with('polls', $polls);//->with('result',$result);
-
+			return view('messagewall')->with('messages', $messages)->with('polls', $polls);//->with('result',$result);
 		}
 		else{
 			redirect()->back()->with("error","No password was provided");
 		}
-
 	}
 
 	/**
