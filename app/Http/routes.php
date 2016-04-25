@@ -37,5 +37,7 @@ Route::group(['prefix' => 'TheGreatWall', 'middleware' => ['web']], function () 
 });
 
 Route::group(['prefix' => 'TheGreatWall/api', 'middleware' => ['web']], function () {
-
+	Route::get('walls', 'ApiController@walls');
+	Route::get('messages', 'ApiController@messages');
+	Route::get('polls', 'ApiController@polls');
 });
