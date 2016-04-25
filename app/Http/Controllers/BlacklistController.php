@@ -110,8 +110,7 @@ class BlacklistController extends Controller
 	 * @param  int $user_id
 	 * @return Response
 	 */
-	public
-	function destroy($user_id)
+	public function destroy($user_id)
 	{
 		$db = DB::table('blacklists')->where('user_id', $user_id)->delete();
 
@@ -124,4 +123,5 @@ class BlacklistController extends Controller
 
 		return redirect('TheGreatWall/blacklist');
 	}
+
 }

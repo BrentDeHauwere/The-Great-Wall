@@ -16,8 +16,9 @@
 		<div class="row message">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<div class="buttons pull-right" role="group">
-						<!-- upvote -->
+					<!-- upvote -->
+					<div class="buttons pull-right">
+
 						<a class="">
 							<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
 						</a>
@@ -37,7 +38,7 @@
 
 				<!-- antwoorden -->
 				<ul class="list-group">
-					@foreach($message->answers as $answer)
+					@foreach($message->answers->where('moderation_level',0) as $answer)
 						<li class="list-group-item">
 							<b>
 								@unless($answer->anonymous)
@@ -47,6 +48,13 @@
 										@endunless
 										<small> {{$answer->created_at}}</small>
 							</b> {{$answer->text}}
+							<!-- upvote -->
+							<div class="buttons pull-right">
+
+								<a class="">
+									<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+								</a>
+							</div>
 						</li>
 					@endforeach
 				</ul>
@@ -72,7 +80,7 @@
 			@endforelse
 
 
-			@foreach($polls as $poll)
+			@foreach($polls->where('moderation_level',0) as $poll)
 
 				<!-- Voorbeeld poll -->
 			<div class="row message poll">
@@ -88,7 +96,15 @@
 
 					<!-- verschillende antwoorden -->
 					<div class="optionContainer">
+						<?php
+						$total = 0;
+						foreach ($poll->choices/*->where('moderation_level',0)*/ as $choice)
+						{
+							$total += $choice->count;
+						}
+						?>
 						@forelse($poll->choices as $choice)
+
 							<div class="options col-md-12">
 								<div class="col-md-4 col-sm-4">
 									<!-- OK button -->
@@ -100,19 +116,30 @@
 
 								<div class="col-md-6 col-sm-6">
 									<div class="progress">
-										<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0"
-											 aria-valuemax="100" style="width: 60%;">
-											60%
+										<?php
+										if ( $total != 0 )
+										{
+											$percentage = $choice->count / $total * 100;
+										}
+										else
+										{
+											$percentage = 0;
+										}
+										?>
+
+										<div class="progress-bar" role="progressbar" aria-valuenow="{{$percentage}}" aria-valuemin="0"
+											 aria-valuemax="100" style="width: {{$percentage}}%;">
+											{{$percentage}}%
 										</div>
 									</div>
 								</div>
 
 								<div class="col-md-1 col-sm-1">
-									<span class="progress-votes">60</span>
+									<span class="progress-votes">{{$choice->count}}</span>
 								</div>
 							</div>
 						@empty
-							<h3 class="text-center">Er zijn geen mogelijk opties ingesteld :(</h3>
+							<h3 class="text-center">Er zijn geen mogelijke opties ingesteld :(</h3>
 						@endforelse
 					</div>
 
@@ -127,69 +154,70 @@
 					 </span>
 						</div>
 					</form>
-
 				</div>
 
 			</div>
 			@endforeach
 
-			{{--<!-- input group -->--}}
-			{{--<div class="btn-group">--}}
-			{{--<button id="messageButton" type="button" class="btn btn-default">Bericht</button>--}}
-			{{--<button id="pollButton" type="button" class="btn btn-default">Poll</button>--}}
-			{{--</div>--}}
 
-			{{--<!-- Voorbeeld Form om nieuwe message aan te maken -->--}}
-			{{--<div id="messageForm" class="message">--}}
-			{{--<form>--}}
-			{{--<div class="panel panel-default">--}}
-			{{--<div class="panel-heading">--}}
-			{{--<h4>Eli Boeye</h4>--}}
-			{{--</div>--}}
-			{{--<div class="panel-body messageBody">--}}
+			<h1>TEST FORMS</h1>
+			<!-- input group -->
+			<div class="btn-group">
+				<button id="messageButton" type="button" class="btn btn-default">Bericht</button>
+				<button id="pollButton" type="button" class="btn btn-default">Poll</button>
+			</div>
 
-			{{--<textarea class="form-control" name="" id="" cols="30" rows="5"--}}
-			{{--placeholder="Plaats hier uw vraag"></textarea>--}}
-			{{--<input type="checkbox" name="anonymous" value="anonymous"> Anoniem--}}
-			{{--<div class="buttons pull-right submitButton" role="group">--}}
-			{{--<input type="submit" class="btn btn-default">--}}
-			{{--</div>--}}
-			{{--</div>--}}
-			{{--</div>--}}
-			{{--</form>--}}
+			<!-- Voorbeeld Form om nieuwe message aan te maken -->
+			<div id="messageForm" class="message">
+				<form>
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4>Eli Boeye</h4>
+						</div>
+						<div class="panel-body messageBody">
 
-			{{--</div>--}}
+			<textarea class="form-control" name="" id="" cols="30" rows="5"
+					  placeholder="Plaats hier uw vraag"></textarea>
+							<input type="checkbox" name="anonymous" value="anonymous"> Anoniem
+							<div class="buttons pull-right submitButton" role="group">
+								<input type="submit" class="btn btn-default">
+							</div>
+						</div>
+					</div>
+				</form>
 
-			{{--<!-- Form om nieuwe poll aan te maken -->--}}
-			{{--<div id="pollForm" class="message">--}}
-			{{--<form action="">--}}
-			{{--<div class="panel panel-default">--}}
-			{{--<div class="panel-heading">--}}
-			{{--<h4>Eli Boeye</h4>--}}
-			{{--</div>--}}
-			{{--<div class="panel-body messageBody">--}}
-			{{--<p>Waarom zijn de bananen krom</p>--}}
+			</div>
 
-			{{--<ul class="list-group">--}}
-			{{--<li class="list-group-item">--}}
-			{{--Cras justo odio--}}
-			{{--<a><span class="glyphicon glyphicon-remove pull-right"></span></a>--}}
-			{{--</li>--}}
-			{{--<li class="list-group-item">--}}
-			{{--Dapibus ac facilisis in--}}
-			{{--<a><span class="glyphicon glyphicon-remove pull-right"></span></a>--}}
-			{{--</li>--}}
-			{{--<textarea class="form-control" name="" id="" cols="30" rows="5"--}}
-			{{--placeholder="Plaats hier uw optie"></textarea>--}}
-			{{--<input type="checkbox" name="anonymous" value="anonymous"> Anoniem--}}
-			{{--<div class="buttons pull-right submitButton" role="group">--}}
-			{{--<input type="submit" class="btn btn-default">--}}
-			{{--</div>--}}
-			{{--</ul>--}}
-			{{--</div>--}}
-			{{--</div>--}}
-			{{--</form>--}}
-			{{--</div>--}}
+			<!-- Form om nieuwe poll aan te maken -->
+			<div id="pollForm" class="message">
+				<form action="">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4>Eli Boeye</h4>
+						</div>
+						<div class="panel-body messageBody">
+							<p>Waarom zijn de bananen krom</p>
+
+							<ul class="list-group">
+								<li class="list-group-item">
+									Cras justo odio
+									<a><span class="glyphicon glyphicon-remove pull-right"></span></a>
+								</li>
+								<li class="list-group-item">
+									Dapibus ac facilisis in
+									<a><span class="glyphicon glyphicon-remove pull-right"></span></a>
+								</li>
+			<textarea class="form-control" name="" id="" cols="30" rows="5"
+					  placeholder="Plaats hier uw optie"></textarea>
+								<input type="checkbox" name="anonymous" value="anonymous"> Anoniem
+								<div class="buttons pull-right submitButton" role="group">
+									<input type="submit" class="btn btn-default">
+								</div>
+							</ul>
+						</div>
+					</div>
+				</form>
+			</div>
 
 
 	</div>

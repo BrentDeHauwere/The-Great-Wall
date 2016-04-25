@@ -7,6 +7,16 @@
 		<div class="alert alert-info">{{ Session::get('message') }}</div>
 	@endif
 
+	<div clas="row">
+		<form mehtod="GET" action="">
+			<div class="col-sm-10">
+				<input type="text" class="form-control" name="filter" placeholder="Filter by user id...">
+			</div>
+			<div class="col-sm-2">
+				<button action="submit" class="btn btn-secondary btn-block">Filter</button>
+			</div>
+		</form>
+	</div>
 	<table class="table table-striped table-bordered">
 		<thead>
 			<tr>

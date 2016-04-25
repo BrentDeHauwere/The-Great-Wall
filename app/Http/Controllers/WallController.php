@@ -19,15 +19,17 @@ class WallController extends Controller
 {
 
 	/**
-  * Displays all the available walls
-  *
-  * return view walls.blade.php with walls
-  */
-    public function index(){
-      $walls = Wall::all();
-      return view('walls', compact('walls'));
-    }
-		
+	 * Displays all the available walls
+	 *
+	 * return view walls.blade.php with walls
+	 */
+	public function index()
+	{
+		$walls = Wall::all();
+
+		return view('walls', compact('walls'));
+	}
+
 	/**
 	 * Select all questions and polls for  a wall
 	 *
@@ -37,15 +39,45 @@ class WallController extends Controller
 	public function openWall($wall_id)
 	{
 		$wall = Wall::find($wall_id);
-		if(empty($wall->password)){
-			$messages = Message::with('votes')->where('wall_id', '=', $wall_id)->get();
-			$polls = Poll::with('choices.votes')->where('wall_id', '=', $wall_id)->get();
+		if ( empty( $wall->password ) )
+		{
+			$messages = Message::with('votes')->where('wall_id', $wall_id)->get();
+			$polls = Poll::with('choices.votes')->where('wall_id', $wall_id)->get();
+
+			/* Sort messages / poll into a chronologically ordered 2D array */
+			$posts = $polls->toArray();
+
+			foreach($messages->where('question_id', NULL) as $message)
+			{
+				$counter = 0;
+				foreach($posts as $post)
+				{
+					if($message->created_at < $post->created_at)
+					{
+						array_splice($posts, $counter, $message);
+
+						break;
+					}
+					$counter+=1;
+				}
+
+			}
+
+
+
+			$original = array( 'a', 'b', 'c', 'd', 'e' );
+			$inserted = array( 'x' ); // Not necessarily an array
+
+			array_splice($original, 3, 0, $inserted); // splice in at position 3
+			// $original is now a b c x d e
+
 
 			//$result = DB::select(DB::raw("SELECT id,created_at,'M' FROM messages UNION SELECT id,created_at,'P' FROM polls ORDER BY created_at"));
 			return view('messagewall')->with('messages', $messages)->with('polls', $polls);//->with('result',$result);
 		}
-		else{
-			redirect()->back()->with("error","No password was provided");
+		else
+		{
+			redirect()->back()->with("error", "No password was provided");
 		}
 	}
 
@@ -63,17 +95,17 @@ class WallController extends Controller
 		$message->channel_id = $request->input('channel_id');
 		$message->text = $request->input('text');
 		$message->anonymous = $request->input('anonymous');
-		if ($request->has('question_id'))
+		if ( $request->has('question_id') )
 		{
 			$message->question_id = $request->input('question_id');
 		}
-		if ($request->has('moderator_id'))
+		if ( $request->has('moderator_id') )
 		{
 			$message->moderator_id = $request->input('moderator_id');
 		}
 
 		$saved = $message->save();
-		if ($saved)
+		if ( $saved )
 		{
 			return redirect()->back()->with('success', 'Saved succesfully');
 		}
@@ -95,12 +127,12 @@ class WallController extends Controller
 		$message_vote->message_id = $request->input('message_id');
 		$message_vote->user_id = $request->input('user_id');
 		$saved = $message_vote->save();
-		if ($saved)
+		if ( $saved )
 		{
 			$message = Message::where('id', '=', 'message_id')->first();
 			$message->count++;
 			$savedM = $message->save;
-			if ($savedM)
+			if ( $savedM )
 			{
 				return redirect()->back()->with('success', 'Message vote success');
 			}
@@ -129,12 +161,12 @@ class WallController extends Controller
 		$poll_vote->poll_choice_id = $request->input('poll_choice_id');
 		$poll_vote->user_id = $request->input('user_id');
 		$saved = $poll_vote->save();
-		if ($saved)
+		if ( $saved )
 		{
 			$pollchoice = PollChoice::where('id', '=', 'message_id')->first();
 			$pollchoice->count++;
 			$savedChoice = $pollchoice->save();
-			if ($savedChoice)
+			if ( $savedChoice )
 			{
 				return redirect()->back()->with('success', 'Poll vote success');
 			}
@@ -166,7 +198,7 @@ class WallController extends Controller
 
 		$result = DB::select(DB::raw("SELECT id,text,moderation_level,created_at,'M' FROM messages UNION SELECT id,question,moderation_level,created_at,'P' FROM polls ORDER BY created_at desc"));
 
-		return view("moderator")->with("messages",$messages)->with("polls",$polls)->with("result",json_decode(json_encode($result),true));
+		return view("moderator")->with("messages", $messages)->with("polls", $polls)->with("result", json_decode(json_encode($result), true));
 	}
 
 	/**
@@ -180,12 +212,12 @@ class WallController extends Controller
 		$userid = 1; //getfromloggedinuser
 		$message_id = $request->input("message_id");
 		$message = Message::where("id", "=", $message_id)->first();
-		if ($message)
+		if ( $message )
 		{
 			$message->moderation_level = 0;
 			$message->moderator_id = $userid;
 			$saved = $message->save();
-			if ($saved)
+			if ( $saved )
 			{
 				return redirect()->back()->with("success", "Message was accepted");
 			}
@@ -212,12 +244,12 @@ class WallController extends Controller
 		$userid = 1; //getfromloggedinuser
 		$message_id = $request->input("message_id");
 		$message = Message::where("id", "=", $message_id)->first();
-		if ($message)
+		if ( $message )
 		{
 			$message->moderation_level = 1;
 			$message->moderator_id = $userid;
 			$saved = $message->save();
-			if ($saved)
+			if ( $saved )
 			{
 				return redirect()->back()->with("success", "Message was declined");
 			}
@@ -238,23 +270,28 @@ class WallController extends Controller
 	 * @param ModeratorMessageHandleRequest
 	 * @return Response
 	 */
-	public function enterWallWithPassword(WallPasswordRequest $request){
+	public function enterWallWithPassword(WallPasswordRequest $request)
+	{
 		$password = $request->input("password");
 		$wall_id = $request->input("wall_id");
 		$wall = Wall::find($wall_id);
 
-		if(Hash::check($password, $wall->password)){
+		if ( Hash::check($password, $wall->password) )
+		{
 			$messages = Message::with('votes')->where('wall_id', '=', $wall_id)->get();
 			$polls = Poll::with('choices.votes')->with('poll_choices_votes')->where('wall_id', '=', $wall_id)->get();
+
 			//return view("messagewall")->with('messages', $messages)->with('polls', $polls);
 			return $wall;
 		}
-		else{
+		else
+		{
 			return redirect('TheGreatWall/')->with('error', "Wrong password. Please try again.");
 		}
 	}
 
-	public function create(){
+	public function create()
+	{
 		return view('wall_create');
 	}
 

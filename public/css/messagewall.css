@@ -38,6 +38,10 @@
     margin: auto;
 }
 
+.optionContainer .progress-bar {
+    color: #333;
+}
+
 .btn.vote {
     padding: 4px;
 }
