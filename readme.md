@@ -1,7 +1,5 @@
 # General documentation
 
-![](project-logo.png) ![]()
-
 > A small part of guidence on how a project for the Integration Project of 2015-2016 of EHB Brussels about EHackB should be styles.
 
 > It provides a boilerplate Template for creating a clear view of the repository for anyone on the team.
@@ -76,7 +74,10 @@ If you still want to keep it handwritten, to keep you (and your project) sane, I
 
 ## Author
 
-- Dries Lammens
+- Brent De Hauwere
+- Eli Boey
+- Jonas De Pelmaeker
+- Kamiel Klumpers
 
 ## Acknowledgements
 
