@@ -1,4 +1,4 @@
-@extends('master')
+@extends('masterlayout')
 
 @section('title', 'Ban User')
 

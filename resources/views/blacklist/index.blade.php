@@ -1,6 +1,14 @@
-@extends('master')
+@extends('masterlayout')
 
 @section('title', 'Blacklist')
+
+@section('page-script')
+<script type="text/javascript">
+	function filter(){
+		alert('button clicked');
+	};
+</script>
+@stop
 
 @section('content')
 	@if (Session::has('message'))
@@ -8,14 +16,12 @@
 	@endif
 
 	<div clas="row">
-		<form mehtod="GET" action="">
 			<div class="col-sm-10">
 				<input type="text" class="form-control" name="filter" placeholder="Filter by user id...">
 			</div>
 			<div class="col-sm-2">
-				<button action="submit" class="btn btn-secondary btn-block">Filter</button>
+				<button action="submit" name="filterbutton" class="btn btn-secondary btn-block" onclick="filter()">Filter</button>
 			</div>
-		</form>
 	</div>
 	<table class="table table-striped table-bordered">
 		<thead>
