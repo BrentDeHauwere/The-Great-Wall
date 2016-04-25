@@ -7,6 +7,7 @@
     <title>EhackB - @yield('title')</title>
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
     @yield('header')
+    @yield('page-script')
   </head>
   <body>
     <div class="container">
