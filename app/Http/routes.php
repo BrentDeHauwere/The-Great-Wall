@@ -2,6 +2,24 @@
 
 /*
 |--------------------------------------------------------------------------
+| Routes File
+|--------------------------------------------------------------------------
+|
+| Here is where you will register all of the routes in an application.
+| It's a breeze. Simply tell Laravel the URIs it should respond to
+| and give it the controller to call when that URI is requested.
+|
+*/
+
+Route::get('/', function ()
+{
+	return view('welcome');
+});
+
+Route::get('walls', 'WallsController@index');
+
+/*
+|--------------------------------------------------------------------------
 | Application Routes
 |--------------------------------------------------------------------------
 |
@@ -12,8 +30,8 @@
 */
 
 Route::group(['prefix' => 'TheGreatWall', 'middleware' => ['web']], function () {
-  Route::resource('sessions', 'SessionController');
-  Route::resource('blacklist', 'BlacklistController');
+	Route::resource('sessions', 'SessionController');
+	Route::resource('blacklist', 'BlacklistController');
 	Route::get('wall/{wall_id}','WallController@openWall');
 	Route::post('message/new','WallController@newMessage');
 	Route::post('message/vote','WallController@voteMessage');
