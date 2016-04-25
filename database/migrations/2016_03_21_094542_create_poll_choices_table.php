@@ -17,6 +17,8 @@ class CreatePollChoicesTable extends Migration
             $table->integer('poll_id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->longText('text');
+            // Moderation_level: 0 = Accepted, 1 = Declined, 2 = User blokked
+            $table->tinyInteger('moderation_level')->default(0);
             $table->integer('count')->unsigned()->default(0);
             $table->dateTime('created_at');
         });
