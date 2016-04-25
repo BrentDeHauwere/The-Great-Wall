@@ -4,7 +4,14 @@
 
 @section('page-script')
 <script   src="https://code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.11/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.js"></script>
+
 <script>
+	$(document).ready( function () {
+		$('#table').DataTable();
+	} );
+
 	function filter(query){
 
 	};
@@ -15,11 +22,7 @@
 	@if (Session::has('message'))
 		<div class="alert alert-info">{{ Session::get('message') }}</div>
 	@endif
-
-	<form>
-		<input type="text" name="query" class="form-control" onchange="filter(this.value)" placeholder="Search for users..."></input>
-	</form>
-	<table class="table table-striped table-bordered">
+	<table class="table table-striped table-bordered" id="table">
 		<thead>
 			<tr>
 				<td>User ID</td>
