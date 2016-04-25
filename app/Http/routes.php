@@ -35,3 +35,7 @@ Route::group(['prefix' => 'TheGreatWall', 'middleware' => ['web']], function () 
 	Route::post('/wall/enter','WallController@enterWallWithPassword');
 	Route::get('/', 'WallController@index');
 });
+
+Route::group(['prefix' => 'TheGreatWall/api', 'middleware' => ['web']], function () {
+
+});
