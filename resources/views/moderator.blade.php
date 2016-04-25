@@ -47,13 +47,12 @@
 									<input type="hidden" name="_token" value="{{ csrf_token() }}">
 									<input type="hidden" name="message_id" value="{{ $row['id'] }}"/>
 								</form>
-								<form class="btn-group" method="POST" action="">
-									<input type="hidden" class="btn">
-									<input type="hidden" class="btn">
+								<form class="btn-group" method="GET" action="/TheGreatWall/blacklist/create">
+									<input type="hidden" name="message_id" value="{{ $row['id'] }}">
 									<button type="submit" class="btn greybtn"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></button>
 								</form>
 							</div>
-							<h4 class="list-group-item-heading">User {{ $row['M'].' '.$row['created_at'] }}</h4>
+							<h4 class="list-group-item-heading">User <!-- Ophalen van CAPI--></h4>
 							<p class="list-group-item-text">
 								{{ $row['text'] }}
 							</p>
@@ -80,13 +79,12 @@
 									<input type="hidden" name="_token" value="{{ csrf_token() }}">
 									<input type="hidden" name="message_id" value="{{ $row['id'] }}"/>
 								</form>
-								<form class="btn-group" method="POST" action="">
-									<input type="hidden" class="btn">
-									<input type="hidden" class="btn">
+								<form class="btn-group" method="GET" action="/TheGreatWall/blacklist/create">
+									<input type="hidden" name="poll_id" value="{{ $row['id'] }}">
 									<button type="submit" class="btn greybtn"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></button>
 								</form>
 							</div>
-							<h4 class="list-group-item-heading">User {{ $row['M'].' '.$row['created_at'] }}</h4>
+							<h4 class="list-group-item-heading">User  <!-- Ophalen van CAPI--></h4>
 							<p class="list-group-item-text">
 								{{ $row['text'] }}
 							</p>
@@ -98,6 +96,3 @@
 		</div>
 	</body>
 </html>
-
-
-
