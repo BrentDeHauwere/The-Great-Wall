@@ -1,22 +1,33 @@
-@extends('master')
+@extends('masterlayout')
 
 @section('title', 'Blacklist')
+
+@section('page-script')
+<script   src="https://code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
+<script>
+	function filter(query){
+		if (query != ""){
+			$.ajax({
+				url: '{{ URL::to( "TheGreatWall/blacklist/filter" )}}',
+				type: 'GET',
+				data: 'query='+query,
+				success : function(response){
+					console.log(response);
+				}
+			}, "json");
+		}
+	};
+</script>
+@stop
 
 @section('content')
 	@if (Session::has('message'))
 		<div class="alert alert-info">{{ Session::get('message') }}</div>
 	@endif
 
-	<div clas="row">
-		<form mehtod="GET" action="">
-			<div class="col-sm-10">
-				<input type="text" class="form-control" name="filter" placeholder="Filter by user id...">
-			</div>
-			<div class="col-sm-2">
-				<button action="submit" class="btn btn-secondary btn-block">Filter</button>
-			</div>
-		</form>
-	</div>
+	<form>
+		<input type="text" name="query" class="form-control" onchange="filter(this.value)" placeholder="Search for users..."></input>
+	</form>
 	<table class="table table-striped table-bordered">
 		<thead>
 			<tr>
