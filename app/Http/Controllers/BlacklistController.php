@@ -63,7 +63,7 @@ class BlacklistController extends Controller
     //Create entry in the database
     $db = DB::table('blacklists')->insert(['user_id' => $request->input('user_id'), 'reason' => $request->input('reason'), 'created_at' => new DateTime()]);
 
-    //Update the users messages and polls in the tables
+    //Update the users messages or polls in the tables
     if (!empty($request->input('message_id'))){
       $update = DB::table('messages')->where('id', $request->input('message_id'))->update(['moderation_level' => 1]);
     } else {
@@ -125,7 +125,6 @@ class BlacklistController extends Controller
     } else {
       Session::flash('message', 'Could not delete the user from blacklist.');
     }
-
 
 		return redirect('TheGreatWall/blacklist');
 	}
