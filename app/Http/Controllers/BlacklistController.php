@@ -124,12 +124,4 @@ class BlacklistController extends Controller
 		return redirect('TheGreatWall/blacklist');
 	}
 
-  /**
-  *
-  */
-  public function filter(Request $request){
-    $hitlist = Blacklist::where('user_id', $request->input('query'))->get();
-    return response()->json($hitlist);
-  }
-
 }
