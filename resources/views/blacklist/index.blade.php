@@ -3,9 +3,19 @@
 @section('title', 'Blacklist')
 
 @section('page-script')
-<script type="text/javascript">
-	function filter(){
-		alert('button clicked');
+<script   src="https://code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
+<script>
+	function filter(query){
+		if (query != ""){
+			$.ajax({
+				url: '{{ URL::to( "TheGreatWall/blacklist/filter" )}}',
+				type: 'GET',
+				data: 'query='+query,
+				success : function(response){
+					console.log(response);
+				}
+			}, "json");
+		}
 	};
 </script>
 @stop
@@ -15,14 +25,9 @@
 		<div class="alert alert-info">{{ Session::get('message') }}</div>
 	@endif
 
-	<div clas="row">
-			<div class="col-sm-10">
-				<input type="text" class="form-control" name="filter" placeholder="Filter by user id...">
-			</div>
-			<div class="col-sm-2">
-				<button action="submit" name="filterbutton" class="btn btn-secondary btn-block" onclick="filter()">Filter</button>
-			</div>
-	</div>
+	<form>
+		<input type="text" name="query" class="form-control" onchange="filter(this.value)" placeholder="Search for users..."></input>
+	</form>
 	<table class="table table-striped table-bordered">
 		<thead>
 			<tr>
