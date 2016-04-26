@@ -45,17 +45,23 @@ class WallController extends Controller
 			$polls = Poll::with('choices.votes')->where('wall_id', $wall_id)->get();
 
 			/* Sort messages / poll into a chronologically ordered 2D array */
-			$posts = $polls->toArray();
+			$posts = [];
+
+			foreach($polls as $poll)
+			{
+				array_push($posts, array('p', $poll));
+			}
 
 			foreach($messages->where('question_id', NULL) as $message)
 			{
 				$counter = 0;
 				foreach($posts as $post)
 				{
-					if($message->created_at < $post->created_at)
+//					echo json_encode($post[1]->created_at);
+//					echo '<br>';
+					if($message->created_at < $post[1]->created_at)
 					{
-						array_splice($posts, $counter, $message);
-
+						array_splice($posts, $counter, 0, array('m', $message));
 						break;
 					}
 					$counter+=1;
@@ -63,17 +69,15 @@ class WallController extends Controller
 
 			}
 
-
-
-			$original = array( 'a', 'b', 'c', 'd', 'e' );
-			$inserted = array( 'x' ); // Not necessarily an array
-
-			array_splice($original, 3, 0, $inserted); // splice in at position 3
-			// $original is now a b c x d e
+			/*TESTERINO*/
+			foreach($posts as $post)
+			{
+				echo $post;
+			}
 
 
 			//$result = DB::select(DB::raw("SELECT id,created_at,'M' FROM messages UNION SELECT id,created_at,'P' FROM polls ORDER BY created_at"));
-			return view('messagewall')->with('messages', $messages)->with('polls', $polls);//->with('result',$result);
+			//return view('messagewall')->with('messages', $messages)->with('polls', $polls);//->with('result',$result);
 		}
 		else
 		{

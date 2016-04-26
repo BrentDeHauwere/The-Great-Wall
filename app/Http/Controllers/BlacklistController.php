@@ -35,18 +35,14 @@ class BlacklistController extends Controller
     $message_id = $request->input('message_id');
     $poll_id = $request->input('poll_id');
 
-
     if(!empty($message_id)){
-
       $user_id = DB::table('messages')->select('user_id')->where('id', $request->input('message_id'))->first();
-
     } else {
-
       $user_id = DB::table('polls')->select('user_id')->where('id', $request->input('poll_id'))->first();
     }
 
     //$user_id is a stdClass class for some reason...
-		return view('blacklist.create')->with('user_id', $user_id->user_id);
+		return view('blacklist.create')->with('user_id', $user_id->user_id)->with('message_id', $message_id)->with('poll_id', $poll_id);
 	}
 
   /**
@@ -59,10 +55,20 @@ class BlacklistController extends Controller
 		// Server-side validation
 		$this->validate($request, [
 			'user_id' 	=> 'required|numeric|min:1',
-      'reason'    => 'required'
+      'reason'    => 'required',
+      'message_id' => 'numeric|min:1',
+      'poll_id'   => 'numeric|min:1',
 		]);
 
+    //Create entry in the database
     $db = DB::table('blacklists')->insert(['user_id' => $request->input('user_id'), 'reason' => $request->input('reason'), 'created_at' => new DateTime()]);
+
+    //Update the users messages and polls in the tables
+    if (!empty($request->input('message_id'))){
+      $update = DB::table('messages')->where('id', $request->input('message_id'))->update(['moderation_level' => 1]);
+    } else {
+      $update = DB::table('polls')->where('id', $request->input('poll_id'))->update(['moderation_level' => 1]);
+    }
 
     if ($db){
       $request->session()->put('message', 'Successfully banned user.');

@@ -11,13 +11,6 @@
 |
 */
 
-Route::get('/', function ()
-{
-	return view('welcome');
-});
-
-Route::get('walls', 'WallsController@index');
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
