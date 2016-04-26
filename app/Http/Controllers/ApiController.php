@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Wall;
 use App\Message;
 use App\Poll;
+use App\Blacklist;
 
 class ApiController extends Controller
 {
@@ -21,5 +22,9 @@ class ApiController extends Controller
 
   public function polls(){
     return response()->json(Poll::all());
+  }
+
+  public function blacklist(){
+    return response()->json(Blacklist::all());
   }
 }
