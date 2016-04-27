@@ -9,6 +9,7 @@ use App\Wall;
 use App\Message;
 use App\Poll;
 use App\Blacklist;
+use App\User;
 use DB;
 
 class ApiController extends Controller
@@ -62,7 +63,14 @@ class ApiController extends Controller
   }
 
   public function polls(){
-    return response()->json(Poll::all());
+
+    $polls = DB::table('polls')->select('id', 'text', 'wall_id');
+
+    foreach($polls as $poll){
+
+    }
+
+    return response()->json($polls);
   }
 
   public function blacklist(){
@@ -74,13 +82,17 @@ class ApiController extends Controller
 
       //user_id formatting to user{user_id, name}
       $temp_userid = $usr->user_id;
+      $user = DB::table('users')->select('name')->where('id', $temp_userid)->get();
       unset($usr->user_id);
-      $usr->user = ["user_id" => $temp_userid, "name" => "moet nog gebeuren"];
+      $usr->user = ["user_id" => $temp_userid,
+                    "name" => $user[0]
+                    ];
 
       //Convert timestamp to unix format
       $usr->created_at = strtotime($usr->created_at);
     }
 
     return response()->json($db);
+    //return DB::table('users')->select('name')->where('id', $temp_userid)->get();
   }
 }
