@@ -33,6 +33,8 @@ class ApiController extends Controller
         $wall->creator = ["user_id" => $wall->user_id, "name" => $user->name];
       }
 
+      unset($wall->user_id);
+
       //Convert timestamp to unix format
       $wall->created_at = strtotime($wall->created_at);
     }
