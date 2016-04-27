@@ -22,7 +22,7 @@
 |
 */
 
-Route::group(['prefix' => 'TheGreatWall', 'middleware' => ['web']], function () {
+Route::group(['middleware' => ['web']], function () {
 	Route::resource('sessions', 'SessionController');
 	Route::resource('blacklist', 'BlacklistController');
 	Route::get('wall/{wall_id}','WallController@openWall');
