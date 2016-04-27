@@ -44,7 +44,7 @@ class ApiController extends Controller
 
   public function messages(){
 
-    $messages = DB::table('messages')->select('id', 'text', 'question_id', 'wall_id', 'user_id', 'anonymous', 'count', 'created_at', 'moderator_id')->get();
+    $messages = Message::all();
 
     foreach($messages as $msg){
       //format id to message_id
@@ -52,15 +52,24 @@ class ApiController extends Controller
       unset($msg->id);
 
       //format user_id to creator{userid, name} if not anonymous
-      if ($msg->anonymous ==1){
+      if ($msg->anonymous == 1){
         $msg->creator = null;
       } else {
-        $msg->creator = ["user_id" => $msg->user_id, "name" => "moet nog gebeuren"];
+        $user = User::find($msg->user_id);
+        $msg->creator = ["user_id" => $msg->user_id, "name" => $user->name];
       }
+      unset($msg->anonymous);
+
+      unset($msg->moderation_level);
 
       //format count to votes
       $msg->votes = $msg->count;
       unset($msg->count);
+
+      //if message is a response to another message, send message with repsonse message
+      if(!empty($msg->question_id)){
+        
+      }
 
       //format timestamp to unix format
       $msg->created_at = strtotime($msg->created_at);
