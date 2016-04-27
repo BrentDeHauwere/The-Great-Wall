@@ -19,9 +19,11 @@ class ApiController extends Controller
 
     foreach($walls as $wall){
 
-      //user_id formatting to user{user_id, name}
+      //id formatting to wall_id
       $wall->wall_id = $wall->id;
       unset($wall->id);
+
+      //user_id formatting to creator{userid, name}
       $wall->creator = ["user_id" => $wall->user_id, "name" => "moet nog gebeuren"];
 
       //Convert timestamp to unix format
@@ -32,7 +34,31 @@ class ApiController extends Controller
   }
 
   public function messages(){
-    return response()->json(Message::all());
+
+    $messages = DB::table('messages')->select('id', 'text', 'question_id', 'wall_id', 'user_id', 'anonymous', 'count', 'created_at', 'moderator_id')->get();
+
+    foreach($messages as $msg){
+      //format id to message_id
+      $msg->message_id = $msg->id;
+      unset($msg->id);
+
+      //format user_id to creator{userid, name} if not anonymous
+      if ($msg->anonymous ==1){
+        $msg->creator = null;
+      } else {
+        $msg->creator = ["user_id" => $msg->user_id, "name" => "moet nog gebeuren"];
+      }
+
+      //format count to votes
+      $msg->votes = $msg->count;
+      unset($msg->count);
+
+      //format timestamp to unix format
+      $msg->created_at = strtotime($msg->created_at);
+
+    }
+
+    return response()->json($messages);
   }
 
   public function polls(){
