@@ -25,8 +25,8 @@
 					<td>{{ $value->name }}</td>
 					<td>{{ $value->password }}</td>
 					<td>
-						<a class="btn btn-small btn-success" href="{{ URL::to('TheGreatWall/sessions/' . $value->id) }}">Show this Wall</a>
-						<a class="btn btn-small btn-info" href="{{ URL::to('TheGreatWall/sessions/' . $value->id . '/edit') }}">Edit this Wall</a>
+						<a class="btn btn-small btn-success" href="{{ URL::to('/sessions/' . $value->id) }}">Show this Wall</a>
+						<a class="btn btn-small btn-info" href="{{ URL::to('/sessions/' . $value->id . '/edit') }}">Edit this Wall</a>
 						<form action="{{action('SessionController@destroy', $value->id)}}" method="post">
 							<input type="hidden" name="_token" value="{{ csrf_token() }}">
 							<input type="hidden" name="_method" value="delete">
