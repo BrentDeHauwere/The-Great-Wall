@@ -64,7 +64,7 @@ class SessionController extends Controller
 
 		Session::flash('info', 'Successfully created wall.');
 
-		return Redirect::to('TheGreatWall/sessions');
+		return Redirect::to('sessions');
 	}
 
 
@@ -129,7 +129,7 @@ class SessionController extends Controller
 
 		Session::flash('info', 'Successfully updated wall.');
 
-		return Redirect::to('TheGreatWall/sessions');
+		return Redirect::to('sessions');
 	}
 
 	/**
@@ -146,6 +146,6 @@ class SessionController extends Controller
 
 		Session::flash('info', 'Successfully deleted the wall.');
 
-		return Redirect::to('TheGreatWall/sessions');
+		return Redirect::to('sessions');
 	}
 }
