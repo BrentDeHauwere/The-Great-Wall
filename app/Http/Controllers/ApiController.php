@@ -14,6 +14,11 @@ use DB;
 
 class ApiController extends Controller
 {
+  /**
+  * Returns all the walls in JSON-format
+  *
+  * @return all walls in JSON.
+  */
   public function walls(){
 
     $walls = Wall::all();
@@ -25,6 +30,11 @@ class ApiController extends Controller
     return response()->json($walls);
   }
 
+  /**
+  * Returns all the messages in JSON-format
+  *
+  * @return all messages in JSON.
+  */
   public function messages(){
 
     $messages = Message::all();
@@ -36,10 +46,20 @@ class ApiController extends Controller
     return response()->json($messages);
   }
 
+  /**
+  * Returns all the polls in JSON-format
+  *
+  * @return all polls in JSON.
+  */
   public function polls(){
     return response()->json(Poll::all());
   }
 
+  /**
+  * Returns all the blacklisted users in JSON-format
+  *
+  * @return all blacklisted users in JSON.
+  */
   public function blacklist(){
     $db = DB::table('blacklists')->select('user_id', 'reason', 'created_at')->get();
 
@@ -59,6 +79,12 @@ class ApiController extends Controller
     return response()->json($db);
   }
 
+  /**
+  * Formats a message for use in the API.
+  *
+  * @param Message message to be formatted
+  * @return formatted message.
+  */
   private function formatMessage(Message $msg){
     //format id to message_id
     $msg->message_id = $msg->id;
@@ -101,6 +127,12 @@ class ApiController extends Controller
     return $msg;
   }
 
+  /**
+  * Formats a wall for use in the API.
+  *
+  * @param Wall wall to be formatted
+  * @return formatted wall.
+  */
   private function formatWall(Wall $wall){
     //id formatting to wall_id
     $wall->wall_id = $wall->id;
