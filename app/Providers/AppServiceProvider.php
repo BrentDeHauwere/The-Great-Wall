@@ -17,9 +17,10 @@ class AppServiceProvider extends ServiceProvider
 		//
 		Blade::directive('warning', function ($text)
 		{
-			$text = explode('(', $text)[1];
+			/*$text = explode('(', $text)[1];
 			$text = explode('"', $text)[1];
-			$text = explode(')', $text)[0];
+			$text = explode(')', $text)[0];*/
+			$text = substr($text, 1, -1);
 			return
 			'
 			<div class="alert alert-warning alert-dismissible" role="alert">
@@ -30,9 +31,10 @@ class AppServiceProvider extends ServiceProvider
 		});
 		Blade::directive('danger', function ($text)
 		{
-			$text = explode('(', $text)[1];
+			/*$text = explode('(', $text)[1];
 			$text = explode('"', $text)[1];
-			$text = explode(')', $text)[0];
+			$text = explode(')', $text)[0];*/
+			$text = substr($text, 1, -1);
 			return
 				'
 			<div class="alert alert-danger alert-dismissible" role="alert">
@@ -43,9 +45,10 @@ class AppServiceProvider extends ServiceProvider
 		});
 		Blade::directive('info', function ($text)
 		{
-			$text = explode('(', $text)[1];
+			/*$text = explode('(', $text)[1];
 			$text = explode('"', $text)[1];
-			$text = explode(')', $text)[0];
+			$text = explode(')', $text)[0];*/
+			$text = substr($text, 1, -1);
 			return
 				'
 			<div class="alert alert-info alert-dismissible" role="alert">
@@ -56,9 +59,10 @@ class AppServiceProvider extends ServiceProvider
 		});
 		Blade::directive('success', function ($text)
 		{
-			$text = explode('(', $text)[1];
+			/*$text = explode('(', $text)[1];
 			$text = explode('"', $text)[1];
-			$text = explode(')', $text)[0];
+			$text = explode(')', $text)[0];*/
+			$text = substr($text, 1, -1);
 			return
 				'
 			<div class="alert alert-success alert-dismissible" role="alert">

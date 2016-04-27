@@ -62,7 +62,7 @@ class SessionController extends Controller
 		}
 		$wall->save();
 
-		$request->session()->put('message', 'Successfully created wall.');
+		Session::flash('info', 'Successfully created wall.');
 
 		return Redirect::to('TheGreatWall/sessions');
 	}
@@ -95,7 +95,7 @@ class SessionController extends Controller
 		$wall = Wall::find($id);
 
 		return View::make('sessions.edit')
-			->with('wall', $wall);
+			->with('wall', $wall)->with('success','Something');
 	}
 
 	/**
@@ -127,7 +127,7 @@ class SessionController extends Controller
 		}
 		$wall->save();
 
-		$request->session()->put('message', 'Successfully updated wall.');
+		Session::flash('info', 'Successfully updated wall.');
 
 		return Redirect::to('TheGreatWall/sessions');
 	}
@@ -144,7 +144,7 @@ class SessionController extends Controller
 		$wall = Wall::find($id);
 		$wall->delete();
 
-		Session::flash('message', 'Successfully deleted the wall.');
+		Session::flash('info', 'Successfully deleted the wall.');
 
 		return Redirect::to('TheGreatWall/sessions');
 	}
