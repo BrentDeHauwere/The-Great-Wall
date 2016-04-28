@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Blacklist;
+use App\user;
 use DB;
 use Session;
 use DateTime;
@@ -85,10 +86,9 @@ class BlacklistController extends Controller
 	 * @param  int $id
 	 * @return Response
 	 */
-	public
-	function edit($user_id)
+	public function edit($user_id)
 	{
-    $blacklistedUser = DB::table('blacklists')->where('user_id', $user_id)->first();
+    $blacklistedUser = User::find($user_id);
 		return view('blacklist.edit')->with('blacklistedUser', $blacklistedUser);
 	}
 
@@ -107,7 +107,7 @@ class BlacklistController extends Controller
 
 		$db = DB::table('blacklists')->where('user_id', $user_id)->update(['reason' => $request->input('reason')]);
 
-		return redirect('TheGreatWall/blacklist');
+		return redirect(action('BlacklistController@index'));
 	}
 
   /**
