@@ -15,7 +15,10 @@
     <div class="panel-body">
       <div class="row">
         <div class="col-sm-3">
-          <p>{{ $wall->name }}</p>
+          <h4>{{ $wall->name }}
+            <br>
+            <small>{{ $wall->username }}</small>
+          </h4>
         </div>
         @if (!empty($wall->password))
         <div class="col-sm-offset-3 col-sm-6">
