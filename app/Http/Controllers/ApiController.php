@@ -10,6 +10,8 @@ use App\Message;
 use App\Poll;
 use App\Blacklist;
 use App\user;
+use App\PollChoice;
+use DB;
 
 class ApiController extends Controller
 {
@@ -76,6 +78,9 @@ class ApiController extends Controller
 
       //rename question to text
       $poll->text = $poll->question;
+
+      //get all the poll options
+      $poll->options = DB::table('poll_choices')->select('text', 'count AS votes')->where('poll_id', $poll->id)->get();
 
       unset($poll->id);
       unset($poll->wall_id);
