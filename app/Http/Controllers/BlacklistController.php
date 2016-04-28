@@ -42,10 +42,10 @@ class BlacklistController extends Controller
       $user_id = DB::table('polls')->select('user_id')->where('id', $request->input('poll_id'))->first();
     }
 
-    $username = DB::table('users')->select('name')->where('id', $user_id->user_id);
+    $user = User::find($user_id->user_id);
 
     //$user_id is a stdClass class for some reason...
-		return view('blacklist.create')->with('user_id', $user_id->user_id)->with('message_id', $message_id)->with('poll_id', $poll_id)-With('username', $username);
+		return view('blacklist.create')->with('user_id', $user->id)->with('message_id', $message_id)->with('poll_id', $poll_id)->with('username', $user->name);
 	}
 
   /**
