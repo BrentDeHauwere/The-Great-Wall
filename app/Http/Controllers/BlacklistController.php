@@ -77,7 +77,7 @@ class BlacklistController extends Controller
       $request->session()->put('message', 'Could not ban user.');
     }
 
-		return redirect('TheGreatWall/blacklist');
+		return redirect(action('BlacklistController@index'));
 	}
 
   /**
@@ -126,7 +126,7 @@ class BlacklistController extends Controller
       Session::flash('message', 'Could not delete the user from blacklist.');
     }
 
-		return redirect('TheGreatWall/blacklist');
+		return redirect(action('BlacklistController@index'));
 	}
 
 }
