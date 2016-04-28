@@ -40,7 +40,7 @@
         </div>
         @else
         <div class="col-sm-2 col-sm-offset-7">
-          <form action="{{ action('WallController@openWall', ['wall_id' => $wall->id]) }}" method="GET">
+          <form action="{{ action('WallController@show', ['wall_id' => $wall->id]) }}" method="GET">
             <button class="btn btn-secondary btn-block" type="submit">Enter</button>
           </form>
         </div>
