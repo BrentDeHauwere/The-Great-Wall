@@ -51,7 +51,41 @@ class ApiController extends Controller
   * @return all polls in JSON.
   */
   public function polls(){
-    return response()->json(Poll::all());
+
+    $polls = Poll::all();
+
+    foreach($polls as $poll){
+
+      //rename id to poll_id
+      $poll->poll_id = $poll->id;
+
+      //format wall_id to wall
+      $poll->wall = ApiController::formatWall(Wall::find($poll->wall_id));
+
+      //format user_id to user{user_id, name}
+      $user = User::find($poll->user_id);
+
+      if (!empty($user)){
+        $poll->creator = ["user_id" => $user->id, "name" => $user->name];
+      } else {
+        $poll->creator = null;
+      }
+
+      //Convert timestamp to unix format
+      $poll->created_at = strtotime($poll->created_at);
+
+      //rename question to text
+      $poll->text = $poll->question;
+
+      unset($poll->id);
+      unset($poll->wall_id);
+      unset($poll->user_id);
+      unset($poll->moderation_level);
+      unset($poll->question);
+      unset($poll->addable);
+    }
+
+    return response()->json($polls);
   }
 
   /**
