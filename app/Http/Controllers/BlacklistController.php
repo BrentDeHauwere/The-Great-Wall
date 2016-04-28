@@ -19,7 +19,7 @@ class BlacklistController extends Controller
 	 */
 	public function index()
 	{
-		$blacklistedUsers = Blacklist::orderBy('created_at')->get();
+		$blacklistedUsers = DB::table('blacklists')->select('blacklists.*', 'users.name')->leftJoin('users', 'blacklists.user_id', '=', 'users.id')->get();
 
 		return view('blacklist.index')->with('blacklistedUsers', $blacklistedUsers);
 	}
