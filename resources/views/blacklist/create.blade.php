@@ -3,7 +3,7 @@
 @section('title', 'Ban User')
 
 @section('content')
-	<h1>Ban user - {{ $user_id }}</h1>
+	<h1>Ban user - {{ $username }}</h1>
 
 	 @if (count($errors) > 0)
 		<div class="alert alert-danger">
