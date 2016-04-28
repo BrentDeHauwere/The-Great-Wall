@@ -24,10 +24,10 @@ class WallController extends Controller
   * return view walls.blade.php with walls
   */
     public function index(){
-      $walls = Wall::all();
-      return view('walls', compact('walls'));
+			$walls = DB::select("SELECT walls.*, users.name AS username FROM walls JOIN users ON walls.user_id = users.id");
+      return view('walls')->with('walls', $walls);
     }
-		
+
 	/**
 	 * Select all questions and polls for  a wall
 	 *
