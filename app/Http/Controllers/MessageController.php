@@ -51,7 +51,7 @@ class MessageController extends Controller
 		}
 		else
 		{
-			return redirect()->back()->with('error', 'Message could not be saved');
+			return redirect()->back()->with('danger', 'Message could not be saved');
 		}
 
 	}
@@ -70,7 +70,7 @@ class MessageController extends Controller
 			return redirect()->back()->with('success', 'Destroyed succesfully');
 		}
 		else{
-			return redirect()->back()->with('error', 'Message could not be destroyed');
+			return redirect()->back()->with('danger', 'Message could not be destroyed');
 		}
 	}
 
@@ -96,12 +96,12 @@ class MessageController extends Controller
 			}
 			else
 			{
-				return redirect()->back()->with("error", "Message could not be saved");
+				return redirect()->back()->with("danger", "Message could not be saved");
 			}
 		}
 		else
 		{
-			return redirect()->back()->with("error", "No message found with this id to be moderated by you");
+			return redirect()->back()->with("danger", "No message found with this id to be moderated by you");
 		}
 	}
 
@@ -127,12 +127,12 @@ class MessageController extends Controller
 			}
 			else
 			{
-				return redirect()->back()->with("error", "Message could not be saved");
+				return redirect()->back()->with("danger", "Message could not be saved");
 			}
 		}
 		else
 		{
-			return redirect()->back()->with("error", "No message found with this id to be moderated by you");
+			return redirect()->back()->with("danger", "No message found with this id to be moderated by you");
 		}
 	}
 }

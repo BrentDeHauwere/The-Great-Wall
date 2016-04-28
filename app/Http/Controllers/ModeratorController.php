@@ -19,7 +19,7 @@ use Hash;
 class ModeratorController extends Controller
 {
 	/**
-	 * Show an overview of the walls.
+	 * Show an overview of the messages to be moderated.
 	 *
 	 * @return Response
 	 */

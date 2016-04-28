@@ -23,7 +23,7 @@ class VotePollController extends Controller
 
 
 	/**
-	 * Store a newly created wall in storage.
+	 * Store a newly created vote on a poll in storage.
 	 *
 	 * @return Response
 	 */
@@ -46,17 +46,17 @@ class VotePollController extends Controller
 			{
 				$poll_vote->delete();
 
-				return redirect()->back()->with('error', 'Poll choice could not be incremented');
+				return redirect()->back()->with('danger', 'Poll choice could not be incremented');
 			}
 		}
 		else
 		{
-			return redirect()->back()->with('error', 'New poll vote could not be saved');
+			return redirect()->back()->with('danger', 'New poll vote could not be saved');
 		}
 	}
 
 	/**
-	 * Remove (inactive) the specified wall from storage.
+	 * Remove (inactive) the specified vote on a poll from storage.
 	 *
 	 * @param  int $id
 	 * @return Response
@@ -79,12 +79,12 @@ class VotePollController extends Controller
 			{
 				$message_vote->delete();
 
-				return redirect()->back()->with('error', 'Poll could not be unincremented');
+				return redirect()->back()->with('danger', 'Poll could not be unincremented');
 			}
 		}
 		else
 		{
-			return redirect()->back()->with('error', 'Poll vote could not be undone');
+			return redirect()->back()->with('danger', 'Poll vote could not be undone');
 		}
 	}
 }

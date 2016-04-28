@@ -20,8 +20,8 @@ class PollController extends Controller
 {
 
 	/**
-	 * Store a newly created message in storage.
-	 *
+	 * Store a newly created poll in storage.
+	 * @param Request
 	 * @return Response
 	 */
 	public function store(Request $request)
@@ -30,12 +30,13 @@ class PollController extends Controller
 	}
 
 	/**
-	 * Remove  the specified message from storage.
+	 * Remove  the specified poll from storage.
 	 *
 	 * @param  int $id
 	 * @return Response
 	 */
 	public function destroy($id)
 	{
+
 	}
 }

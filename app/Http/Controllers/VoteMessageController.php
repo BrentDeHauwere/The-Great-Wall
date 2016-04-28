@@ -22,7 +22,7 @@ class VoteMessageController extends Controller
 
 
 	/**
-	 * Store a newly created wall in storage.
+	 * Store a newly created vote on a message in storage.
 	 *
 	 * @return Response
 	 */
@@ -45,17 +45,17 @@ class VoteMessageController extends Controller
 			{
 				$message_vote->delete();
 
-				return redirect()->back()->with('error', 'Message could not be incremented');
+				return redirect()->back()->with('danger', 'Message could not be incremented');
 			}
 		}
 		else
 		{
-			return redirect()->back()->with('error', 'New message vote could not be saved');
+			return redirect()->back()->with('danger', 'New message vote could not be saved');
 		}
 	}
 
 	/**
-	 * Remove (inactive) the specified wall from storage.
+	 * Remove (inactive) the specified vote on a message from storage.
 	 *
 	 * @param  int $id
 	 * @return Response

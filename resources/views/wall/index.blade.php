@@ -4,11 +4,11 @@
 
 @section('content')
 
-  @if (session('error'))
+  <!--@if (session('error'))
       <div class="alert alert-danger">
           {{ session('error') }}
       </div>
-  @endif
+  @endif-->
 
   @foreach ($walls as $wall)
   <div class="panel panel-default">

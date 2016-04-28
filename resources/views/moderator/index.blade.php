@@ -1,26 +1,11 @@
-<html>
-	<head>
-		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"  rel="stylesheet" />
-		<link href="/css/style.css" rel="stylesheet" />
-		<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-	</head>
-	<body>
-		<nav class="navbar navbar-default">
-			<div class="container-fluid">
-				<!-- Brand and toggle get grouped for better mobile display -->
-				<div class="navbar-header">
+@extends('masterlayout')
 
-				</div>
+@section('title', 'Moderator')
 
-				<!-- Collect the nav links, forms, and other content for toggling -->
-				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+@section('content')
 
-				</div><!-- /.navbar-collapse -->
-			</div><!-- /.container-fluid -->
-		</nav>
 
 		<!-- Moderator Stuff Now -->
-		<div class="container">
 			<div class="col-md-12">
 				<div class="list-group">
 					@foreach($result as $row)
@@ -93,6 +78,4 @@
 					@endforeach
 				</div>
 			</div>
-		</div>
-	</body>
-</html>
+@stop

@@ -46,7 +46,7 @@ class WallController extends Controller
 			return view('wall.show')->with('messages', $messages)->with('polls', $polls);//->with('result',$result);
 		}
 		else{
-			redirect()->back()->with("error","No password was provided");
+			redirect()->back()->with("danger","No password was provided");
 		}
 	}
 
@@ -65,11 +65,10 @@ class WallController extends Controller
 		if(Hash::check($password, $wall->password)){
 			$messages = Message::with('votes')->where('wall_id', '=', $wall_id)->get();
 			$polls = Poll::with('choices.votes')->where('wall_id', '=', $wall_id)->get();
-			//return view("messagewall")->with('messages', $messages)->with('polls', $polls);
-			return $wall;
+			return view("wall.show")->with('messages', $messages)->with('polls', $polls);
 		}
 		else{
-			return redirect('wall/')->with('error', "Wrong password. Please try again.");
+			return redirect('wall/')->with('danger', "Wrong password. Please try again.");
 		}
 	}
 
