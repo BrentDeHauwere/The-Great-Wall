@@ -26,7 +26,7 @@ class WallController extends Controller
 
 	public function index()
 	{
-		$walls = Wall::all();
+		$walls = DB::table('walls')->select('walls.*', 'users.name as username')->leftJoin('users', 'walls.user_id', '=', 'users.id')->where('walls.deleted_at', null)->get();
 		return view('wall.index')->with('walls', $walls);
   }
 
