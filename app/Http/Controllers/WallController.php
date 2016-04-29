@@ -26,7 +26,7 @@ class WallController extends Controller
 
   public function index(){
 		$walls = DB::select("SELECT walls.*, users.name AS username FROM walls JOIN users ON walls.user_id = users.id ORDER BY walls.created_at");
-    return view('walls')->with('walls', $walls);
+    return view('wall.index')->with('walls', $walls);
   }
 
 
@@ -38,11 +38,11 @@ class WallController extends Controller
 	 */
 	public function show($id)
 	{
-		$wall = Wall::find($wall_id);
+		$wall = Wall::find($id);
 		if ( empty( $wall->password ) )
 		{
-			$messages = Message::with('votes')->where('wall_id', $wall_id)->where('moderation_level',0)->orderBy('created_at', 'desc')->get();
-			$polls = Poll::with('choices.votes')->where('wall_id', $wall_id)->where('moderation_level',0)->orderBy('created_at', 'desc')->get();
+			$messages = Message::with('votes')->where('wall_id', $id)->where('moderation_level',0)->orderBy('created_at', 'desc')->get();
+			$polls = Poll::with('choices.votes')->where('wall_id', $id)->where('moderation_level',0)->orderBy('created_at', 'desc')->get();
 
 			/* Sort messages / poll into a chronologically ordered 2D array */
 			$posts = [];
