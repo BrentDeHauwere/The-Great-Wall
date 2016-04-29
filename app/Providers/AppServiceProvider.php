@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
 			'
 			<div class="alert alert-warning alert-dismissible" role="alert">
               <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <strong>Warning </strong> '.$text.'
+              <strong>Warning! </strong> '.$text.'
             </div>
             ';
 		});
@@ -39,7 +39,7 @@ class AppServiceProvider extends ServiceProvider
 				'
 			<div class="alert alert-danger alert-dismissible" role="alert">
               <button type="button" class="close" data-dismiss="alert" aria-label="close"><span aria-hidden="true">&times;</span></button>
-              <strong>Danger </strong> '.$text.'
+              <strong>Danger! </strong> '.$text.'
             </div>
             ';
 		});
@@ -53,7 +53,7 @@ class AppServiceProvider extends ServiceProvider
 				'
 			<div class="alert alert-info alert-dismissible" role="alert">
               <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <strong>Info </strong> '.$text.'
+              <strong>Info! </strong> '.$text.'
             </div>
             ';
 		});
@@ -67,7 +67,7 @@ class AppServiceProvider extends ServiceProvider
 				'
 			<div class="alert alert-success alert-dismissible" role="alert">
               <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <strong>Success </strong> '.$text.'
+              <strong>Success! </strong> '.$text.'
             </div>
             ';
 		});
@@ -75,9 +75,9 @@ class AppServiceProvider extends ServiceProvider
 			$namevar = explode('(', $namevar)[1];
 			$namevar = explode(')', $namevar)[0];
 
-			return '<?php 
+			return '<?php
 						if($errors->has('.$namevar.')){
-							
+
 							echo "<span class=\"help-block\"><p class=\"red\">".$errors->first('.$namevar.')."</p></span>";
 						}
 					?>';
