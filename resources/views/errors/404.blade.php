@@ -16,6 +16,6 @@ p, h1, marquee {
   <p>You lost The Great Wall to the Mongols.</p>
   <img src="{{asset('img/team.jpg')}}" alt="Team Photo">
   <p>Error 404: Page not found.</p>
-  <marquee>Oopsie.</marquee>
+  <marquee behavior="alternate">Oopsie.</marquee>
 </div>
 @stop
