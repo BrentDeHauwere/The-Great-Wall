@@ -26,7 +26,6 @@ class WallController extends Controller
 
 	public function index()
 	{
-		//$walls = DB::select("SELECT walls.*, users.name AS username FROM walls JOIN users ON walls.user_id = users.id ORDER BY walls.created_at");
 		$walls = Wall::all();
 		return view('wall.index')->with('walls', $walls);
   }
