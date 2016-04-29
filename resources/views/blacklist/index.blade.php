@@ -33,7 +33,7 @@
 					<td>{{ $user->reason }}</td>
 					<td>{{ $user->created_at }}</td>
 					<td>
-						<a class="btn btn-small btn-info" href="{{ URL::to('TheGreatWall/blacklist/' . $user->user_id . '/edit') }}">Edit</a>
+						<a class="btn btn-small btn-info" href="{{ URL::to('blacklist/' . $user->user_id . '/edit') }}">Edit</a>
 						<form action="{{ action('BlacklistController@destroy', $user->user_id )}}" method="post">
 							<input type="hidden" name="_token" value="{{ csrf_token() }}">
 							<input type="hidden" name="_method" value="delete">
