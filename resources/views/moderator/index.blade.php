@@ -32,7 +32,7 @@
 									<input type="hidden" name="_token" value="{{ csrf_token() }}">
 									<input type="hidden" name="message_id" value="{{ $row['id'] }}"/>
 								</form>
-								<form class="btn-group" method="GET" action="/TheGreatWall/blacklist/create">
+								<form class="btn-group" method="GET" action="{{action('BlacklistController@create')}}">
 									<input type="hidden" name="message_id" value="{{ $row['id'] }}">
 									<button type="submit" class="btn greybtn"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></button>
 								</form>
