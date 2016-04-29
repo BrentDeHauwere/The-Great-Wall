@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Blacklist;
+use App\user;
 use DB;
 use Session;
 use DateTime;
@@ -19,7 +20,7 @@ class BlacklistController extends Controller
 	 */
 	public function index()
 	{
-		$blacklistedUsers = Blacklist::orderBy('created_at')->get();
+		$blacklistedUsers = DB::table('blacklists')->select('blacklists.*', 'users.name')->leftJoin('users', 'blacklists.user_id', '=', 'users.id')->get();
 
 		return view('blacklist.index')->with('blacklistedUsers', $blacklistedUsers);
 	}
@@ -41,8 +42,10 @@ class BlacklistController extends Controller
       $user_id = DB::table('polls')->select('user_id')->where('id', $request->input('poll_id'))->first();
     }
 
+    $user = User::find($user_id->user_id);
+
     //$user_id is a stdClass class for some reason...
-		return view('blacklist.create')->with('user_id', $user_id->user_id)->with('message_id', $message_id)->with('poll_id', $poll_id);
+		return view('blacklist.create')->with('user_id', $user->id)->with('message_id', $message_id)->with('poll_id', $poll_id)->with('username', $user->name);
 	}
 
   /**
@@ -76,7 +79,7 @@ class BlacklistController extends Controller
       $request->session()->put('message', 'Could not ban user.');
     }
 
-		return redirect('TheGreatWall/blacklist');
+		return redirect(action('BlacklistController@index'));
 	}
 
   /**
@@ -85,10 +88,9 @@ class BlacklistController extends Controller
 	 * @param  int $id
 	 * @return Response
 	 */
-	public
-	function edit($user_id)
+	public function edit($user_id)
 	{
-    $blacklistedUser = DB::table('blacklists')->where('user_id', $user_id)->first();
+    $blacklistedUser = User::find($user_id);
 		return view('blacklist.edit')->with('blacklistedUser', $blacklistedUser);
 	}
 
@@ -107,7 +109,7 @@ class BlacklistController extends Controller
 
 		$db = DB::table('blacklists')->where('user_id', $user_id)->update(['reason' => $request->input('reason')]);
 
-		return redirect('TheGreatWall/blacklist');
+		return redirect(action('BlacklistController@index'));
 	}
 
   /**
@@ -126,7 +128,7 @@ class BlacklistController extends Controller
       Session::flash('message', 'Could not delete the user from blacklist.');
     }
 
-		return redirect('TheGreatWall/blacklist');
+		return redirect(action('BlacklistController@index'));
 	}
 
 }

@@ -4,18 +4,21 @@
 
 @section('content')
 
-  @if (session('error'))
+  <!--@if (session('error'))
       <div class="alert alert-danger">
           {{ session('error') }}
       </div>
-  @endif
+  @endif-->
 
   @foreach ($walls as $wall)
   <div class="panel panel-default">
     <div class="panel-body">
       <div class="row">
         <div class="col-sm-3">
-          <p>{{ $wall->name }}</p>
+          <h4>{{ $wall->name }}
+            <br>
+            <small>{{ $wall->username }}</small>
+          </h4>
         </div>
         @if (!empty($wall->password))
         <div class="col-sm-offset-3 col-sm-6">
@@ -40,7 +43,8 @@
         </div>
         @else
         <div class="col-sm-2 col-sm-offset-7">
-          <form action="{{ action('WallController@openWall', ['wall_id' => $wall->id]) }}" method="GET">
+          <form action="{{ action('WallController@show', ['wall_id' => $wall->id]) }}" method="GET">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <button class="btn btn-secondary btn-block" type="submit">Enter</button>
           </form>
         </div>

@@ -20,7 +20,7 @@
 	<table class="table table-striped table-bordered" id="table">
 		<thead>
 			<tr>
-				<td>User ID</td>
+				<td>Username</td>
 				<td>Reason</td>
 				<td>Banned at</td>
 				<td>Actions</td>
@@ -29,7 +29,7 @@
 		<tbody>
 			@foreach($blacklistedUsers as $user)
 				<tr>
-					<td>{{ $user->user_id }}</td>
+					<td>{{ $user->name }}</td>
 					<td>{{ $user->reason }}</td>
 					<td>{{ $user->created_at }}</td>
 					<td>

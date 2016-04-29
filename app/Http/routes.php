@@ -25,7 +25,18 @@
 Route::group(['middleware' => ['web']], function () {
 	Route::resource('sessions', 'SessionController');
 	Route::resource('blacklist', 'BlacklistController');
-	Route::get('wall/{wall_id}','WallController@openWall');
+
+	Route::post('message/accept','MessageController@accept');
+	Route::post('message/decline','MessageController@decline');
+	Route::resource('message', 'MessageController',['only' => ['store', 'destroy']]);
+	Route::resource('poll', 'PollController',['only' => ['store', 'destroy']]);
+	Route::resource('votemessage', 'VoteMessageController',['only' => ['store', 'destroy']]);
+	Route::resource('votepoll', 'VotePollController',['only' => ['store', 'destroy']]);
+	Route::resource('moderator', 'ModeratorController',['only' => ['show']]);
+	Route::post('wall/enter','WallController@enterWallWithPassword');
+	Route::resource('wall', 'WallController',['only' => ['index','show']]);
+
+	/*Route::get('wall/{wall_id}','WallController@openWall');
 	Route::post('message/new','WallController@newMessage');
 	Route::post('message/vote','WallController@voteMessage');
 	Route::post('poll/vote','WallController@votePoll');
@@ -33,7 +44,7 @@ Route::group(['middleware' => ['web']], function () {
 	Route::post('moderator/message/accept','WallController@ModeratorAccept');
 	Route::post('moderator/message/decline','WallController@ModeratorDecline');
 	Route::post('/wall/enter','WallController@enterWallWithPassword');
-	Route::get('/', 'WallController@index');
+	Route::get('/', 'WallController@index');*/
 });
 
 Route::group(['prefix' => 'api', 'middleware' => ['web']], function () {
