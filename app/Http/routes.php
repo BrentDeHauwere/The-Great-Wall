@@ -23,9 +23,9 @@
 */
 
 Route::group(['middleware' => ['web']], function () {
+	Route::get('/', 'WallController@index');
 	Route::resource('sessions', 'SessionController');
 	Route::resource('blacklist', 'BlacklistController');
-
 	Route::post('message/accept','MessageController@accept');
 	Route::post('message/decline','MessageController@decline');
 	Route::resource('message', 'MessageController',['only' => ['store', 'destroy']]);
