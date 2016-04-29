@@ -38,7 +38,7 @@ class WallController extends Controller
 	 */
 	public function show($id)
 	{
-		$wall = Wall::find($wall_id);
+		$wall = Wall::find($id);
 		if ( empty( $wall->password ) )
 		{
 			$messages = Message::with('votes')->where('wall_id', $wall_id)->where('moderation_level',0)->orderBy('created_at', 'desc')->get();
