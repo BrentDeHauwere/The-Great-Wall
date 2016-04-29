@@ -41,6 +41,7 @@
         @else
         <div class="col-sm-2 col-sm-offset-7">
           <form action="{{ action('WallController@show', ['wall_id' => $wall->id]) }}" method="GET">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <button class="btn btn-secondary btn-block" type="submit">Enter</button>
           </form>
         </div>
