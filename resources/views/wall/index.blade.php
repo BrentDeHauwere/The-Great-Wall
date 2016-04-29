@@ -15,7 +15,7 @@
     <div class="panel-body">
       <div class="row">
         <div class="col-sm-3">
-          <h4>{{ $wall->name }}
+          <h4 class="wallname">{{ $wall->name }}
             <br>
             <small>{{ $wall->username }}</small>
           </h4>
@@ -28,24 +28,19 @@
                   <span class="glyphicon glyphicon-lock"></span>
                 </span>
                 {{ csrf_field() }}
-                <input type="password" class="form-control" name="password" placeholder="Password" required>
+                <input type="password" class="form-control wallpassword" name="password" placeholder="Password" required>
                 <input type="hidden" name="wall_id" value="{{$wall->id}}">
                 <span class="input-group-btn">
-                  <button class="btn btn-default btn-block" type="submit">Enter</button>
+                  <button class="btn btn-default btn-block btn-slide" type="submit">Enter</button>
                 </span>
               </div>
             </form>
-          @if( $errors->has('password'))
-            <span class="help-block">
-                    <strong>{{ $errors->first('password') }}</strong>
-                </span>
-          @endif
         </div>
         @else
         <div class="col-sm-2 col-sm-offset-7">
           <form action="{{ action('WallController@show', ['wall_id' => $wall->id]) }}" method="GET">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <button class="btn btn-default btn-rounded btn-block" type="submit">Enter</button>
+            <button class="btn btn-default btn-block" type="submit">Enter</button>
           </form>
         </div>
         @endif
