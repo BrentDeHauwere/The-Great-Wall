@@ -40,6 +40,12 @@
 			@helper('password')
 		</div>
 
+		<div class="form-group">
+			<label for="open_until">Open until</label>
+			<input id="open_until" type="datetime" name="open_until" class="form-control" value="{{ $wall->open_until }}">
+			@helper('open_until')
+		</div>
+
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 		<input type="hidden" name="_method" value="put">

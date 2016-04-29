@@ -18,7 +18,7 @@ class CreateWallsTable extends Migration
             $table->string('name');
             $table->string('password')->nullable();
             $table->softDeletes();
-            $table->dateTime('open_until');
+            $table->dateTime('open_until')->nullable();
             $table->dateTime('created_at');
         });
     }

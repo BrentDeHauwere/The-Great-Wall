@@ -23,7 +23,7 @@ class SessionController extends Controller
 	 */
 	public function index()
 	{
-		$walls = Wall::orderBy('name')->get();
+		$walls = Wall::where('open_until','>',date('Y-m-d H:i:s'))->orWhere('open_until', null)->orderBy('name')->get();
 
 		return View::make('sessions.index')
 			->with('walls', $walls);
@@ -48,9 +48,10 @@ class SessionController extends Controller
 	{
 		// Server-side validation
 		$this->validate($request, [
-			'user_id' 	=> 'required|numeric|min:1',
+			'user_id' 	=> 'required|numeric|min:1|exists:users',
 			'name'    	=> 'required',
 			'password'	=> 'confirmed',
+			'open_until' => 'date_format:Y-m-d H:i:s',
 		]);
 
 		$wall = new Wall;
@@ -60,6 +61,7 @@ class SessionController extends Controller
 		{
 			$wall->password = Hash::make($request->input('password'));
 		}
+		$wall->open_until = $request->input('open_until');
 		$wall->save();
 
 		Session::flash('info', 'Successfully created wall.');
@@ -109,9 +111,10 @@ class SessionController extends Controller
 	{
 		// Server-side validation
 		$this->validate($request, [
-			'user_id' 	=> 'required|numeric|min:1',
+			'user_id' 	=> 'required|numeric|min:1|exists:users',
 			'name'    	=> 'required',
 			'password'	=> 'confirmed',
+			'open_until' => 'date_format:Y-m-d H:i:s',
 		]);
 
 		$wall = Wall::find($id);
@@ -125,6 +128,7 @@ class SessionController extends Controller
 		{
 			$wall->password = null;
 		}
+		$wall->open_until = $request->input('open_until');
 		$wall->save();
 
 		Session::flash('info', 'Successfully updated wall.');

@@ -38,6 +38,12 @@
 			@helper('password_confirmation')
 		</div>
 
+		<div class="form-group">
+			<label for="open_until">Open until</label>
+			<input id="open_until" type="datetime" name="open_until" class="form-control" value="{{ old('open_until') }}">
+			@helper('open_until')
+		</div>
+
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 		<input type="submit" value="Create the wall" class="btn btn-primary">
