@@ -31,11 +31,11 @@
 							@else
 								Anoniem
 								@endunless
-								<small>{{$post[1]->created_at}}</small>
+								<small>at {{$post[1]->created_at}}</small>
 					</h4>
 				</div>
 				<div class="panel-body messageBody">
-					{{$post[1]->text}}
+					<p>{{$post[1]->text}}</p>
 				</div>
 
 				<!-- antwoorden -->
@@ -43,21 +43,20 @@
 					<ul class="list-group">
 						@foreach($post[1]->answers->where('moderation_level',0) as $answer)
 							<li class="list-group-item">
+								<!-- upvote -->
+								<div class="buttons pull-right">
+									<a>
+										<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+									</a>
+								</div>
 								<b>
 									@unless($answer->anonymous)
 										{{$answer->user_id}}
 										@else
 											Anoniem
 											@endunless
-											<small> {{$answer->created_at}}</small>
-								</b> {{$answer->text}}
-									<!-- upvote -->
-								<div class="buttons pull-right">
-
-									<a class="">
-										<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-									</a>
-								</div>
+											<small> at {{$answer->created_at}}</small>
+								</b> <p>{{$answer->text}}</p>
 							</li>
 						@endforeach
 					</ul>
@@ -239,9 +238,5 @@
 @stop
 
 @section('footer')
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-	<script src="https://code.jquery.com/jquery-2.2.3.min.js"
-			integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
 	<script text="text/javascript" src="{{ asset('js/messagewall.js') }}"></script>
-	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 @stop
