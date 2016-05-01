@@ -25,7 +25,7 @@
 							<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
 						</a>
 					</div>
-					<h4>
+					<h4 class="panel-title">
 						@unless($post[1]->anonymous)
 							{{$post[1]->user_id}}
 							@else
@@ -92,7 +92,7 @@
 		<div class="row message poll">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h4>Eli Boeye
+					<h4 class="panel-title">Eli Boeye
 						<small>{{$post[1]->created_at}}</small>
 					</h4>
 				</div>
