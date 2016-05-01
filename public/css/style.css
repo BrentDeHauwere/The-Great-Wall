@@ -40,10 +40,14 @@ body {
 	background-color: #2f2f2f;
 }
 
-.wallname, p, .glyphicon, label, h3, .list-group-item, .form-control {
+.wallname, p, .glyphicon, label, h3, .list-group-item, .form-control, h1 {
 	color: #fff;
 }
 
 small {
 	color: #777;
+}
+
+.table-striped {
+	background-color: #fff;
 }
