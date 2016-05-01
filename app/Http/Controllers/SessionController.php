@@ -25,6 +25,12 @@ class SessionController extends Controller
 	{
 		$walls = Wall::orderBy('name')->get();
 
+		foreach($walls as $wall){
+			if (!empty($wall->password)){
+				$wall->password = "Yes";
+			}
+		}
+
 		return View::make('sessions.index')
 			->with('walls', $walls);
 	}

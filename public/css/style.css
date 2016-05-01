@@ -36,10 +36,18 @@ body {
 	box-shadow: 2px 5px 20px 2px rgba(0, 0, 0, 0.12), 2px 5px 10px 2px rgba(0, 0, 0, 0);
 }
 
-.panel, .input-group-addon, h4, .panel-default>.panel-heading, .list-group-item, .form-control {
+.panel, .input-group-addon, .panel-default, .list-group-item, .form-control {
 	background-color: #2f2f2f;
 }
 
-.wallname, p, .glyphicon, label, h3, h4, .list-group-item, .form-control {
+.wallname, p, .glyphicon, label, h3, .list-group-item, .form-control, h1 {
 	color: #fff;
+}
+
+small {
+	color: #777;
+}
+
+.table-striped {
+	background-color: #fff;
 }
