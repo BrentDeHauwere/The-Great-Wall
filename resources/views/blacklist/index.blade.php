@@ -3,13 +3,19 @@
 @section('title', 'Blacklist')
 
 @section('page-script')
-<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.11/css/jquery.dataTables.css">
-<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.11/js/jquery.dataTables.js"></script>
-
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/bs/jq-2.2.0,dt-1.10.11/datatables.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/t/bs/jq-2.2.0,dt-1.10.11/datatables.min.js"></script>
 <script>
 	$(document).ready( function () {
-		$('#table').DataTable();
-	} );
+		//Initializeer de plugin
+		$('#table').DataTable( {
+			"columns" : [
+				null,
+				null,
+				null,
+				{ "searchable:" : false, "orderable" : false }
+			] } );
+} );
 </script>
 @stop
 
@@ -33,11 +39,11 @@
 					<td>{{ $user->reason }}</td>
 					<td>{{ $user->created_at }}</td>
 					<td>
-						<a class="btn btn-small btn-info" href="{{ URL::to('blacklist/' . $user->user_id . '/edit') }}">Edit</a>
+						<a class="btn btn-small btn-info btn-block" href="{{ URL::to('blacklist/' . $user->user_id . '/edit') }}">Edit</a>
 						<form action="{{ action('BlacklistController@destroy', $user->user_id )}}" method="post">
 							<input type="hidden" name="_token" value="{{ csrf_token() }}">
 							<input type="hidden" name="_method" value="delete">
-							<input type="submit" value="Remove" class="btn btn-warning">
+							<input type="submit" value="Remove" class="btn btn-danger btn-block">
 						</form>
 					</td>
 				</tr>

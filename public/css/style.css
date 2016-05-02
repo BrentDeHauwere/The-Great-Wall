@@ -40,7 +40,7 @@ body {
 	background-color: #2f2f2f;
 }
 
-.wallname, p, .glyphicon, label, h3, .list-group-item, .form-control, h1 {
+.wallname, p, .glyphicon, label, h3, .list-group-item, .form-control, h1, marquee {
 	color: #fff;
 }
 
