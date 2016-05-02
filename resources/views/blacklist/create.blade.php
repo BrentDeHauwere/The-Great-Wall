@@ -24,6 +24,6 @@
 		<input type="hidden" name="message_id" value="{{ $message_id }}">
 		<input type="hidden" name="poll_id" value="{{ $poll_id }}">
 		{{ csrf_field() }}
-		<input type="submit" value="Ban" class="btn btn-primary">
+		<input type="submit" value="Ban" class="btn btn-default">
 	</form>
 @endsection

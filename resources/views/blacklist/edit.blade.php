@@ -23,6 +23,6 @@
 		{{ csrf_field() }}
 		<input type="hidden" name="_method" value="put">
 		<input type="hidden" name="user_id" value="{{$blacklistedUser->id}}">
-		<input type="submit" value="Edit" class="btn btn-primary">
+		<input type="submit" value="Edit" class="btn btn-default">
 	</form>
 @endsection
