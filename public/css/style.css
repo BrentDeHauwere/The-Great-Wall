@@ -51,3 +51,12 @@ small {
 .table-striped {
 	background-color: #fff;
 }
+
+/*CSS for Moderator overview questions/polls */
+.list-group-item-danger {
+	background-color: #a94442;
+}
+
+.list-group-item-success {
+	background-color: #3c763d;
+}
