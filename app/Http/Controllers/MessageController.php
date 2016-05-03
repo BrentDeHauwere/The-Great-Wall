@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Event;
 use App\Wall;
 use Illuminate\Http\Request;
 
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\View;
 use App\Http\Requests\StoreMessageRequest;
 use App\Http\Requests\ModeratorMessageHandleRequest;
 use App\Message;
+use App\Events\NewMessageEvent;
 
 use Validator;
 use Hash;
@@ -36,7 +38,7 @@ class MessageController extends Controller
 		$message->anonymous =$request->input('anonymous');
 
 		$message->created_at = date('Y-m-d H:i:s');
-		
+
 		if ($request->has('question_id'))
 		{
 			$message->question_id = $request->input('question_id');
@@ -49,6 +51,7 @@ class MessageController extends Controller
 		$saved = $message->save();
 		if ($saved)
 		{
+			Event::fire(new NewMessageEvent($message));
 			return redirect()->back()->with('success', 'Saved succesfully');
 		}
 		else

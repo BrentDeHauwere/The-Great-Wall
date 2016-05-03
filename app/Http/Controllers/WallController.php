@@ -46,7 +46,7 @@ class WallController extends Controller
 			$messages = Message::with('votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 			$polls = Poll::with('choices.votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 			$posts = $this->sortMessagesPolls($messages, $polls);
-
+			session(['wall'.$wall->id => date("Y-m-d H:i:s")]);
 			return view('wall.show')->with('posts', $posts)->with('wall', $wall);//->with('result',$result);
 		}
 		else
@@ -121,6 +121,29 @@ class WallController extends Controller
 	public function create()
 	{
 		return view('wall_create');
+	}
+
+	public function ajaxMessage($id){
+		$wall = Wall::find($id);
+
+		if ($wall!=null && empty( $wall->password ) )
+		{
+
+			$messages;
+			$polls;
+			if(session()->has('wall'.$wall->id)){
+				$messages = Message::with('votes')->where('created_at',session('wall'.$wall->id))->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
+				$polls = Poll::with('choices.votes')->where('created_at',session('wall'.$wall->id))->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
+			}
+			else{
+				$polls = Poll::with('choices.votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
+				$messages = Message::with('votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
+			}
+
+			$posts = $this->sortMessagesPolls($messages, $polls);
+			session(['wall'.$wall->id => date("Y-m-d H:i:s")]);
+			return view('ajax.messages')->with('posts', $posts)->with('wall', $wall);//->with('result',$result);
+		}
 	}
 
 }

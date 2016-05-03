@@ -1,6 +1,26 @@
 @extends("masterlayout")
 @section('header')
-	<link rel="stylesheet" type="text/css" href="/css/messagewall.css">
+<script>
+var ajax_call = function() {
+	console.log("STARTED");
+	$.ajax({
+		url: "/ajax/messages/{{ $wall->id }}",
+		cache: false,
+		success: function(html){
+			console.log(html);
+			if(html != "error"){
+				$("#title").after(html).fadeIn( "slow" );
+			}
+			console.log("ENDED");
+		}
+	});
+};
+
+var interval = 1000 * 60 * 0.5;
+
+setInterval(ajax_call, interval);
+
+</script>
 @stop
 
 @section('title', 'The Great Wall')
@@ -8,7 +28,7 @@
 @section('content')
 
 	<div class=" container messagesContainer center-block">
-		<h3>{{$wall->name}}</h3>
+		<h3 id="title">{{$wall->name}}</h3>
 
 		@foreach($posts as $post)
 
