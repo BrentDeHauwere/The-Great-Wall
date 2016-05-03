@@ -29,8 +29,8 @@ class StoreMessageRequest extends Request
           'channel_id' => 'required|exists:channels,id',
           'text' => 'required|string',
           'anonymous' => 'required|boolean',
-          'question_id' => 'optional|exists:messages,id',
-          'moderator_id' => 'optional|exists:users,id',
+          'question_id' => 'exists:messages,id',
+          'moderator_id' => 'exists:users,id',
         ];
     }
 }
