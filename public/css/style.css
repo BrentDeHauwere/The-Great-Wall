@@ -1,7 +1,6 @@
-html{
-	padding:0 !important;
+.btn-group {
+	margin-left: -5px; !important;
 }
-.btn-group {margin-left: -5px; !important;}
 
 .greybtn{
 	background-color:rgb(78,79,80);
@@ -15,4 +14,49 @@ html{
 
 .red{
 	color:#E65454;
+}
+
+/*own developments*/
+body {
+	background-color: #2f2f2f;
+}
+
+.btn-default {
+	-webkit-transition: background-color 0.5s, box-shadow 0.5s, color 0.5s;
+	-o-transition: background-color 0.5s, box-shadow 0.5s, color 0.5s;
+	transition: background-color 0.5s, box-shadow 0.5s, color 0.5s;
+
+	color: #fff;
+	background-color: #2f2f2f;
+}
+
+.btn-default:hover {
+	background-color: #fff;
+	color: #2f2f2f;
+	box-shadow: 2px 5px 20px 2px rgba(0, 0, 0, 0.12), 2px 5px 10px 2px rgba(0, 0, 0, 0);
+}
+
+.panel, .input-group-addon, .panel-default, .list-group-item, .form-control {
+	background-color: #2f2f2f;
+}
+
+.wallname, p, .glyphicon, label, h3, .list-group-item, .form-control, h1, marquee {
+	color: #fff;
+}
+
+small {
+	color: #777;
+}
+
+.table-striped {
+	background-color: #fff;
+}
+
+/*CSS for Moderator overview questions/polls */
+.list-group-item-danger {
+	background-color: #a94442;
+}
+
+.list-group-item-success {
+	background-color: #3c763d;
 }

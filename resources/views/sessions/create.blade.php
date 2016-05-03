@@ -40,6 +40,6 @@
 
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-		<input type="submit" value="Create the wall" class="btn btn-primary">
+		<input type="submit" value="Create the wall" class="btn btn-default">
 	</form>
 @endsection
