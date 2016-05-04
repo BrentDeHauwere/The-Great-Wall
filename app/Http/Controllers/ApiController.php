@@ -9,7 +9,7 @@ use App\Wall;
 use App\Message;
 use App\Poll;
 use App\Blacklist;
-use App\user;
+use App\User;
 use App\PollChoice;
 use DB;
 
