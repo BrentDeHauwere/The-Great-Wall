@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Blacklist;
-use App\user;
+use App\User;
 use DB;
 use Session;
 use DateTime;
