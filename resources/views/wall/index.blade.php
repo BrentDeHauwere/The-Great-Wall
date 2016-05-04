@@ -48,8 +48,4 @@
     </div>
   </div>
   @endforeach
-  <form method="GET" action="{{ action('SessionController@create') }}">
-    <button type="submit" class="btn btn-default">Create Wall</button>
-  </form>
-  <p>Pas deze button aan wanneer we een user kunnen checken via CAPI.</p>
 @stop
