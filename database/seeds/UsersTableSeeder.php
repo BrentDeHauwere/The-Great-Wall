@@ -12,9 +12,8 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-          ['id' => 1,'name' => 'El Donaldo','email' => 'donald@thegreatmexicanwa.ll','password' => 'china']
-          ['id' => 2,'name' => 'The Zodiac Killer','email' => 'notJohn@kusack.com','password' => 'trumpislife']
-      ]
-      );
+          ['id' => 1,'name' => 'El Donaldo','email' => 'donald@thegreatmexicanwa.ll','password' => 'china'],
+          ['id' => 2,'name' => 'The Zodiac Killer','email' => 'notJohn@kusack.com','password' => 'trumpislife'],
+      ]);
     }
 }
