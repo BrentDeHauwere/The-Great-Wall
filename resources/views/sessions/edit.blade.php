@@ -44,6 +44,6 @@
 
 		<input type="hidden" name="_method" value="put">
 
-		<input type="submit" value="Edit the wall" class="btn btn-primary">
+		<input type="submit" value="Edit the wall" class="btn btn-default">
 	</form>
 @endsection

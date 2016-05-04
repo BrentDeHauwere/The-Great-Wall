@@ -40,11 +40,16 @@ body {
 	background-color: #2f2f2f;
 }
 
-.wallname, p, label, h3, .form-control, h1, marquee {
+.wallname, p, label, h3, .form-control, h1, marquee, .list-group-item-heading, .glyphicon-lock {
 	color: #fff;
 }
 
-.messageBody > p, .messageBody, .list-group-item > p, panel > form {
+.input-wall {
+	background-color: #fff;
+	color: black;
+}
+
+.messageBody > p, .messageBody {
 	background-color: #fff;
 	color: #2f2f2f;
 }
