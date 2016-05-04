@@ -13,7 +13,7 @@
 				<td>ID</td>
 				<td>User ID</td>
 				<td>Name</td>
-				<td>Password</td>
+				<td>Protected</td>
 				<td>Actions</td>
 			</tr>
 		</thead>
