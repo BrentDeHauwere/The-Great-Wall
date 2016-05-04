@@ -128,7 +128,7 @@ class MessageController extends Controller
 			$saved = $message->save();
 			if ($saved)
 			{
-				return redirect()->back()->with("success", "Message was accepted");
+				return redirect()->back()->with("success", "Message was blocked");
 			}
 			else
 			{

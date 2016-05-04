@@ -1,25 +1,11 @@
 @extends("masterlayout")
 @section('header')
+<script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
 <script>
-var ajax_call = function() {
-	console.log("STARTED");
-	$.ajax({
-		url: "/ajax/messages/{{ $wall->id }}",
-		cache: false,
-		success: function(html){
-			console.log(html);
-			if(html != "error"){
-				$("#title").after(html).fadeIn( "slow" );
-			}
-			console.log("ENDED");
-		}
-	});
-};
-
-var interval = 1000 * 60 * 0.5;
-
-setInterval(ajax_call, interval);
-
+ var socket = io('http://localhost:3000');
+ socket.on('test-channel:App\\Events\\NewMessageEvent',function(message){
+	 console.log(message);
+ });
 </script>
 @stop
 

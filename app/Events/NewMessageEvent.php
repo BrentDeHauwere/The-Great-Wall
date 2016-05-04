@@ -29,6 +29,6 @@ class NewMessageEvent extends Event implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return ['walls.message'];
+        return ['test-channel'];
     }
 }

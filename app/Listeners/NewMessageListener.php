@@ -2,12 +2,12 @@
 
 namespace App\Listeners;
 
-use App\Events\SomeEvent;
+use App\Events\NewMessageEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 
-class NewMessageListener implements ShouldBroadcast
+class NewMessageListener implements ShouldQueue
 {
     /**
      * Create the event listener.
