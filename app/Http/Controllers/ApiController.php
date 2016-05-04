@@ -22,7 +22,7 @@ class ApiController extends Controller
   */
   public function walls(){
 
-    $walls = Wall::all();
+    $walls = Wall::paginate(5);
 
     foreach($walls as $wall){
       $wall = ApiController::formatWall($wall);
@@ -38,7 +38,7 @@ class ApiController extends Controller
   */
   public function messages(){
 
-    $messages = Message::all();
+    $messages = Message::paginate(5);
 
     foreach($messages as $msg){
      $msg = ApiController::formatMessage($msg);
@@ -54,7 +54,7 @@ class ApiController extends Controller
   */
   public function polls(){
 
-    $polls = Poll::all();
+    $polls = Poll::paginate(5);
 
     foreach($polls as $poll){
 
@@ -99,7 +99,7 @@ class ApiController extends Controller
   * @return all blacklisted users in JSON.
   */
   public function blacklist(){
-    $blacklist = Blacklist::all();
+    $blacklist = Blacklist::paginate(5);
 
     //format results to match JSON-document
     foreach($blacklist as $usr){
