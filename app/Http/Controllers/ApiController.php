@@ -65,10 +65,10 @@ class ApiController extends Controller
       $poll->wall = ApiController::formatWall(Wall::find($poll->wall_id));
 
       //format user_id to user{user_id, name}
-      $user = User::find($poll->user_id);
+      $username = DB::table('users')->select('name')->where('id', $poll->user_id)->first();
 
       if (!empty($user)){
-        $poll->creator = ["user_id" => $user->id, "name" => $user->name];
+        $poll->creator = ["user_id" => $user->id, "name" => $username->name];
       } else {
         $poll->creator = null;
       }
@@ -105,9 +105,9 @@ class ApiController extends Controller
     foreach($blacklist as $usr){
 
       //user_id formatting to user{user_id, name}
-      $user = User::find($usr->user_id);
+      $username = DB::table('users')->select('name')->where('id', $usr->user_id)->first();
       $temp_userid = $usr->user_id;
-      $usr->user = ["user_id" => $temp_userid, "name" => $user->name];
+      $usr->user = ["user_id" => $temp_userid, "name" => $username->name];
 
       //Convert timestamp to unix format
       $usr->created_at = strtotime($usr->created_at);
@@ -133,8 +133,8 @@ class ApiController extends Controller
     if ($msg->anonymous == 1){
       $msg->creator = null;
     } else {
-      $user = User::find($msg->user_id);
-      $msg->creator = ["user_id" => $msg->user_id, "name" => $user->name];
+      $username = DB::table('users')->select('name')->where('id', $msg->user_id)->first();
+      $msg->creator = ["user_id" => $msg->user_id, "name" => $username->name];
     }
 
     //format count to votes
@@ -180,12 +180,12 @@ class ApiController extends Controller
     $wall->wall_id = $wall->id;
 
     //user_id formatting to creator{userid, name}
-    $user = User::find($wall->user_id);
+    $username = DB::table('users')->select('name')->where('id', $wall->user_id)->first();
 
-    if (empty($user->name)){
+    if (empty($username)){
       $wall->creator = ["user_id" => $wall->user_id, "name" => "Not found."];
     } else {
-      $wall->creator = ["user_id" => $wall->user_id, "name" => $user->name];
+      $wall->creator = ["user_id" => $wall->user_id, "name" => $username->name];
     }
 
     //unset unwanted properties
