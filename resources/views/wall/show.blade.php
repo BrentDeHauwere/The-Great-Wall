@@ -71,14 +71,14 @@
 						<input type="hidden" name="user_id" value="{{1}}">
 						<input type="hidden" name="wall_id" value="{{$wall->id}}">
 						<div class="input-group">
-							<div class="input-group-addon">
+							<div class="input-group-addon input-wall">
 								Anoniem
 								<input type="hidden" name="anonymous" value=0>
 								<input type="checkbox" name="anonymous" value=1>
 							</div>
-							<input name="text" type="text" class="form-control" placeholder="Uw antwoord">
+							<input name="text" type="text" class="form-control input-wall" placeholder="Uw antwoord">
 							<span class="input-group-btn">
-								 <input type="submit" class="btn btn-default" value="Antw.">
+								 <input type="submit" class="btn btn-default input-wall" value="Antw.">
 							 </span>
 						</div>
 					</form>
