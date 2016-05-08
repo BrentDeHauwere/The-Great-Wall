@@ -36,12 +36,26 @@ body {
 	box-shadow: 2px 5px 20px 2px rgba(0, 0, 0, 0.12), 2px 5px 10px 2px rgba(0, 0, 0, 0);
 }
 
-.panel, .input-group-addon, .panel-default, .list-group-item, .form-control {
+.panel, .input-group-addon, .panel-default, .form-control {
 	background-color: #2f2f2f;
 }
 
-.wallname, p, .glyphicon, label, h3, .list-group-item, .form-control, h1, marquee {
+.wallname, p, label, h3, .form-control, h1, marquee, .list-group-item-heading, .glyphicon-lock {
 	color: #fff;
+}
+
+.input-wall {
+	background-color: #fff;
+	color: black;
+}
+
+.messageBody > p, .messageBody {
+	background-color: #fff;
+	color: #2f2f2f;
+}
+
+.optionContainer{
+	background-color: #fff;
 }
 
 small {

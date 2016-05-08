@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Blacklist;
-use App\user;
+use App\User;
 use DB;
 use Session;
 use DateTime;
@@ -42,10 +42,16 @@ class BlacklistController extends Controller
       $user_id = DB::table('polls')->select('user_id')->where('id', $request->input('poll_id'))->first();
     }
 
-    $user = User::find($user_id->user_id);
+    $username = DB::table('users')->select('name')->where('id', $user_id->user_id)->first();
+
+    if (empty($username)){
+      return "Username Not Found In Database.";
+    } else {
+      $username = $username->name;
+    }
 
     //$user_id is a stdClass class for some reason...
-		return view('blacklist.create')->with('user_id', $user->id)->with('message_id', $message_id)->with('poll_id', $poll_id)->with('username', $user->name);
+		return view('blacklist.create')->with('user_id', $user_id->user_id)->with('message_id', $message_id)->with('poll_id', $poll_id)->with('username', $username);
 	}
 
   /**

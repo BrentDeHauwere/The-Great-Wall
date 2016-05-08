@@ -39,7 +39,6 @@
         @else
         <div class="col-sm-2 col-sm-offset-7">
           <form action="{{ action('WallController@show', ['wall_id' => $wall->id]) }}" method="GET">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <button class="btn btn-default btn-block" type="submit">Enter</button>
           </form>
         </div>
@@ -48,8 +47,4 @@
     </div>
   </div>
   @endforeach
-  <form method="GET" action="{{ action('SessionController@create') }}">
-    <button type="submit" class="btn btn-default">Create Wall</button>
-  </form>
-  <p>Pas deze button aan wanneer we een user kunnen checken via CAPI.</p>
 @stop
