@@ -47,7 +47,7 @@ class WallController extends Controller
 			$polls = Poll::with('choices.votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 			$posts = $this->sortMessagesPolls($messages, $polls);
 
-			return view('wall.show')->with('posts', $posts)->with('wall', $wall);//->with('result',$result);
+			return view('wall.show')->with('posts', $posts)->with('wall', $wall);
 		}
 		else
 		{

@@ -3,6 +3,10 @@
 	<link rel="stylesheet" type="text/css" href="/css/messagewall.css">
 @stop
 
+@section('page-script')
+	<script src="http://malsup.github.com/jquery.form.js"></script>
+@stop
+
 @section('title', 'The Great Wall')
 
 @section('content')
@@ -14,7 +18,7 @@
 
 		@if($post[0]=='m')
 		@if(empty($post[1]->question_id))
-		<!-- message -->
+			<!-- message -->
 		<div class="row message">
 			<div class="panel panel-default">
 				<div class="panel-heading">
@@ -45,9 +49,14 @@
 							<li class="list-group-item">
 								<!-- upvote -->
 								<div class="buttons pull-right">
-									<a>
-										<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-									</a>
+									<form>
+										<input type="hidden" name="message_id" value={{$post[1]->id}}>
+										<!-- ID of the logged-in user -->
+										<input type="hidden" name="user_id" value={{1}}>
+										<button type="submit" class="form-control upvote active">
+											<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+										</button>
+									</form>
 								</div>
 								<b>
 									@unless($answer->anonymous)
@@ -56,14 +65,15 @@
 											Anoniem
 											@endunless
 											<small> at {{$answer->created_at}}</small>
-								</b> <p>{{$answer->text}}</p>
+								</b>
+								<p class="answer">{{$answer->text}}</p>
 							</li>
 						@endforeach
 					</ul>
 					@endunless
 
 
-					<!-- antwoord toevoegen -->
+						<!-- antwoord toevoegen -->
 					<form method="POST" action="/message">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 						<input type="hidden" name="question_id" value="{{$post[1]->id}}">
@@ -92,7 +102,7 @@
 		<div class="row message poll">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h4 class="panel-title">Eli Boeye
+					<h4 class="panel-title">{{$post[1]->user_id}}
 						<small>{{$post[1]->created_at}}</small>
 					</h4>
 				</div>
@@ -101,7 +111,7 @@
 				</div>
 
 				<!-- verschillende antwoorden -->
-				<div class="optionContainer row">
+				<div class="choiceContainer row">
 					<?php
 					$total = 0;
 					foreach ($post[1]->choices/*->where('moderation_level',0)*/ as $choice)
@@ -111,14 +121,14 @@
 					?>
 					@forelse($post[1]->choices as $choice)
 
-						<div class="options col-md-12">
+						<div class="choices col-md-12">
 							<div class="col-md-4 col-sm-4">
 								<!-- OK button -->
 								<button type="button" class="btn btn-default vote">
 									<span class="glyphicon glyphicon-ok" area-hidden="true"></span>
 								</button>
 
-								<span class="progress-opt">{{$post[1]->text}}</span>
+								<span class="progress-opt">{{$choice->text}}</span>
 							</div>
 
 							<div class="col-md-6 col-sm-6">
@@ -126,7 +136,7 @@
 									<?php
 									if ( $total != 0 )
 									{
-										$percentage = $choice->count / $total * 100;
+										$percentage = round($choice->count / $total * 100);
 									}
 									else
 									{
@@ -187,7 +197,7 @@
 						<input type="checkbox" name="anonymous" value=1> Anoniem
 
 						<div class="buttons pull-right submitButton" role="group">
-							<input type="submit" class="btn btn-default">
+							<input type="submit" class="btn btn-default" value="Posten">
 						</div>
 					</div>
 				</div>
@@ -200,37 +210,44 @@
 		</div>
 
 		<!-- Form om nieuwe poll aan te maken -->
-		<div id="pollForm" class="message">
-			<form action="">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<div class="btn-group">
-							<button type="button" class="btn btn-default messageButton">Bericht</button>
-							<button type="button" class="btn btn-default pollButton">Poll</button>
-						</div>
-					</div>
-					<div class="panel-body messageBody">
-						<p>Waarom zijn de bananen krom</p>
-
-						<ul class="list-group">
-							<li class="list-group-item">
-								Cras justo odio
-								<a><span class="glyphicon glyphicon-remove pull-right"></span></a>
-							</li>
-							<li class="list-group-item">
-								Dapibus ac facilisis in
-								<a><span class="glyphicon glyphicon-remove pull-right"></span></a>
-							</li>
-			<textarea class="form-control" name="" id="" cols="30" rows="5"
-					  placeholder="Plaats hier uw optie"></textarea>
-							<input type="checkbox" name="anonymous" value="anonymous"> Anoniem
-							<div class="buttons pull-right submitButton" role="group">
-								<input type="submit" class="btn btn-default">
-							</div>
-						</ul>
+		<div id="pollForm" class="poll">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<div class="btn-group">
+						<button type="button" class="btn btn-default messageButton">Bericht</button>
+						<button type="button" class="btn btn-default pollButton">Poll</button>
 					</div>
 				</div>
-			</form>
+				<div class="panel-body messageBody">
+					<form id="formPoll" method="POST" action="/poll">
+
+						<input type="hidden" name="_token" value="{{ csrf_token() }}">
+						<input type="hidden" name="user_id" value="{{1}}">
+						<input type="hidden" name="wall_id" value="{{$wall->id}}">
+
+						<input class="form-control" type="text" name="question"
+							   placeholder="Plaats hier uw vraag">
+
+						<ul class="list-group" id="pollChoices">
+
+						</ul>
+
+						<div class="input-group">
+							<input id="pollChoiceText" type="text" class="form-control" placeholder="Plaats hier uw optie">
+							<span class="input-group-btn">
+								<button class="btn btn-secondary" type="button" id="addPollChoice">Toevoegen</button>
+							</span>
+						</div>
+
+						<input type="hidden" name="addable" value=0>
+						<input type="checkbox" name="addable" value=1> Keuzes toe te voegen
+
+						<div class="buttons pull-right submitButton" role="group">
+							<input type="submit" class="btn btn-default" value="Posten">
+						</div>
+					</form>
+				</div>
+			</div>
 		</div>
 
 
