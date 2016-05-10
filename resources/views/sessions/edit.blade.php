@@ -42,7 +42,7 @@
 
 		<div class="form-group">
 			<label for="open_until">Open until</label>
-			<input id="open_until" type="datetime" name="open_until" class="form-control" value="{{ $wall->open_until }}">
+			<input id="open_until" type="datetime-local" name="open_until" class="form-control" value="{{ $wall->open_until }}">
 			@helper('open_until')
 		</div>
 
