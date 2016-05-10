@@ -25,7 +25,7 @@
 					<td>{{ $value->name }}</td>
 					<td>{{ $value->password }}</td>
 					<td>
-							<a class="btn btn-success btn-block" href="{{ URL::to('/sessions/' . $value->id) }}">Show</a>
+							<a class="btn btn-success btn-block" href="{{ action('SessionController@show', $value->id) }}">Show</a>
 							<a class="btn btn-info btn-block" href="{{ URL::to('/sessions/' . $value->id . '/edit') }}">Edit</a>
 							<form action="{{action('SessionController@destroy', $value->id)}}" method="post">
 								<input type="hidden" name="_token" value="{{ csrf_token() }}"/>
@@ -37,4 +37,6 @@
 			@endforeach
 		</tbody>
 	</table>
+	<a class="btn btn-success btn-block" href="{{ action('SessionController@create') }}">Add Session</a>
+	<a class="btn btn-success btn-block" href="{{ action('BlacklistController@index') }}">Go to Blacklist</a>
 @endsection

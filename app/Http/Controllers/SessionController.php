@@ -11,8 +11,11 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
+use App\Message;
+use App\Poll;
 use Validator;
 use Hash;
+use DB;
 
 class SessionController extends Controller
 {
@@ -82,13 +85,16 @@ class SessionController extends Controller
 	 * @param  int $id
 	 * @return Response
 	 */
-	public
-	function show($id)
+	public function show($id)
 	{
-		$wall = Wall::find($id);
+		$userid = 1; //getfromloggedinuser
+		$messages = Message::with("votes")->where("wall_id", "=", $id)->get();
+		$polls = Poll::with("choices.votes")->where("wall_id", "=", $id)->get();
+
+		$result = DB::select(DB::raw("SELECT id,text,moderation_level,created_at,'M' FROM messages UNION SELECT id,question,moderation_level,created_at,'P' FROM polls ORDER BY created_at desc"));
 
 		return View::make('sessions.show')
-			->with('wall', $wall);
+			->with("messages",$messages)->with("polls",$polls)->with("result",json_decode(json_encode($result),true));
 	}
 
 	/**

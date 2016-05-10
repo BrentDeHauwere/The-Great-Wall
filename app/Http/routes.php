@@ -47,7 +47,6 @@ Route::group(['middleware' => ['web']], function () {
 	// ---------- SESSIONS ----------
 	// Views
 	Route::resource('sessions', 'SessionController');
-	Route::resource('moderator', 'ModeratorController',['only' => ['show']]);
 	// Actions (performed on a session view)
 	Route::post('message/accept','MessageController@accept');
 	Route::post('message/decline','MessageController@decline');
