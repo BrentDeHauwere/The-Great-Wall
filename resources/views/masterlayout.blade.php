@@ -11,24 +11,39 @@
     <script src="{{asset('/js/smoothscroll.js')}}"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css"/>
+
+    <!-- Semantic UI -->
+    <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="css/customize_semantic.css">
+
     @yield('header')
     @yield('page-script')
   </head>
   <body>
-    <nav class="navbar navbar-default">
-    	<div class="container-fluid">
-    		  <a href="{{ route('home') }}"><div class="navbar-brand">The Great Wall</div></a>
-    		<div class="navbar-header">
 
-    		</div>
-
-    		<!-- Collect the nav links, forms, and other content for toggling -->
-    		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
-    		</div><!-- /.navbar-collapse -->
-    	</div><!-- /.container-fluid -->
-    </nav>
-    <div class="container">
+    <div class="ui inverted segment noradius">
+      <div class="ui inverted secondary pointing menu">
+        <a class="active item" href="{{ route('home') }}">
+          Home
+        </a>
+        <a class="item" href="{{ action('SessionController@index') }}">
+          Moderate
+        </a>
+        <a class="item" href="{{ action('BlacklistController@index') }}">
+          Blacklist
+        </a>
+        <div class="right menu">
+          <div class="ui dropdown item">
+            Username <i class="user icon"></i>
+            <div class="menu">
+              <a class="item">Logout</a>
+              <a class="item">More</a>
+              <a class="item">More</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
       @if(session()->has('success'))
         @success({{ session('success') }})
@@ -49,5 +64,9 @@
       @yield('content')
     </div>
     @yield('footer')
+
+        <!-- Semantic UI -->
+    <script src="semantic/dist/semantic.min.js"></script>
+    <script src="js/customize_semantic.js"></script>
   </body>
 </html>
