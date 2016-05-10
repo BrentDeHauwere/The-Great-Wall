@@ -12,8 +12,8 @@ class WallsTableSeeder extends Seeder
     public function run()
     {
         DB::table('walls')->insert([
-            ['user_id' => 1, 'name' => 'Talk Laravel'],
-            ['user_id' => 2, 'name' => 'Talk Economic Risks']
+            ['user_id' => 1, 'name' => 'Talk Laravel', 'open_until' => date('Y-m-d H:i:s', time() - (24 * 60 * 60))],
+            ['user_id' => 2, 'name' => 'Talk Economic Risks', 'open_until' => null]
         ]);
 
         DB::table('walls')->insert([

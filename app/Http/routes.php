@@ -23,28 +23,48 @@
 */
 
 Route::group(['middleware' => ['web']], function () {
-	Route::get('/', 'WallController@index');
-	Route::resource('sessions', 'SessionController');
-	Route::resource('blacklist', 'BlacklistController');
+
+	// ---------- INDEX ----------
+	Route::get('/', ['as' => 'home', function() {
+		// User should be logged in, therefore will have a role
+		// Based on the role, we will redirect the user to the correct page
+		// TO DO: get the role of the user
+		$role = 'Bezoeker';
+
+		switch ($role) {
+			case 'Bezoeker':
+				return redirect()->action('WallController@index');
+				break;
+			case 'Moderator':
+				return redirect()->action('SessionController@index');
+				break;
+			default:
+				App::abort(401);
+				break;
+		}
+	}]);
+
+	// ---------- SESSIONS ----------
+	// Views
+	Route::resource('session', 'SessionController');
+	// Actions (performed on a session view)
 	Route::post('message/accept','MessageController@accept');
 	Route::post('message/decline','MessageController@decline');
+
+	// ---------- BLACKLIST ----------
+	// Blacklist - Moderator
+	Route::resource('blacklist', 'BlacklistController');
+
+	// ---------- WALLS ----------
+	// Views
+	Route::resource('wall', 'WallController',['only' => ['index','show']]);
+	// Wall - Actions to perform on a wall
+	Route::post('wall/enter','WallController@enterWallWithPassword');
 	Route::resource('message', 'MessageController',['only' => ['store', 'destroy']]);
 	Route::resource('poll', 'PollController',['only' => ['store', 'destroy']]);
 	Route::resource('votemessage', 'VoteMessageController',['only' => ['store', 'destroy']]);
 	Route::resource('votepoll', 'VotePollController',['only' => ['store', 'destroy']]);
-	Route::resource('moderator', 'ModeratorController',['only' => ['show']]);
-	Route::post('wall/enter','WallController@enterWallWithPassword');
-	Route::resource('wall', 'WallController',['only' => ['index','show']]);
 
-	/*Route::get('wall/{wall_id}','WallController@openWall');
-	Route::post('message/new','WallController@newMessage');
-	Route::post('message/vote','WallController@voteMessage');
-	Route::post('poll/vote','WallController@votePoll');
-	Route::get('moderator/questions/{wall_id}','WallController@ModeratorQuestions');
-	Route::post('moderator/message/accept','WallController@ModeratorAccept');
-	Route::post('moderator/message/decline','WallController@ModeratorDecline');
-	Route::post('/wall/enter','WallController@enterWallWithPassword');
-	Route::get('/', 'WallController@index');*/
 });
 
 Route::group(['prefix' => 'api', 'middleware' => ['web']], function () {
