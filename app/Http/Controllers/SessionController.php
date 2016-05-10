@@ -26,11 +26,21 @@ class SessionController extends Controller
 	 */
 	public function index()
 	{
-		$walls = Wall::where('open_until','>',date('Y-m-d H:i:s'))->orWhere('open_until', null)->orderBy('name')->get();
+		$walls = Wall::withTrashed()->orderBy('name')->get();
 
 		foreach($walls as $wall){
 			if (!empty($wall->password)){
 				$wall->password = "Yes";
+			}
+
+			if ($wall->deleted_at != null) {
+				$wall->open_until = 'Manually closed';
+			}
+			else if ($wall->open_until == 0) {
+				$wall->open_until = 'Infinity (not set)';
+			}
+			else if ($wall->open_until < date('d-m-y H:i:s')) {
+				$wall->open_until = "Automatically closed ({$wall->open_until})";
 			}
 		}
 
@@ -57,10 +67,10 @@ class SessionController extends Controller
 	{
 		// Server-side validation
 		$this->validate($request, [
-			'user_id' 	=> 'required|numeric|min:1|exists:users',
+			'user_id' 	=> 'required|numeric|min:1',
 			'name'    	=> 'required',
 			'password'	=> 'confirmed',
-			'open_until' => 'date_format:Y-m-d H:i:s',
+			'open_until' => 'date',
 		]);
 
 		$wall = new Wall;
@@ -108,6 +118,11 @@ class SessionController extends Controller
 	{
 		$wall = Wall::find($id);
 
+		// Required for datetime-local inputfield
+		$old_date_timestamp = strtotime($wall->open_until);
+		$wall->open_until = date('Y-m-d H:i', $old_date_timestamp);
+		$wall->open_until = str_replace(' ', 'T', $wall->open_until);
+
 		return View::make('session.edit')
 			->with('wall', $wall)->with('success','Something');
 	}
@@ -123,7 +138,7 @@ class SessionController extends Controller
 	{
 		// Server-side validation
 		$this->validate($request, [
-			'user_id' 	=> 'required|numeric|min:1|exists:users',
+			'user_id' 	=> 'required|numeric|min:1',
 			'name'    	=> 'required',
 			'password'	=> 'confirmed',
 			'open_until' => 'date_format:Y-m-d H:i:s',
@@ -160,7 +175,7 @@ class SessionController extends Controller
 		$wall = Wall::find($id);
 		$wall->delete();
 
-		Session::flash('info', 'Successfully deleted the wall.');
+		Session::flash('info', 'Successfully closed the wall.');
 
 		return Redirect::to('session');
 	}

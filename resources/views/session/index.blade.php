@@ -32,7 +32,7 @@
 							<form action="{{action('SessionController@destroy', $value->id)}}" method="post">
 								<input type="hidden" name="_token" value="{{ csrf_token() }}"/>
 								<input type="hidden" name="_method" value="delete"/>
-								<button type="submit" class="btn btn-danger btn-block">Delete</button>
+								<button type="submit" class="btn btn-danger btn-block" style="margin-top: 5px">Close</button>
 							</form>
 					</td>
 				</tr>

@@ -25,7 +25,7 @@
 Route::group(['middleware' => ['web']], function () {
 
 	// ---------- INDEX ----------
-	Route::get('/', function() {
+	Route::get('/', ['as' => 'home', function() {
 		// User should be logged in, therefore will have a role
 		// Based on the role, we will redirect the user to the correct page
 		// TO DO: get the role of the user
@@ -42,7 +42,7 @@ Route::group(['middleware' => ['web']], function () {
 				App::abort(401);
 				break;
 		}
-	});
+	}]);
 
 	// ---------- SESSIONS ----------
 	// Views

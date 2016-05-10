@@ -17,7 +17,7 @@
   <body>
     <nav class="navbar navbar-default">
     	<div class="container-fluid">
-    		  <div class="navbar-brand">The Great Wall</div>
+    		  <a href="{{ route('home') }}"><div class="navbar-brand">The Great Wall</div></a>
     		<div class="navbar-header">
 
     		</div>
