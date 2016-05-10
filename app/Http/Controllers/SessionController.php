@@ -25,6 +25,12 @@ class SessionController extends Controller
 	{
 		$walls = Wall::where('open_until','>',date('Y-m-d H:i:s'))->orWhere('open_until', null)->orderBy('name')->get();
 
+		foreach($walls as $wall){
+			if (!empty($wall->password)){
+				$wall->password = "Yes";
+			}
+		}
+
 		return View::make('sessions.index')
 			->with('walls', $walls);
 	}

@@ -13,9 +13,12 @@ p, h1, marquee {
 @section('content')
 <div class="text-center">
   <h1>Oh no!</h1>
-  <p>You lost The Great Wall to the Mongols.</p>
+  <p>We lost The Great Wall to the Mongols. :(</p>
   <img src="{{asset('img/team.jpg')}}" alt="Team Photo">
+  <marquee behavior="alternate">
+    <img src="{{asset('img/arco.png')}}" alt="Team Photo">
+    GEEN PANIEK IK BEN STUDENTENVERTEGENWOORDIGER
+  </marquee>
   <p>Error 404: Page not found.</p>
-  <marquee>Oopsie.</marquee>
 </div>
 @stop

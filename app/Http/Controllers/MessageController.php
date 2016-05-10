@@ -33,8 +33,10 @@ class MessageController extends Controller
 		$message->wall_id = $request->input('wall_id');
 		$message->channel_id = $request->input('channel_id');
 		$message->text = $request->input('text');
-		$message->anonymous = $request->input('anonymous');
+		$message->anonymous =$request->input('anonymous');
 
+		$message->created_at = date('Y-m-d H:i:s');
+		
 		if ($request->has('question_id'))
 		{
 			$message->question_id = $request->input('question_id');
@@ -123,7 +125,7 @@ class MessageController extends Controller
 			$saved = $message->save();
 			if ($saved)
 			{
-				return redirect()->back()->with("success", "Message was accepted");
+				return redirect()->back()->with("success", "Message was blocked");
 			}
 			else
 			{

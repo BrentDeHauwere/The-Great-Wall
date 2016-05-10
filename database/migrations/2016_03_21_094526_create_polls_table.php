@@ -18,6 +18,7 @@ class CreatePollsTable extends Migration
             // Moderation_level: 0 = Accepted, 1 = Declined, 2 = User blokked
             $table->integer('user_id')->unsigned();
             $table->integer('moderator_id')->unsigned()->nullable();
+            $table->integer('channel_id')->unsigned();
             $table->longText('question');
             $table->boolean('addable');
             $table->tinyInteger('moderation_level')->default(0);
