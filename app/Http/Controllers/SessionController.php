@@ -34,7 +34,7 @@ class SessionController extends Controller
 			}
 		}
 
-		return View::make('sessions.index')
+		return View::make('session.index')
 			->with('walls', $walls);
 	}
 
@@ -45,7 +45,7 @@ class SessionController extends Controller
 	 */
 	public function create()
 	{
-		return View::make('sessions.create');
+		return View::make('session.create');
 	}
 
 	/**
@@ -75,7 +75,7 @@ class SessionController extends Controller
 
 		Session::flash('info', 'Successfully created wall.');
 
-		return Redirect::to('sessions');
+		return Redirect::to('session');
 	}
 
 
@@ -93,7 +93,7 @@ class SessionController extends Controller
 
 		$result = DB::select(DB::raw("SELECT id,text,moderation_level,created_at,'M' FROM messages UNION SELECT id,question,moderation_level,created_at,'P' FROM polls ORDER BY created_at desc"));
 
-		return View::make('sessions.show')
+		return View::make('session.show')
 			->with("messages",$messages)->with("polls",$polls)->with("result",json_decode(json_encode($result),true));
 	}
 
@@ -108,7 +108,7 @@ class SessionController extends Controller
 	{
 		$wall = Wall::find($id);
 
-		return View::make('sessions.edit')
+		return View::make('session.edit')
 			->with('wall', $wall)->with('success','Something');
 	}
 
@@ -145,7 +145,7 @@ class SessionController extends Controller
 
 		Session::flash('info', 'Successfully updated wall.');
 
-		return Redirect::to('sessions');
+		return Redirect::to('session');
 	}
 
 	/**
@@ -162,6 +162,6 @@ class SessionController extends Controller
 
 		Session::flash('info', 'Successfully deleted the wall.');
 
-		return Redirect::to('sessions');
+		return Redirect::to('session');
 	}
 }

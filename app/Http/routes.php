@@ -29,7 +29,7 @@ Route::group(['middleware' => ['web']], function () {
 		// User should be logged in, therefore will have a role
 		// Based on the role, we will redirect the user to the correct page
 		// TO DO: get the role of the user
-		$role = null;
+		$role = 'Bezoeker';
 
 		switch ($role) {
 			case 'Bezoeker':
@@ -46,7 +46,7 @@ Route::group(['middleware' => ['web']], function () {
 
 	// ---------- SESSIONS ----------
 	// Views
-	Route::resource('sessions', 'SessionController');
+	Route::resource('session', 'SessionController');
 	// Actions (performed on a session view)
 	Route::post('message/accept','MessageController@accept');
 	Route::post('message/decline','MessageController@decline');
