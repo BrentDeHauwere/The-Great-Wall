@@ -44,12 +44,11 @@ Route::group(['middleware' => ['web']], function () {
 	// Views
 	Route::resource('wall', 'WallController',['only' => ['index','show']]);
 	// Wall - Actions to perform on a wall
+	Route::post('wall/enter','WallController@enterWallWithPassword');
 	Route::resource('message', 'MessageController',['only' => ['store', 'destroy']]);
 	Route::resource('poll', 'PollController',['only' => ['store', 'destroy']]);
 	Route::resource('votemessage', 'VoteMessageController',['only' => ['store', 'destroy']]);
 	Route::resource('votepoll', 'VotePollController',['only' => ['store', 'destroy']]);
-
-	Route::post('wall/enter','WallController@enterWallWithPassword');
 
 });
 
