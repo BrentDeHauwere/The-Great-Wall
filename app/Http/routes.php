@@ -25,8 +25,24 @@
 Route::group(['middleware' => ['web']], function () {
 
 	// ---------- INDEX ----------
-	// Views - Should depend on the role of the user (walls/sessions) TO DO: redirect
-	Route::get('/', 'WallController@index'); // TO DO: create controller
+	Route::get('/', function() {
+		// User should be logged in, therefore will have a role
+		// Based on the role, we will redirect the user to the correct page
+		// TO DO: get the role of the user
+		$role = null;
+
+		switch ($role) {
+			case 'Bezoeker':
+				return redirect()->action('WallController@index');
+				break;
+			case 'Moderator':
+				return redirect()->action('SessionController@index');
+				break;
+			default:
+				App::abort(401);
+				break;
+		}
+	});
 
 	// ---------- SESSIONS ----------
 	// Views
