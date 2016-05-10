@@ -38,9 +38,7 @@
         </div>
         @else
         <div class="col-sm-2 col-sm-offset-7">
-          <form action="{{ action('WallController@show', ['wall_id' => $wall->id]) }}" method="GET">
-            <button class="btn btn-default btn-block" type="submit">Enter</button>
-          </form>
+            <button class="btn btn-default btn-block" type="button" onclick="location.href='{{ action('WallController@show', ['wall_id' => $wall->id]) }}';"">Enter</button>
         </div>
         @endif
       </div>

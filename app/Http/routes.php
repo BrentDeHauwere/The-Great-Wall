@@ -23,28 +23,34 @@
 */
 
 Route::group(['middleware' => ['web']], function () {
-	Route::get('/', 'WallController@index');
+
+	// ---------- INDEX ----------
+	// Views - Should depend on the role of the user (walls/sessions) TO DO: redirect
+	Route::get('/', 'WallController@index'); // TO DO: create controller
+
+	// ---------- SESSIONS ----------
+	// Views
 	Route::resource('sessions', 'SessionController');
-	Route::resource('blacklist', 'BlacklistController');
+	Route::resource('moderator', 'ModeratorController',['only' => ['show']]);
+	// Actions (performed on a session view)
 	Route::post('message/accept','MessageController@accept');
 	Route::post('message/decline','MessageController@decline');
+
+	// ---------- BLACKLIST ----------
+	// Blacklist - Moderator
+	Route::resource('blacklist', 'BlacklistController');
+
+	// ---------- WALLS ----------
+	// Views
+	Route::resource('wall', 'WallController',['only' => ['index','show']]);
+	// Wall - Actions to perform on a wall
 	Route::resource('message', 'MessageController',['only' => ['store', 'destroy']]);
 	Route::resource('poll', 'PollController',['only' => ['store', 'destroy']]);
 	Route::resource('votemessage', 'VoteMessageController',['only' => ['store', 'destroy']]);
 	Route::resource('votepoll', 'VotePollController',['only' => ['store', 'destroy']]);
-	Route::resource('moderator', 'ModeratorController',['only' => ['show']]);
-	Route::post('wall/enter','WallController@enterWallWithPassword');
-	Route::resource('wall', 'WallController',['only' => ['index','show']]);
 
-	/*Route::get('wall/{wall_id}','WallController@openWall');
-	Route::post('message/new','WallController@newMessage');
-	Route::post('message/vote','WallController@voteMessage');
-	Route::post('poll/vote','WallController@votePoll');
-	Route::get('moderator/questions/{wall_id}','WallController@ModeratorQuestions');
-	Route::post('moderator/message/accept','WallController@ModeratorAccept');
-	Route::post('moderator/message/decline','WallController@ModeratorDecline');
-	Route::post('/wall/enter','WallController@enterWallWithPassword');
-	Route::get('/', 'WallController@index');*/
+	Route::post('wall/enter','WallController@enterWallWithPassword');
+
 });
 
 Route::group(['prefix' => 'api', 'middleware' => ['web']], function () {
