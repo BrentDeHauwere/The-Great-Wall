@@ -24,6 +24,13 @@
         $('.ui .item').removeClass('active');
         $("#" + page).addClass('active');
       });
+
+      $('#user').blur(function(){
+        console.log('event fired');
+        var page = "@yield('page')";
+        $('.ui .item').removeClass('active');
+        $("#" + page).addClass('active');
+      });
     </script>
   </head>
   <body>
@@ -39,8 +46,8 @@
         <a class="item" href="{{ action('BlacklistController@index') }}" id="blacklist">
           Blacklist
         </a>
-        <div class="right menu">
-          <div class="ui dropdown item">
+        <div class="right menu" >
+          <div class="ui dropdown item" id="user">
             Username <i class="user icon"></i>
             <div class="menu">
               <a class="item">Logout</a>
