@@ -2,14 +2,9 @@
 
 @section('title', 'Walls')
 
+@section('page','home')
+
 @section('content')
-
-  <!--@if (session('error'))
-      <div class="alert alert-danger">
-          {{ session('error') }}
-      </div>
-  @endif-->
-
   @foreach ($walls as $wall)
   <div class="panel panel-default">
     <div class="panel-body">

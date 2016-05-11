@@ -13,11 +13,18 @@
     <link rel="stylesheet" href="/css/style.css"/>
 
     <!-- Semantic UI -->
-    <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
-    <link rel="stylesheet" type="text/css" href="css/customize_semantic.css">
+    <link rel="stylesheet" type="text/css" href="/semantic/dist/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/customize_semantic.css">
 
     @yield('header')
     @yield('page-script')
+    <script>
+      $(document).ready(function(){
+        var page = "@yield('page')";
+        $('.ui .item').removeClass('active');
+        $("#" + page).addClass('active');
+      });
+    </script>
   </head>
   <body>
 
@@ -66,7 +73,7 @@
     @yield('footer')
 
         <!-- Semantic UI -->
-    <script src="semantic/dist/semantic.min.js"></script>
-    <script src="js/customize_semantic.js"></script>
+    <script src="/semantic/dist/semantic.min.js"></script>
+    <script src="/js/customize_semantic.js"></script>
   </body>
 </html>

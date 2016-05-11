@@ -2,6 +2,8 @@
 
 @section('title', 'Moderator')
 
+@section('page','moderate')
+
 @section('content')
 
 	<!-- Moderator Stuff Now -->
