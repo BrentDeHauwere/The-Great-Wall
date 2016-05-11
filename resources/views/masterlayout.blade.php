@@ -23,13 +23,13 @@
 
     <div class="ui inverted segment noradius">
       <div class="ui inverted secondary pointing menu">
-        <a class="active item" href="{{ route('home') }}">
+        <a class="item" href="{{ route('home') }}" id="home">
           Home
         </a>
-        <a class="item" href="{{ action('SessionController@index') }}">
+        <a class="item" href="{{ action('SessionController@index') }}" id="moderate">
           Moderate
         </a>
-        <a class="item" href="{{ action('BlacklistController@index') }}">
+        <a class="item" href="{{ action('BlacklistController@index') }}" id="blacklist">
           Blacklist
         </a>
         <div class="right menu">
