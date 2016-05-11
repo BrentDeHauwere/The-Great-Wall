@@ -14,6 +14,7 @@ use App\PollChoice;
 use App\PollVote;
 use Illuminate\Http\Request;
 use Hash;
+use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 
 class WallController extends Controller
 {
@@ -49,6 +50,11 @@ class WallController extends Controller
 			$messages = Message::with('votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 			$polls = Poll::with('choices.votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 			$posts = $this->sortMessagesPolls($messages, $polls);
+
+			$posts = array_slice($posts, 5);
+
+			$currentPage = app('request')->get('page') ? : 1;
+			$posts = new Paginator($posts, count($posts), 5, $currentPage);
 
 			return view('wall.show')->with('posts', $posts)->with('wall', $wall);//->with('result',$result);
 		}
