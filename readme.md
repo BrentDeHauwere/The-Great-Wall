@@ -17,6 +17,12 @@ You can get this repo by ether
 - Downloading this repository as a .zip file.
 - Unzip it locally and implement the gitlab-boilerplate to the root of your repository.
 
+# Dependencies
+
+- Redis Server (10.3.50.20)
+- Node.js
+- Server needs to run command `node socket.js` to run the node server
+
 # Getting Started
 
 - [boilerplate](http://whatis.techtarget.com/definition/boilerplate) (template) files with resumed guidelines for root `README`.
