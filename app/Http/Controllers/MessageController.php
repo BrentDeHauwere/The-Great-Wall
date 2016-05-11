@@ -52,7 +52,7 @@ class MessageController extends Controller
 		if ($saved)
 		{
 			Event::fire(new NewMessageEvent($message));
-			return redirect()->back()->with('success', 'Saved succesfully');
+			//return redirect()->back()->with('success', 'Saved succesfully');
 		}
 		else
 		{

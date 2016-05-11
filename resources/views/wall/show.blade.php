@@ -7,12 +7,12 @@
    console.log(data);
    console.log(data.message.wall_id);
    console.log(data.message.question_id);
-	 if(data.message.wall_id == {{ $wall->id }} && data.message.question_id == null){
+	 if(data.message.question_id == null){
      var iets = "text:" + data.message.text + ".";
      console.log(iets);
      $("#title").after(iets);
    }
-   else if(data.message.wall_id == {{ $wall->id }} && data.message.question_id != null){
+   else if(data.message.question_id != null){
      console.log(data.message.text);
      console.log($("#answers"+data.message.question_id));
      $("#answers"+data.message.question_id).after("<li>" + data.message.text + "</li>");

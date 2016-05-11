@@ -29,6 +29,9 @@ class NewMessageEvent extends Event implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return ['wall.'.$message->wall_id.'.messages'];
+        //$string = 'wall.'.$this->message->wall_id.'.messages';
+        //dd($string);
+        //dd($this->message);
+        return ['messagewall1.wall.'.$this->message->wall_id.'.messages'];
     }
 }
