@@ -43,7 +43,7 @@ class SessionController extends Controller
 			else if ($wall->open_until == 0) {
 				$wall->open_until = 'Infinity (not set)';
 			}
-			else if ($wall->open_until < date('d-m-y H:i:s')) {
+			else if ($wall->open_until < date('Y-m-d H:i:s')) {
 				$wall->open_until = "Automatically closed ({$wall->open_until})";
 			}
 		}
@@ -180,6 +180,23 @@ class SessionController extends Controller
 		$wall->delete();
 
 		Session::flash('info', 'Successfully closed the wall.');
+
+		return Redirect::to('session');
+	}
+
+	/**
+	 * Add (active) the specified wall to storage.
+	 *
+	 * @param  int $id
+	 * @return Response
+	 */
+	public
+	function revertDestroy($id)
+	{
+		$wall = Wall::find($id);
+		$wall->restore();
+
+		Session::flash('info', 'Successfully opened the wall.');
 
 		return Redirect::to('session');
 	}

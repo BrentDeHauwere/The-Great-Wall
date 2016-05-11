@@ -47,6 +47,7 @@ Route::group(['middleware' => ['web']], function () {
 	// ---------- SESSIONS ----------
 	// Views
 	Route::resource('session', 'SessionController');
+	Route::post('session/{id}/revertDestroy', 'SessionController@revertDestroy');
 	// Actions (performed on a session view)
 	Route::post('message/accept','MessageController@accept');
 	Route::post('message/decline','MessageController@decline');
