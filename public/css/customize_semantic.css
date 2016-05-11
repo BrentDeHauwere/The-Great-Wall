@@ -2,6 +2,36 @@
 	border-radius: 0 !important;
 }
 
-.icon {
+.icon_customized {
 	margin-left: 5px !important;
+}
+
+/*
+ ========== WALLS - Index ==========
+ */
+#walls {
+	width: 90%;
+	margin: 0 auto;
+	padding: 14px;
+	border: 1px solid rgba(34,36,38,.15);
+	border-radius: 0.3em;
+}
+
+
+/*
+ ========== FOOTER ==========
+ */
+footer {
+	margin-top: 30px;
+	height: 3em;
+	color: white;
+	background: black;
+	text-align: center;
+	bottom: 0;
+	position: absolute;
+	width: 100%;
+}
+
+footer p {
+	line-height: 3em;
 }
