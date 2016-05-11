@@ -21,7 +21,7 @@ You can get this repo by ether
 - Redis Server
   - Broadcasts will always start with messagewall1.*
   - Channels now in use:
-    - `messagewall1.wall.*.messages`
+      - `messagewall1.wall.*.messages`
 
 - Node.js
 - Server needs to run command `node& socket.js` to run the node server, the socket.js file is found in the root directory of this project.
