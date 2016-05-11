@@ -3,8 +3,20 @@
 <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
 <script>
  var socket = io('http://localhost:3000');
- socket.on('test-channel:App\\Events\\NewMessageEvent',function(message){
-	 console.log(message);
+ socket.on('wall.messages:App\\Events\\NewMessageEvent',function(data){
+   console.log(data);
+   console.log(data.message.wall_id);
+   console.log(data.message.question_id);
+	 if(data.message.wall_id == {{ $wall->id }} && data.message.question_id == null){
+     var iets = "text:" + data.message.text + ".";
+     console.log(iets);
+     $("#title").after(iets);
+   }
+   else if(data.message.wall_id == {{ $wall->id }} && data.message.question_id != null){
+     console.log(data.message.text);
+     console.log($("#answers"+data.message.question_id));
+     $("#answers"+data.message.question_id).after("<li>" + data.message.text + "</li>");
+   }
  });
 </script>
 @stop
@@ -13,7 +25,7 @@
 
 @section('content')
 
-	<div class=" container messagesContainer center-block">
+	<div id="messagecontainer" class=" container messagesContainer center-block">
 		<h3 id="title">{{$wall->name}}</h3>
 
 		@foreach($posts as $post)
@@ -46,7 +58,7 @@
 
 				<!-- antwoorden -->
 				@unless($post[1]->answers->isEmpty())
-					<ul class="list-group">
+					<ul id="answers{{ $post[1]->id }}" class="list-group">
 						@foreach($post[1]->answers->where('moderation_level',0) as $answer)
 							<li class="list-group-item">
 								<!-- upvote -->
