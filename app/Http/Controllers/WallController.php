@@ -25,10 +25,9 @@ class WallController extends Controller
 	 */
 	public function index()
 	{
-		$walls = DB::table('walls')->select('walls.*', 'users.name as username')->leftJoin('users', 'walls.user_id', '=', 'users.id')->where('walls.deleted_at', null)->get();
-
+		$walls = DB::table('walls')->select('walls.*', 'users.name as username')->leftJoin('users', 'walls.user_id', '=', 'users.id')->where('walls.deleted_at', null)->Where('open_until', 0)->orWhere('open_until','>',date('Y-m-d H:i:s'))->get();
 		return view('wall.index')->with('walls', $walls);
-  	}
+  }
 
 
 	/**
@@ -39,7 +38,10 @@ class WallController extends Controller
 	 */
 	public function show($id)
 	{
-		$wall = Wall::find($id);
+		$wall = Wall::findOrFail($id);
+		if ($wall->deleted_at != null || $wall->open_until == 0 || $wall->open_until < date('d-m-y H:i:s')) {
+			abort(404);
+		}
 
 		if ($wall!=null && empty( $wall->password ) )
 		{

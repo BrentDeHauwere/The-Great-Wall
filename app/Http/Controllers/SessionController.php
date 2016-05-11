@@ -11,8 +11,11 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
+use App\Message;
+use App\Poll;
 use Validator;
 use Hash;
+use DB;
 
 class SessionController extends Controller
 {
@@ -23,15 +26,25 @@ class SessionController extends Controller
 	 */
 	public function index()
 	{
-		$walls = Wall::orderBy('name')->get();
+		$walls = Wall::withTrashed()->orderBy('name')->get();
 
 		foreach($walls as $wall){
 			if (!empty($wall->password)){
 				$wall->password = "Yes";
 			}
+
+			if ($wall->deleted_at != null) {
+				$wall->open_until = 'Manually closed';
+			}
+			else if ($wall->open_until == 0) {
+				$wall->open_until = 'Infinity (not set)';
+			}
+			else if ($wall->open_until < date('d-m-y H:i:s')) {
+				$wall->open_until = "Automatically closed ({$wall->open_until})";
+			}
 		}
 
-		return View::make('sessions.index')
+		return View::make('session.index')
 			->with('walls', $walls);
 	}
 
@@ -42,7 +55,7 @@ class SessionController extends Controller
 	 */
 	public function create()
 	{
-		return View::make('sessions.create');
+		return View::make('session.create');
 	}
 
 	/**
@@ -57,6 +70,7 @@ class SessionController extends Controller
 			'user_id' 	=> 'required|numeric|min:1',
 			'name'    	=> 'required',
 			'password'	=> 'confirmed',
+			'open_until' => 'date',
 		]);
 
 		$wall = new Wall;
@@ -66,11 +80,12 @@ class SessionController extends Controller
 		{
 			$wall->password = Hash::make($request->input('password'));
 		}
+		$wall->open_until = $request->input('open_until');
 		$wall->save();
 
 		Session::flash('info', 'Successfully created wall.');
 
-		return Redirect::to('sessions');
+		return Redirect::to('session');
 	}
 
 
@@ -80,13 +95,16 @@ class SessionController extends Controller
 	 * @param  int $id
 	 * @return Response
 	 */
-	public
-	function show($id)
+	public function show($id)
 	{
-		$wall = Wall::find($id);
+		$userid = 1; //getfromloggedinuser
+		$messages = Message::with("votes")->where("wall_id", "=", $id)->get();
+		$polls = Poll::with("choices.votes")->where("wall_id", "=", $id)->get();
 
-		return View::make('sessions.show')
-			->with('wall', $wall);
+		$result = DB::select(DB::raw("SELECT id,text,moderation_level,created_at,'M' FROM messages UNION SELECT id,question,moderation_level,created_at,'P' FROM polls ORDER BY created_at desc"));
+
+		return View::make('session.show')
+			->with("messages",$messages)->with("polls",$polls)->with("result",json_decode(json_encode($result),true));
 	}
 
 	/**
@@ -100,7 +118,12 @@ class SessionController extends Controller
 	{
 		$wall = Wall::find($id);
 
-		return View::make('sessions.edit')
+		// Required for datetime-local inputfield
+		$old_date_timestamp = strtotime($wall->open_until);
+		$wall->open_until = date('Y-m-d H:i', $old_date_timestamp);
+		$wall->open_until = str_replace(' ', 'T', $wall->open_until);
+
+		return View::make('session.edit')
 			->with('wall', $wall)->with('success','Something');
 	}
 
@@ -118,6 +141,7 @@ class SessionController extends Controller
 			'user_id' 	=> 'required|numeric|min:1',
 			'name'    	=> 'required',
 			'password'	=> 'confirmed',
+			'open_until' => 'date_format:Y-m-d H:i:s',
 		]);
 
 		$wall = Wall::find($id);
@@ -131,11 +155,12 @@ class SessionController extends Controller
 		{
 			$wall->password = null;
 		}
+		$wall->open_until = $request->input('open_until');
 		$wall->save();
 
 		Session::flash('info', 'Successfully updated wall.');
 
-		return Redirect::to('sessions');
+		return Redirect::to('session');
 	}
 
 	/**
@@ -150,8 +175,8 @@ class SessionController extends Controller
 		$wall = Wall::find($id);
 		$wall->delete();
 
-		Session::flash('info', 'Successfully deleted the wall.');
+		Session::flash('info', 'Successfully closed the wall.');
 
-		return Redirect::to('sessions');
+		return Redirect::to('session');
 	}
 }

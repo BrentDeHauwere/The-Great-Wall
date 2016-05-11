@@ -3,8 +3,8 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var Redis = require('ioredis');
 var redis = new Redis();
-redis.subscribe('wall.messages', function(err, count) {
-    console.log('Redis: test-channel subscribed');
+redis.psubscribe('wall.*.messages', function(err, count) {
+    console.log('Redis: wall.messages subscribed');
     console.log('Error:' + err);
     console.log('Count:' +count);
 });

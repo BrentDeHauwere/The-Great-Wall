@@ -3,7 +3,7 @@
 <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
 <script>
  var socket = io('http://localhost:3000');
- socket.on('wall.messages:App\\Events\\NewMessageEvent',function(data){
+ socket.on('wall.{{ $wall->id }}.messages:App\\Events\\NewMessageEvent',function(data){
    console.log(data);
    console.log(data.message.wall_id);
    console.log(data.message.question_id);
