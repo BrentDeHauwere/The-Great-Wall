@@ -72,5 +72,5 @@ Route::group(['prefix' => 'api', 'middleware' => ['web']], function () {
 	Route::get('messages', 'ApiController@messages');
 	Route::get('polls', 'ApiController@polls');
 	Route::get('blacklist', 'ApiController@blacklist');
-	Route::get('{gibberish}', 'ApiController@badPage');
+	Route::get('{requestedPage}', 'ApiController@badPage');
 });

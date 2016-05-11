@@ -124,11 +124,11 @@ class ApiController extends Controller
   *
   * @return 404 error in JSON.
   */
-  public function badPage($gibberish){
+  public function badPage($requestedPage){
     return response()->json([
                 'error' => 'URL not found.',
                 'error code' => 404,
-                'reason' => "The requested page (" . $gibberish . ") could not be found. #sorry #notsorry"
+                'reason' => "The requested page (" . $requestedPage . ") could not be found. #sorry #notsorry"
             ], 404);
   }
 
