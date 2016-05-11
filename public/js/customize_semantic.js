@@ -1,0 +1,5 @@
+$('.dropdown')
+	.dropdown({
+		transition: 'drop'
+	})
+;
