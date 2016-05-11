@@ -17,9 +17,7 @@
 						<span class="cinema">{{ $wall->username }}</span>
 					</div>
 					<div class="description black">
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vestibulum neque turpis, id
-							ullamcorper purus pellentesque vitae. Morbi ac tempor mauris. Sed malesuada cursus mi rhoncus
-							cursus.</p>
+						<p>{{ $wall->description }}</p>
 					</div>
 					<div class="extra">
 						@if (!empty($wall->password))
