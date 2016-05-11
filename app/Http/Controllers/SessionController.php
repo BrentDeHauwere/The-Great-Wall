@@ -32,6 +32,10 @@ class SessionController extends Controller
 			if (!empty($wall->password)){
 				$wall->password = "Yes";
 			}
+			else
+			{
+				$wall->password = "No";
+			}
 
 			if ($wall->deleted_at != null) {
 				$wall->open_until = 'Manually closed';

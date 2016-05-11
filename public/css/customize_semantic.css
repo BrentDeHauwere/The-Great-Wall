@@ -6,12 +6,19 @@
 	margin-left: 5px !important;
 }
 
+.body_customized {
+	width: 90%;
+	margin: 0 auto;
+}
+
+.form_inline_customize {
+	display: inline;
+}
+
 /*
  ========== WALLS - Index ==========
  */
 #walls {
-	width: 90%;
-	margin: 0 auto;
 	padding: 14px;
 	border: 1px solid rgba(34,36,38,.15);
 	border-radius: 0.3em;
