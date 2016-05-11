@@ -18,10 +18,13 @@ You can get this repo by ether
 - Unzip it locally and implement the gitlab-boilerplate to the root of your repository.
 
 # Dependencies
+- Redis Server
+  - Broadcasts will always start with messagewall1.*
+  - Channels now in use:
+    - `messagewall1.wall.*.messages`
 
-- Redis Server (10.3.50.20)
 - Node.js
-- Server needs to run command `node socket.js` to run the node server
+- Server needs to run command `node& socket.js` to run the node server, the socket.js file is found in the root directory of this project.
 
 # Getting Started
 
