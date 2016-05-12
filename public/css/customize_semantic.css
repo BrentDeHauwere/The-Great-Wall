@@ -1,11 +1,6 @@
-.noradius {
-	border-radius: 0 !important;
-}
-
-.icon_customized {
-	margin-left: 5px !important;
-}
-
+/*
+ ========== OVERAL ==========
+ */
 .body_customized {
 	width: 90%;
 	margin: 0 auto;
@@ -14,6 +9,27 @@
 .form_inline_customize {
 	display: inline;
 }
+
+
+/*
+ ========== NAVIGATION ==========
+ */
+#navigation {
+	border-radius: 0 !important;
+	position: fixed;
+	width: 100%;
+	z-index: 1;
+}
+
+#navigation_margin {
+	height: 100px;
+	width: 100%;
+}
+
+.icon_customized {
+	margin-left: 5px !important;
+}
+
 
 /*
  ========== WALLS - Index ==========
@@ -35,7 +51,7 @@ footer {
 	background: black;
 	text-align: center;
 	bottom: 0;
-	position: absolute;
+	position: fixed;
 	width: 100%;
 }
 

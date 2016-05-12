@@ -39,8 +39,7 @@
 		</script>
 	</head>
 	<body>
-
-		<div class="ui inverted segment noradius">
+		<div class="ui inverted segment" id="navigation">
 			<div class="ui inverted secondary pointing menu">
 				<a class="item" href="{{ route('home') }}" id="home">
 					Home
@@ -62,6 +61,8 @@
 					</div>
 				</div>
 			</div>
+		</div>
+		<div id="navigation_margin">
 		</div>
 
 		@if(session()->has('success'))
