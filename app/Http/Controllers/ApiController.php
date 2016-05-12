@@ -128,7 +128,7 @@ class ApiController extends Controller
     return response()->json([
                 'error' => 'URL not found.',
                 'error code' => 404,
-                'reason' => "The requested page (" . $requestedPage . ") could not be found."
+                'reason' => "The requested page " . $requestedPage . " could not be found."
             ], 404);
   }
 
