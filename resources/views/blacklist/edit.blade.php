@@ -20,7 +20,7 @@
 	<form action="{{action('BlacklistController@update', $blacklistedUser->id)}}" method="post">
 		<div class="form-group">
 			<label for="reason">Reason</label>
-			<input id="reason" type="text" name="reason" class="form-control">
+			<input id="reason" type="text" name="reason" class="form-control" value="{{ $blacklistedUser->reason }}">
 		</div>
 		{{ csrf_field() }}
 		<input type="hidden" name="_method" value="put">

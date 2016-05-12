@@ -96,7 +96,7 @@ class BlacklistController extends Controller
 	 */
 	public function edit($user_id)
 	{
-    $blacklistedUser = User::find($user_id);
+    	$blacklistedUser = Blacklist::where('user_id', $user_id)->first();
 		return view('blacklist.edit')->with('blacklistedUser', $blacklistedUser);
 	}
 
