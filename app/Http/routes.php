@@ -62,6 +62,7 @@ Route::group(['middleware' => ['web']], function () {
 	Route::post('wall/enter','WallController@enterWallWithPassword');
 	Route::resource('message', 'MessageController',['only' => ['store', 'destroy']]);
 	Route::resource('poll', 'PollController',['only' => ['store', 'destroy']]);
+	Route::resource('pollchoice', 'PollChoiceController',['only' => ['store', 'destroy']]);
 	Route::resource('votemessage', 'VoteMessageController',['only' => ['store', 'destroy']]);
 	Route::resource('votepoll', 'VotePollController',['only' => ['store', 'destroy']]);
 

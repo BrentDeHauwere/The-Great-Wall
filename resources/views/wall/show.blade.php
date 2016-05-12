@@ -1,16 +1,13 @@
 @extends("masterlayout")
+
 @section('header')
 	<link rel="stylesheet" type="text/css" href="/css/messagewall.css">
-@stop
-
-@section('page-script')
 	<script src="http://malsup.github.com/jquery.form.js"></script>
 @stop
 
 @section('title', 'The Great Wall')
 
 @section('content')
-
 	<div class=" container messagesContainer center-block">
 		<h3>{{$wall->name}}</h3>
 
@@ -72,7 +69,6 @@
 					</ul>
 					@endunless
 
-
 						<!-- antwoord toevoegen -->
 					<form method="POST" action="/message">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -92,7 +88,6 @@
 							 </span>
 						</div>
 					</form>
-
 			</div>
 		</div>
 		@endif
@@ -114,7 +109,7 @@
 				<div class="choiceContainer row">
 					<?php
 					$total = 0;
-					foreach ($post[1]->choices/*->where('moderation_level',0)*/ as $choice)
+					foreach ($post[1]->choices->where('moderation_level', 0) as $choice)
 					{
 						$total += $choice->count;
 					}
@@ -123,12 +118,16 @@
 
 						<div class="choices col-md-12">
 							<div class="col-md-4 col-sm-4">
-								<!-- OK button -->
-								<button type="button" class="btn btn-default vote">
-									<span class="glyphicon glyphicon-ok" area-hidden="true"></span>
-								</button>
-
-								<span class="progress-opt">{{$choice->text}}</span>
+								<form method="POST" action="/votepoll">
+									<!-- OK button -->
+									<input type="hidden" name="_token" value="{{ csrf_token() }}">
+									<input type="hidden" name="poll_choice_id" value={{$choice->id}}>
+									<input type="hidden" name="user_id" value={{1}}>
+									<button type="submit" class="btn btn-default vote">
+										<span class="glyphicon glyphicon-ok" area-hidden="true"></span>
+									</button>
+									<span class="progress-opt">{{$choice->text}}</span>
+								</form>
 							</div>
 
 							<div class="col-md-6 col-sm-6">
@@ -156,20 +155,24 @@
 							</div>
 						</div>
 					@empty
-						<h3 class="text-center">Er zijn geen mogelijke opties ingesteld :(</h3>
+						<h3 class="text-center">Er zijn geen mogelijke opties
+							ingesteld :(</h3>
 					@endforelse
 				</div>
 
 				@if($post[1]->addable)
 					<!-- antwoord toevoegen -->
-				<form>
+				<form method="POST" action="{{ action("PollChoiceController@store") }}">
 					<div class="input-group">
-						<input type="text" class="form-control" placeholder="Uw antwoord">
-								<span class="input-group-btn">
-									 <button class="btn btn-default" type="button">
-										 Antw.
-									 </button>
-								 </span>
+						<input type="hidden" name="_token" value="{{ csrf_token() }}">
+						<input type="hidden" name="user_id" value={{1}}>
+						<input type="hidden" name="poll_id" value={{$post[1]->id}}>
+						<input type="text"  name="text" class="form-control" placeholder="Uw antwoord">
+							<span class="input-group-btn">
+								 <button class="btn btn-default" type="submit">
+									 Antw.
+								 </button>
+							 </span>
 					</div>
 				</form>
 				@endif
@@ -186,8 +189,12 @@
 					<div class="panel-heading">
 						<!-- input group -->
 						<div class="btn-group">
-							<button type="button" class="btn btn-default messageButton">Bericht</button>
-							<button type="button" class="btn btn-default pollButton">Poll</button>
+							<button type="button" class="btn btn-default messageButton">
+								Bericht
+							</button>
+							<button type="button" class="btn btn-default pollButton">
+								Poll
+							</button>
 						</div>
 					</div>
 					<div class="panel-body messageBody">
@@ -206,7 +213,6 @@
 				<input type="hidden" name="wall_id" value="{{$wall->id}}">
 				<input type="hidden" name="channel_id" value="{{1}}">
 			</form>
-
 		</div>
 
 		<!-- Form om nieuwe poll aan te maken -->
@@ -214,8 +220,12 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<div class="btn-group">
-						<button type="button" class="btn btn-default messageButton">Bericht</button>
-						<button type="button" class="btn btn-default pollButton">Poll</button>
+						<button type="button" class="btn btn-default messageButton">
+							Bericht
+						</button>
+						<button type="button" class="btn btn-default pollButton">
+							Poll
+						</button>
 					</div>
 				</div>
 				<div class="panel-body messageBody">
@@ -240,7 +250,8 @@
 						</div>
 
 						<input type="hidden" name="addable" value=0>
-						<input type="checkbox" name="addable" value=1> Keuzes toe te voegen
+						<input type="checkbox" name="addable" value=1> Keuzes toe te
+						voegen
 
 						<div class="buttons pull-right submitButton" role="group">
 							<input type="submit" class="btn btn-default" value="Posten">
@@ -249,10 +260,9 @@
 				</div>
 			</div>
 		</div>
-
-
 	</div>
 @stop
+
 
 @section('footer')
 	<script text="text/javascript" src="{{ asset('js/messagewall.js') }}"></script>

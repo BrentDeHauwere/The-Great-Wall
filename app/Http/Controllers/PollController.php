@@ -88,15 +88,15 @@ class PollController extends Controller
 	 */
 	public function destroy($id)
 	{
-		$message = Message::where('id', $id);
-		$deleted = $message->delete();
+		$poll = Poll::where('id', $id);
+		$deleted = $poll->delete();
 		if ( $deleted )
 		{
 			return redirect()->back()->with('success', 'Destroyed succesfully');
 		}
 		else
 		{
-			return redirect()->back()->with('danger', 'Message could not be destroyed');
+			return redirect()->back()->with('danger', 'Poll could not be destroyed');
 		}
 	}
 }

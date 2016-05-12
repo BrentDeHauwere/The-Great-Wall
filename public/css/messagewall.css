@@ -50,6 +50,8 @@
 
 .btn.vote {
     padding: 4px;
+    border-radius: 5px;
+    display: inline-block;
 }
 
 textarea {
