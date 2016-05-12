@@ -38,6 +38,8 @@
 
 @section('title', 'The Great Wall')
 
+@section('page','home')
+
 @section('content')
 
 	<div id="messagecontainer" class=" container messagesContainer center-block">

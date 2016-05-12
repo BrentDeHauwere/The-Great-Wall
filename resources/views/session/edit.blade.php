@@ -2,6 +2,8 @@
 
 @section('title', 'Edit Wall: ' . $wall->name)
 
+@section('page','moderate')
+
 @section('content')
 	<h1>Edit - {{ $wall->name }}</h1>
 

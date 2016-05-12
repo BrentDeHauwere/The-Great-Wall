@@ -14,6 +14,9 @@ use App\PollChoice;
 use App\PollVote;
 use Illuminate\Http\Request;
 use Hash;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Http\Request as IllRequest;
 
 class WallController extends Controller
 {
@@ -48,7 +51,18 @@ class WallController extends Controller
 			$messages = Message::with('votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 			$polls = Poll::with('choices.votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 			$posts = $this->sortMessagesPolls($messages, $polls);
-			session(['wall'.$wall->id => date("Y-m-d H:i:s")]);
+
+			//BEGIN CODE FOR PAGINATION
+			//Source: https://laracasts.com/discuss/channels/laravel/laravel-pagination-not-working-with-array-instead-of-collection
+			$page = Input::get('page', 1); // Get the current page or default to 1, this is what you miss!
+			$perPage = 2;
+			$offset = ($page * $perPage) - $perPage;
+
+			$request = new Request();
+
+			$posts = new LengthAwarePaginator(array_slice($posts, $offset, $perPage, true), count($posts), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
+
+			//END CODE FOR Pagination
 			return view('wall.show')->with('posts', $posts)->with('wall', $wall);//->with('result',$result);
 		}
 		else
