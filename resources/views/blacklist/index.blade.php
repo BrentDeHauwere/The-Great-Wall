@@ -27,7 +27,7 @@
 			<tbody>
 				@foreach($blacklistedUsers as $user)
 					<tr>
-						<td>{{ $user->name }}</td>
+						<td>{{ $user->user->name }}</td>
 						<td>{{ $user->reason }}</td>
 						<td>{{ $user->created_at }}</td>
 						<td>

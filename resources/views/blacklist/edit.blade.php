@@ -5,7 +5,7 @@
 @section('page','blacklist')
 
 @section('content')
-	<h1>Edit - {{ $blacklistedUser->name }}</h1>
+	<h1>Edit - {{ $blacklistedUser->user->name }}</h1>
 
 	@if (count($errors) > 0)
 		<div class="alert alert-danger">
