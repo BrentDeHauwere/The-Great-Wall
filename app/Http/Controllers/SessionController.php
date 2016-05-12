@@ -193,7 +193,7 @@ class SessionController extends Controller
 	public
 	function revertDestroy($id)
 	{
-		$wall = Wall::find($id);
+		$wall = Wall::onlyTrashed()->find($id);
 		$wall->restore();
 
 		Session::flash('info', 'Successfully opened the wall.');
