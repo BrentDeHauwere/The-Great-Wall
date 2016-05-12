@@ -40,6 +40,10 @@
 	border-radius: 0.3em;
 }
 
+.search {
+	float: right;
+	margin-bottom: 14px;
+}
 
 /*
  ========== FOOTER ==========

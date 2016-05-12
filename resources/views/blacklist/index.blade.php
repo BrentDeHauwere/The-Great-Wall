@@ -10,6 +10,11 @@
 	@endif
 
 	<div class="body_customized">
+		<div class="ui icon input right search">
+			<input type="text" placeholder="Search..." id="search_input">
+			<i class="search icon"></i>
+		</div>
+
 		<table class="ui sortable celled table" id="table">
 			<thead>
 				<tr>
@@ -51,5 +56,15 @@
 	<script src="/js/jquery.tablesort.js"></script>
 	<script>
 		$('#table').tablesort();
+
+		var $rows = $('#table tbody tr');
+		$('#search_input').keyup(function() {
+			var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+			$rows.show().filter(function() {
+				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+				return !~text.indexOf(val);
+			}).hide();
+		});
 	</script>
 @endsection
