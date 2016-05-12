@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\View;
 
 use App\Http\Requests;
 use App\Blacklist;
 use App\User;
 use DB;
-use Session;
 use DateTime;
 
 class BlacklistController extends Controller
@@ -22,7 +23,7 @@ class BlacklistController extends Controller
 	{
 		$blacklistedUsers = Blacklist::with('user')->get();
 
-		return view('blacklist.index')->with('blacklistedUsers', $blacklistedUsers);
+		return view('blacklist.index')->with('blacklistedUsers', $blacklistedUsers)->with('info', 'No blacklisted users.');
 	}
 
 	/**

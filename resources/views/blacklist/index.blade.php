@@ -45,9 +45,6 @@
 			</tbody>
 		</table>
 	</div>
-	@if (empty($blacklistedUsers))
-		<p class="alert alert-info">No blacklisted users.</p>
-	@endif
 
 	<script src="/js/jquery.tablesort.js"></script>
 	<script>

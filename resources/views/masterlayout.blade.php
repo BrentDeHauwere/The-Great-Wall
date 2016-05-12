@@ -15,7 +15,7 @@
 		<link rel="stylesheet" href="/css/style.css"/>
 		-->
 
-		<!-- Semantic UI -->
+		<!-- Semantic UI - CSS -->
 		<link rel="stylesheet" type="text/css" href="/semantic/dist/semantic.min.css">
 		<link rel="stylesheet" type="text/css" href="/css/customize_semantic.css">
 
@@ -67,19 +67,38 @@
 
 		@if(session()->has('success'))
 			@success({{ session('success') }})
+		@elseif(!empty($success))
+			@success({{ $success }})
 		@endif
 
 		@if(session()->has('warning'))
 			@warning({{ session('warning') }})
+		@elseif(!empty($warning))
+			@warning({{ $warning }})
 		@endif
 
-		@if(session()->has('danger'))
-			@danger({{ session('danger') }})
+		@if(session()->has('error'))
+			@danger({{ session('error') }})
+		@elseif(!empty($error))
+			@danger({{ $error }})
 		@endif
 
 		@if(session()->has('info'))
 			@info({{ session('info') }})
+		@elseif(!empty($info))
+			@info({{ $info }})
 		@endif
+
+		<script>
+			$('.message .close')
+				.on('click', function() {
+					$(this)
+						.closest('.message')
+						.transition('fade')
+					;
+				})
+			;
+		</script>
 
 		@yield('content')
 
@@ -90,7 +109,7 @@
 		</footer>
 		@yield('footer')
 
-			<!-- Semantic UI -->
+			<!-- Semantic UI - JS -->
 		<script src="/semantic/dist/semantic.min.js"></script>
 		<script src="/js/customize_semantic.js"></script>
 	</body>

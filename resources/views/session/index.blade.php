@@ -5,15 +5,16 @@
 @section('page','moderate')
 
 @section('content')
-	@if (Session::has('message'))
-		<div class="alert alert-info">{{ Session::get('message') }}</div>
-	@endif
-
 	<div class="body_customized">
-		<table class="ui celled table">
+		<table class="ui celled sortable table" id="table">
+
+			<div class="ui icon input search medium">
+				<input type="text" placeholder="Search..." id="search_input">
+				<i class="search icon"></i>
+			</div>
 			<thead class="full-width">
 				<tr>
-					<th colspan="6">
+					<th colspan="6" class="no-sort">
 						<a class="ui right floated small primary labeled icon button" href="{{ action('SessionController@create') }}">
 							<i class="plus icon"></i> Add Session
 						</a>
@@ -29,7 +30,7 @@
 					<th>Name</th>
 					<th>Protected</th>
 					<th>Open until</th>
-					<th style="width: 332px">Actions</th>
+					<th class="no-sort" style="width: 332px">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -77,4 +78,19 @@
 			</tbody>
 		</table>
 	</div>
+
+	<script src="/js/jquery.tablesort.js"></script>
+	<script>
+		$('table').tablesort();
+
+		var $rows = $('table tbody tr');
+		$('#search_input').keyup(function() {
+			var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+			$rows.show().filter(function() {
+				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+				return !~text.indexOf(val);
+			}).hide();
+		});
+	</script>
 @endsection
