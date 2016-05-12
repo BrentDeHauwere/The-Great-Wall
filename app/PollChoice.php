@@ -28,4 +28,12 @@ class PollChoice extends Model
     {
         return $this->belongsTo('App\Poll');
     }
+
+    /**
+     * Get the user that owns the choice.
+     */
+    public function user()
+    {
+        return $this->hasOne('App\User');
+    }
 }
