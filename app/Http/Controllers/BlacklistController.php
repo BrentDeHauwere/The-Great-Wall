@@ -80,9 +80,9 @@ class BlacklistController extends Controller
     }
 
     if ($db){
-      $request->session()->put('message', 'Successfully banned user.');
+      $request->session()->flash('message', 'Successfully banned user.');
     } else {
-      $request->session()->put('message', 'Could not ban user.');
+      $request->session()->flash('message', 'Could not ban user.');
     }
 
 		return redirect(action('BlacklistController@index'));
