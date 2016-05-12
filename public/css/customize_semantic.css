@@ -58,3 +58,7 @@ footer {
 footer p {
 	line-height: 3em;
 }
+
+#footer_margin {
+	height: 5em;
+}

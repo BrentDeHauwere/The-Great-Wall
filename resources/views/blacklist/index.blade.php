@@ -4,36 +4,19 @@
 
 @section('page','blacklist')
 
-@section('page-script')
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/bs/jq-2.2.0,dt-1.10.11/datatables.min.css"/>
-	<script type="text/javascript" src="https://cdn.datatables.net/t/bs/jq-2.2.0,dt-1.10.11/datatables.min.js"></script>
-<script>
-	$(document).ready( function () {
-		//Initializeer de plugin
-		$('#table').DataTable( {
-			"columns" : [
-				null,
-				null,
-				null,
-				{ "searchable:" : false, "orderable" : false }
-			] } );
-} );
-</script>
-@stop
-
 @section('content')
 	@if (Session::has('message'))
 		<div class="alert alert-info">{{ Session::get('message') }}</div>
 	@endif
 
 	<div class="body_customized">
-		<table class="ui celled table" id="table">
+		<table class="ui sortable celled table" id="table">
 			<thead>
 				<tr>
 					<th>Username</th>
 					<th>Reason</th>
 					<th>Banned at</th>
-					<th style="width: 231px">Actions</th>
+					<th class="no-sort" style="width: 231px">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -64,4 +47,9 @@
 	@if (empty($blacklistedUsers))
 		<p class="alert alert-info">No blacklisted users.</p>
 	@endif
+
+	<script src="/js/jquery.tablesort.js"></script>
+	<script>
+		$('#table').tablesort();
+	</script>
 @endsection

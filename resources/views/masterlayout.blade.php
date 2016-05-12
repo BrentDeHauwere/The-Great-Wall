@@ -83,6 +83,8 @@
 
 		@yield('content')
 
+		<div id="footer_margin">
+		</div>
 		<footer>
 			<p>Made by Brent De Hauwere, Eli Boey, Jonas De Pelsmaeker and Kamiel Klumpers</p>
 		</footer>
