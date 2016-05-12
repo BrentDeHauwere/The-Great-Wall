@@ -87,7 +87,7 @@ class SessionController extends Controller
 		$wall->open_until = $request->input('open_until');
 		$wall->save();
 
-		Session::flash('info', 'Successfully created wall.');
+		Session::flash('success', 'Successfully created wall.');
 
 		return Redirect::to('session');
 	}
@@ -162,7 +162,7 @@ class SessionController extends Controller
 		$wall->open_until = $request->input('open_until');
 		$wall->save();
 
-		Session::flash('info', 'Successfully updated wall.');
+		Session::flash('success', 'Successfully updated wall.');
 
 		return Redirect::to('session');
 	}
@@ -179,7 +179,7 @@ class SessionController extends Controller
 		$wall = Wall::find($id);
 		$wall->delete();
 
-		Session::flash('info', 'Successfully closed the wall.');
+		Session::flash('success', 'Successfully closed the wall.');
 
 		return Redirect::to('session');
 	}
@@ -196,7 +196,7 @@ class SessionController extends Controller
 		$wall = Wall::onlyTrashed()->find($id);
 		$wall->restore();
 
-		Session::flash('info', 'Successfully opened the wall.');
+		Session::flash('success', 'Successfully opened the wall.');
 
 		return Redirect::to('session');
 	}

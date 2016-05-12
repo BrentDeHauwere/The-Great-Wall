@@ -46,15 +46,7 @@ class BlacklistController extends Controller
 		}
 
 		$username = DB::table('users')->select('name')->where('id', $user_id->user_id)->first();
-
-		if (empty($username))
-		{
-			return "User Not Found In Database.";
-		}
-		else
-		{
-			$username = $username->name;
-		}
+		$username = $username->name;
 
 		//$user_id is a stdClass class for some reason...
 		return view('blacklist.create')->with('user_id', $user_id->user_id)->with('message_id', $message_id)->with('poll_id', $poll_id)->with('username', $username);
@@ -90,11 +82,11 @@ class BlacklistController extends Controller
 
 		if ($db)
 		{
-			$request->session()->flash('message', 'Successfully banned user.');
+			$request->session()->flash('success', 'Successfully banned user.');
 		}
 		else
 		{
-			$request->session()->flash('message', 'Could not ban user.');
+			$request->session()->flash('error', 'Could not ban user.');
 		}
 
 		return redirect(action('BlacklistController@index'));
@@ -128,7 +120,7 @@ class BlacklistController extends Controller
 
 		$db = DB::table('blacklists')->where('user_id', $user_id)->update(['reason' => $request->input('reason')]);
 
-		return redirect(action('BlacklistController@index'));
+		return redirect(action('BlacklistController@index'))->with('success', 'Successfully updated the banned user');
 	}
 
 	/**
@@ -143,11 +135,11 @@ class BlacklistController extends Controller
 
 		if ($db)
 		{
-			Session::flash('message', 'Successfully deleted the user from blacklist.');
+			Session::flash('success', 'Successfully deleted the user from the blacklist.');
 		}
 		else
 		{
-			Session::flash('message', 'Could not delete the user from blacklist.');
+			Session::flash('error', 'Could not delete the user from the blacklist.');
 		}
 
 		return redirect(action('BlacklistController@index'));

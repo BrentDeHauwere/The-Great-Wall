@@ -5,10 +5,6 @@
 @section('page','blacklist')
 
 @section('content')
-	@if (Session::has('message'))
-		<div class="alert alert-info">{{ Session::get('message') }}</div>
-	@endif
-
 	<div class="body_customized">
 		<div class="ui icon input right search">
 			<input type="text" placeholder="Search..." id="search_input">

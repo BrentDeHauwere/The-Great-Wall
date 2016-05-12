@@ -61,7 +61,7 @@ class WallController extends Controller
 		}
 		else
 		{
-			redirect()->back()->with("error", "No password was provided");
+			redirect()->back()->with("error", "No password was provided.");
 		}
 	}
 
@@ -87,7 +87,7 @@ class WallController extends Controller
 		}
 		else
 		{
-			return redirect('wall/')->with('danger', "Wrong password. Please try again.");
+			return redirect('wall/')->with('error', "Wrong password. Please try again.");
 		}
 	}
 
