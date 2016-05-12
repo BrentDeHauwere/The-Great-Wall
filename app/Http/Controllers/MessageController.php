@@ -52,7 +52,7 @@ class MessageController extends Controller
 		if ($saved)
 		{
 			Event::fire(new NewMessageEvent($message));
-			//return redirect()->back()->with('success', 'Saved succesfully');
+			return redirect()->back()->with('success', 'Saved succesfully');
 		}
 		else
 		{
@@ -92,7 +92,11 @@ class MessageController extends Controller
 		$message = Message::where("id", "=", $message_id)->first();
 		if ($message)
 		{
-			$message->moderation_level = 0;
+			if($message->moderation_level != 0){
+				$message->moderation_level = 0;
+			}
+
+
 			$message->moderator_id = $userid;
 			$saved = $message->save();
 			if ($saved)

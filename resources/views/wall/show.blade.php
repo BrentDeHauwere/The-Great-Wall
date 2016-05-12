@@ -3,8 +3,8 @@
 <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
 <script>
  var socket = io('http://localhost:3000');
- socket.on('wall.{{ $wall->id }}.messages:App\\Events\\NewMessageEvent',function(data){
-   console.log(data);
+ socket.on('messagewall1.wall.{{ $wall->id }}.messages:App\\Events\\NewMessageEvent',function(data){
+   console.log("Message: " + data);
    console.log(data.message.wall_id);
    console.log(data.message.question_id);
 	 if(data.message.question_id == null){
@@ -17,6 +17,21 @@
      console.log($("#answers"+data.message.question_id));
      $("#answers"+data.message.question_id).after("<li>" + data.message.text + "</li>");
    }
+ });
+ socket.on('messagewall1.wall.{{ $wall->id }}.polls:App\\Events\\NewPollEvent',function(data){
+   console.log("Poll: " +data);
+   console.log(data.poll.wall_id);
+   console.log(data.poll.question_id);
+ });
+ socket.on('messagewall1.wall.{{ $wall->id }}.message.moderator.accepted:App\\Events\\NewMessageModeratorAcceptedEvent',function(data){
+   console.log("Moderator Accepted: " + data);
+   console.log(data.poll.wall_id);
+   console.log(data.poll.question_id);
+ });
+ socket.on('messagewall1.wall.{{ $wall->id }}.message.moderator.declined:App\\Events\\NewMessageModeratorDeclinedEvent',function(data){
+   console.log("Moderator Declined: " +data);
+   console.log(data.poll.wall_id);
+   console.log(data.poll.question_id);
  });
 </script>
 @stop
