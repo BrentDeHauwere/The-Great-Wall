@@ -44,6 +44,6 @@ class Wall extends Model
      */
     public function user()
     {
-        return $this->hasOne('App\User');
+        return $this->hasOne('App\User', 'id', 'user_id');
     }
 }
