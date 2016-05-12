@@ -145,7 +145,7 @@ class SessionController extends Controller
 			'user_id' 	=> 'required|numeric|min:1',
 			'name'    	=> 'required',
 			'password'	=> 'confirmed',
-			'open_until' => 'date_format:Y-m-d H:i:s',
+			'open_until' => 'date',
 		]);
 
 		$wall = Wall::find($id);
