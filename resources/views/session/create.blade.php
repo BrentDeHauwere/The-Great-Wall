@@ -2,6 +2,8 @@
 
 @section('title', 'Create Wall')
 
+@section('page','moderate')
+
 @section('content')
 	@if (count($errors) > 0)
 		<div class="alert alert-danger">

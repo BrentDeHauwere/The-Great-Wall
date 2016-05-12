@@ -2,6 +2,8 @@
 
 @section('title', 'Ban User')
 
+@section('page','blacklist')
+
 @section('content')
 	<h1>Ban user - {{ $username }}</h1>
 

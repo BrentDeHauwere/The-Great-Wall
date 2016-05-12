@@ -14,6 +14,9 @@ use App\PollChoice;
 use App\PollVote;
 use Illuminate\Http\Request;
 use Hash;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Http\Request as IllRequest;
 
 class WallController extends Controller
 {
@@ -25,9 +28,10 @@ class WallController extends Controller
 
 	public function index()
 	{
-		$walls = DB::table('walls')->select('walls.*', 'users.name as username')->leftJoin('users', 'walls.user_id', '=', 'users.id')->where('walls.deleted_at', null)->Where('open_until', 0)->orWhere('open_until','>',date('Y-m-d H:i:s'))->get();
+		$walls = DB::table('walls')->select('walls.*', 'users.name as username')->leftJoin('users', 'walls.user_id', '=', 'users.id')->where('walls.deleted_at', null)->Where('open_until', 0)->orWhere('open_until', '>', date('Y-m-d H:i:s'))->get();
+
 		return view('wall.index')->with('walls', $walls);
-  }
+	}
 
 
 	/**
@@ -39,18 +43,31 @@ class WallController extends Controller
 	public function show($id)
 	{
 		$wall = Wall::findOrFail($id);
-		if ($wall->deleted_at != null || $wall->open_until == 0 || $wall->open_until < date('d-m-y H:i:s')) {
+		if ( $wall->deleted_at != null || $wall->open_until == 0 || $wall->open_until < date('d-m-y H:i:s') )
+		{
 			abort(404);
 		}
 
-		if ($wall!=null && empty( $wall->password ) )
+		if ( $wall != null && empty( $wall->password ) )
 		{
 			$messages = Message::with('votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 			$polls = Poll::with('choices.votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 
 			$posts = $this->sortMessagesPolls($messages, $polls);
 
-			return view('wall.show')->with('posts', $posts)->with('wall', $wall);
+			//BEGIN CODE FOR PAGINATION
+			//Source: https://laracasts.com/discuss/channels/laravel/laravel-pagination-not-working-with-array-instead-of-collection
+			$page = Input::get('page', 1); // Get the current page or default to 1, this is what you miss!
+			$perPage = 2;
+			$offset = ( $page * $perPage ) - $perPage;
+
+			$request = new Request();
+
+			$posts = new LengthAwarePaginator(array_slice($posts, $offset, $perPage, true), count($posts), $perPage, $page, [ 'path' => $request->url(), 'query' => $request->query() ]);
+
+			//END CODE FOR Pagination
+
+			return view('wall.show')->with('posts', $posts)->with('wall', $wall);//->with('result',$result);
 		}
 		else
 		{
@@ -70,7 +87,7 @@ class WallController extends Controller
 		$wall_id = $request->input("wall_id");
 		$wall = Wall::find($wall_id);
 
-		if ( $wall!=null && Hash::check($password, $wall->password) )
+		if ( $wall != null && Hash::check($password, $wall->password) )
 		{
 			$messages = Message::with('votes')->where('wall_id', $wall_id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 			$polls = Poll::with('choices.votes')->where('wall_id', $wall_id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
@@ -89,39 +106,60 @@ class WallController extends Controller
 		/* Sort messages / poll into a chronologically ordered 2D array */
 		$posts = [ ];
 
-		foreach ($polls as $poll)
+		if ( !$polls->isEmpty() )
 		{
-			array_push($posts, array( 'p', $poll ));
+			foreach ($polls as $poll)
+			{
+				array_push($posts, array( 'p', $poll ));
+			}
+		}
+		else
+		{
+			foreach ($messages as $message)
+			{
+				array_push($posts, array( 'm', $message ));
+			}
 		}
 
 		$msgCounter = 0;
-		foreach ($messages->where('question_id', NULL) as $message)
+
+		if ( $messages != null )
 		{
-			$counter = 0;
-			foreach ($posts as $post)
+			foreach ($messages->where('question_id', NULL) as $message)
 			{
-				if ( $message->created_at > $post[1]->created_at )
+				$counter = 0;
+
+				if ( $polls->isEmpty() )
 				{
-					$arr = array( 'm', $message );
-					array_splice($posts, $counter, 0, array( $arr ));
-					unset( $messages[ $msgCounter ] );
 					break;
 				}
-				elseif ( $message->create_at < $posts[0][1]->created_at )
+
+				foreach ($posts as $post)
 				{
-					array_push($posts, array( 'm', $message ));
-					unset( $messages[ $msgCounter ] );
-					break;
+					if ( $message->created_at > $post[1]->created_at )
+					{
+						$arr = array( 'm', $message );
+						array_splice($posts, $counter, 0, array( $arr ));
+						unset( $messages[ $msgCounter ] );
+						break;
+					}
+					elseif ( $message->create_at < $post[1]->created_at )
+					{
+						array_push($posts, array( 'm', $message ));
+						unset( $messages[ $msgCounter ] );
+						break;
+					}
+					$counter += 1;
 				}
-				$counter += 1;
+				$msgCounter += 1;
 			}
-			$msgCounter += 1;
 		}
 
 		return $posts;
 	}
 
-	public function create()
+	public
+	function create()
 	{
 		return view('wall_create');
 	}

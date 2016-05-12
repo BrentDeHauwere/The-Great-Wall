@@ -2,6 +2,8 @@
 
 @section('title', 'Edit Reason: ' . $blacklistedUser->user_id)
 
+@section('page','blacklist')
+
 @section('content')
 	<h1>Edit - {{ $blacklistedUser->name }}</h1>
 

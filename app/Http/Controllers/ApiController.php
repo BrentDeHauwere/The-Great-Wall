@@ -120,6 +120,19 @@ class ApiController extends Controller
   }
 
   /**
+  * Returns a 404-error when the url doesn't exists.
+  *
+  * @return 404 error in JSON.
+  */
+  public function badPage($requestedPage){
+    return response()->json([
+                'error' => 'URL not found.',
+                'error code' => 404,
+                'reason' => "The requested page (" . $requestedPage . ") could not be found."
+            ], 404);
+  }
+
+  /**
   * Formats a message for use in the API.
   *
   * @param Message message to be formatted

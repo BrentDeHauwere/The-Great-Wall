@@ -7,6 +7,8 @@
 
 @section('title', 'The Great Wall')
 
+@section('page','home')
+
 @section('content')
 	<div class=" container messagesContainer center-block">
 		<h3>{{$wall->name}}</h3>
