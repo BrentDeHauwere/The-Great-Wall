@@ -48,7 +48,7 @@ class VotePollController extends Controller
 		$existingVotes = 0;
 		foreach ($poll->choices as $choice)
 		{
-			foreach ( $choice->votes as $vote )
+			foreach ($choice->votes as $vote)
 			{
 				$existingVotes += 1;
 			}
@@ -59,14 +59,19 @@ class VotePollController extends Controller
 		}
 
 		// if multiple votes -> delete
-		if($existingVotes > 0)
+		if ( $existingVotes > 0 )
 		{
 			foreach ($poll->choices as $choice)
 			{
-				foreach($choice->votes as $vote)
+				foreach ($choice->votes as $vote)
 				{
-					dd($vote);
-					$vote->delete();
+					// PollVote::destroy([$vote->poll_choice_id, $vote->user_id]);
+					$votes=Pollvote::with(['choice.votes' => function ($query) use ($vote)
+					{
+						$query->where('user_id', $vote->user_id);
+					}])->delete();
+					$choice->count-=1;
+					$choice->save();
 				}
 			}
 			$saved = $poll_vote->save();
@@ -74,16 +79,16 @@ class VotePollController extends Controller
 		else
 		{
 			$savenew = true;
-			foreach($poll->choices as $choice)
+			foreach ($poll->choices as $choice)
 			{
-				if($choice->votes->contains($poll_vote))
+				if ( $choice->votes->contains($poll_vote) )
 				{
 					// if contains -> get out and do nothing :)
 					$savenew = false;
 					break;
 				}
 			}
-			if($savenew)
+			if ( $savenew )
 			{
 				$saved = $poll_vote->save();
 			}

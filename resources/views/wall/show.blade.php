@@ -117,6 +117,7 @@
 					{
 						$total += $choice->count;
 					}
+
 					?>
 					@forelse($post[1]->choices as $choice)
 
@@ -239,6 +240,7 @@
 						<input type="hidden" name="user_id" value="{{1}}">
 						<input type="hidden" name="wall_id" value="{{$wall->id}}">
 						<input type="hidden" name="channel_id" value={{1}}>
+
 						<input class="form-control" type="text" name="question"
 							   placeholder="Plaats hier uw vraag">
 
