@@ -28,41 +28,89 @@ class VotePollController extends Controller
 	 */
 	public function store(VotePollRequest $request)
 	{
-    	$poll_vote = new PollVote();
+		$poll_vote = new PollVote();
 		$poll_vote->poll_choice_id = $request->input('poll_choice_id');
 		$poll_vote->user_id = $request->input('user_id');
 
-		// Message::where('id',$id);
-		//$pollID = Poll::where('id', );
+		$saved = false;
 
-		// TODO: niet meerdere keren op 1 poll stemmen
-		/*dd(PollChoice::where('id', $poll_vote->poll_choice_id));
+		// clicked choice
+		$pollChoice = PollChoice::where('id', $poll_vote->poll_choice_id)->first();
 
-		if(!(PollChoice::where('poll_id'))){
-			return redirect()->back()->with('danger', 'New poll vote could not be saved');
-		} */
+		// corresponding poll
+		$poll = Poll::with([ 'choices.votes' => function ($query) use ($poll_vote)
+		{
+			$query->where('user_id', $poll_vote->user_id);
+		} ])->where('id', $pollChoice->poll_id)->first();
 
-		$saved = $poll_vote->save();
-		if ($saved)
+
+		// check if multiple votes already exist, if so --> delete them
+		$existingVotes = 0;
+		foreach ($poll->choices as $choice)
+		{
+			foreach ( $choice->votes as $vote )
+			{
+				$existingVotes += 1;
+			}
+			if ( $existingVotes > 1 )
+			{
+				break;
+			}
+		}
+
+		// if multiple votes -> delete
+		if($existingVotes > 0)
+		{
+			foreach ($poll->choices as $choice)
+			{
+				foreach($choice->votes as $vote)
+				{
+					dd($vote);
+					$vote->delete();
+				}
+			}
+			$saved = $poll_vote->save();
+		}
+		else
+		{
+			$savenew = true;
+			foreach($poll->choices as $choice)
+			{
+				if($choice->votes->contains($poll_vote))
+				{
+					// if contains -> get out and do nothing :)
+					$savenew = false;
+					break;
+				}
+			}
+			if($savenew)
+			{
+				$saved = $poll_vote->save();
+			}
+		}
+
+
+		if ( $saved )
 		{
 			$pollchoice = PollChoice::where('id', $poll_vote->poll_choice_id)->first();
 
 			$pollchoice->count++;
 			$savedChoice = $pollchoice->save();
 
-			if ($savedChoice)
+			if ( $savedChoice )
 			{
 				return redirect()->back()->with('success', 'Poll vote success');
 			}
 			else
 			{
 				$poll_vote->delete();
-				return redirect()->back()->with('danger', 'Poll choice could not be incremented');
+
+				return redirect()->back()->with('danger', 'Poll vote could not be incremented');
 			}
 		}
 		else
 		{
-			return redirect()->back()->with('danger', 'New poll vote could not be saved');
+			// return redirect()->back()->with('danger', 'New poll vote could not be saved');
 		}
 	}
 
@@ -75,14 +123,14 @@ class VotePollController extends Controller
 	public
 	function destroy($id)
 	{
-    $pollvote = PollVote::where('id','=',$id);
-    $deleted = $pollvote->delete();
-    if ($deleted)
+		$pollvote = PollVote::where('id', '=', $id);
+		$deleted = $pollvote->delete();
+		if ( $deleted )
 		{
 			$poll = PollChoice::where('id', '=', $pollvote->poll_id)->first();
 			$poll->count--;
 			$savedP = $poll->save;
-			if ($savedP)
+			if ( $savedP )
 			{
 				return redirect()->back()->with('success', 'Poll unvote success');
 			}

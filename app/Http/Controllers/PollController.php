@@ -31,11 +31,12 @@ class PollController extends Controller
 		$poll->user_id = $request->input('user_id');
 		$poll->wall_id = $request->input('wall_id');
 
-		// $poll->channel_id = $request->input('channel_id');
+		$poll->channel_id = $request->input('channel_id');
 
 		$poll->question = $request->input('question');
 		$poll->addable = $request->input('addable');
 		$poll->created_at = date('Y-m-d H:i:s');
+		$poll->channel_id = $request->input('channel_id');
 
 		if ( $request->has('moderator_id') )
 		{
@@ -58,6 +59,7 @@ class PollController extends Controller
 				$pollChoice->user_id = $poll->user_id;
 				$pollChoice->text = $choice;
 				$pollChoice->created_at = date('Y-m-d H:i:s');
+
 
 				$savedChoice = $pollChoice->save();
 

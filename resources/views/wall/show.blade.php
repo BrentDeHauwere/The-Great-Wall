@@ -2,7 +2,9 @@
 
 @section('header')
 	<link rel="stylesheet" type="text/css" href="/css/messagewall.css">
+
 	<script src="http://malsup.github.com/jquery.form.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 @stop
 
 @section('title', 'The Great Wall')
@@ -236,7 +238,7 @@
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 						<input type="hidden" name="user_id" value="{{1}}">
 						<input type="hidden" name="wall_id" value="{{$wall->id}}">
-
+						<input type="hidden" name="channel_id" value={{1}}>
 						<input class="form-control" type="text" name="question"
 							   placeholder="Plaats hier uw vraag">
 
