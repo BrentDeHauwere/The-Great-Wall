@@ -78,9 +78,9 @@
 		@endif
 
 		@if(session()->has('error'))
-			@danger({{ session('error') }})
+			@error({{ session('error') }})
 		@elseif(!empty($error))
-			@danger({{ $error }})
+			@error({{ $error }})
 		@endif
 
 		@if(session()->has('info'))

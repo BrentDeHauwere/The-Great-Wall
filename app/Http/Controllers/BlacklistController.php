@@ -23,7 +23,14 @@ class BlacklistController extends Controller
 	{
 		$blacklistedUsers = Blacklist::with('user')->get();
 
-		return view('blacklist.index')->with('blacklistedUsers', $blacklistedUsers)->with('info', 'No blacklisted users.');
+		if ($blacklistedUsers->isEmpty())
+		{
+			return view('blacklist.index')->with('blacklistedUsers', $blacklistedUsers)->with('info', 'No blacklisted users.');
+		}
+		else
+		{
+			return view('blacklist.index')->with('blacklistedUsers', $blacklistedUsers);
+		}
 	}
 
 	/**
