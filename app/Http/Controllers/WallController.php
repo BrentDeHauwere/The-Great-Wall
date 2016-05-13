@@ -165,8 +165,7 @@ class WallController extends Controller
 		return $posts;
 	}
 
-	public
-	function create()
+	public function create()
 	{
 		return view('wall_create');
 	}
