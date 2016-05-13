@@ -35,7 +35,7 @@ class WallController extends Controller
 					->orWhere('open_until', '>', date('Y-m-d H:i:s'));
 			})
 			->get();
-		
+
 		return view('wall.index')->with('walls', $walls);
 	}
 
@@ -189,6 +189,35 @@ class WallController extends Controller
 			$posts = $this->sortMessagesPolls($messages, $polls);
 			session(['wall'.$wall->id => date("Y-m-d H:i:s")]);
 			return view('ajax.messages')->with('posts', $posts)->with('wall', $wall);//->with('result',$result);
+		}
+	}
+
+	public function updateShow(Request $request,$id){
+		$wall = Wall::findOrFail($id);
+		if ($wall->deleted_at != null || $wall->open_until == 0 || $wall->open_until < date('d-m-y H:i:s'))
+		{
+			abort(404);
+		}
+
+		if ($wall != null && empty($wall->password))
+		{
+			$messages = Message::with('votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
+			$polls = Poll::with('choices.votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
+
+			$posts = $this->sortMessagesPolls($messages, $polls);
+
+			//BEGIN CODE FOR PAGINATION
+			//Source: https://laracasts.com/discuss/channels/laravel/laravel-pagination-not-working-with-array-instead-of-collection
+			$page = $request->input('page'); // Get the current page or default to 1, this is what you miss!
+			$perPage = 5;
+			$offset = ($page * $perPage) - $perPage;
+
+			$request = new Request();
+
+			$posts = new LengthAwarePaginator(array_slice($posts, $offset, $perPage, true), count($posts), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
+
+			//END CODE FOR Pagination
+			return view('wall.updateshow')->with('posts', $posts)->with('wall', $wall);//->with('result',$result);
 		}
 	}
 

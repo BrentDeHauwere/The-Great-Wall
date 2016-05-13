@@ -327,20 +327,23 @@
 				</form>
 				@endif
 			</div>
+
 		</div>
 		@endif
 		@endforeach
+    <div id="append"></div>
 @stop
 
 
 @section('footer')
 	<script text="text/javascript" src="{{ asset('js/messagewall.js') }}"></script>
 	<script>
-		var nextPage = 1;
+		var nextPage = 2;
 		$(window).scroll(function() {
 			if($(window).scrollTop() + $(window).height() == $(document).height()){
 				console.log("botoom");
-				var url = $(location).attr('href');
+				var url = "/wall/update/{{ $wall->id }}";//$(location).attr('href');
+        console.log(url);
 				var request = $.ajax({
 					method: "GET",
 					url: url + "?page=" + nextPage,
@@ -348,7 +351,7 @@
 					success : function(html){
 						nextPage += 1;
 						console.log("ajax done");
-						$("body").append(html);
+						$("#append").append(html);
 					}
 				});
 			}
