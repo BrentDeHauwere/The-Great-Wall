@@ -41,15 +41,21 @@
 	<body>
 		<div class="ui inverted segment" id="navigation">
 			<div class="ui inverted secondary pointing menu">
-				<a class="item" href="{{ action('WallController@index') }}" id="home">
-					Home
-				</a>
-				<a class="item" href="{{ action('SessionController@index') }}" id="moderate">
-					Moderate
-				</a>
-				<a class="item" href="{{ action('BlacklistController@index') }}" id="blacklist">
-					Blacklist
-				</a>
+				@if(Auth::user()->role == 'Moderator')
+					<a class="item" href="{{ action('WallController@index') }}" id="home">
+						Home
+					</a>
+					<a class="item" href="{{ action('SessionController@index') }}" id="moderate">
+						Moderate
+					</a>
+					<a class="item" href="{{ action('BlacklistController@index') }}" id="blacklist">
+						Blacklist
+					</a>
+				@else
+					<a class="item" href="{{ action('WallController@index') }}" id="home">
+						The Great Wall &nbsp; <small>Home</small>
+					</a>
+				@endif
 				<div class="right menu">
 					<div class="ui dropdown item" id="user">
 						{{ Auth::user()->name }} <i class="user icon icon_customized"></i>
