@@ -44,4 +44,12 @@ class Message extends Model
     {
         return $this->hasMany('App\Message', 'question_id', 'id');
     }
+    
+    /**
+     * Get the user that owns the message.
+     */
+    public function user()
+    {
+        return $this->hasOne('App\User', 'id', 'user_id');
+    }
 }

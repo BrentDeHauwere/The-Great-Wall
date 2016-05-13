@@ -13,7 +13,8 @@ class CreateBlacklistsTable extends Migration
     public function up()
     {
         Schema::create('blacklists', function (Blueprint $table) {
-            $table->integer('user_id')->unsigned();
+            $table->increments('id');
+            $table->integer('user_id')->unsigned()->unique();
             $table->longText('reason');
             $table->dateTime('created_at');
         });

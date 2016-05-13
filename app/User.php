@@ -30,4 +30,20 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Get the votes on polls for this user.
+     */
+    public function pollVotes()
+    {
+        return $this->hasMany('App\PollVote');
+    }
+
+    /**
+     * Get the votes on messages for this user.
+     */
+    public function messageVotes()
+    {
+        return $this->hasMany('App\MessageVote');
+    }
 }

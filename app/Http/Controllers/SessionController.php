@@ -32,6 +32,10 @@ class SessionController extends Controller
 			if (!empty($wall->password)){
 				$wall->password = "Yes";
 			}
+			else
+			{
+				$wall->password = "No";
+			}
 
 			if ($wall->deleted_at != null) {
 				$wall->open_until = 'Manually closed';
@@ -39,13 +43,19 @@ class SessionController extends Controller
 			else if ($wall->open_until == 0) {
 				$wall->open_until = 'Infinity (not set)';
 			}
-			else if ($wall->open_until < date('d-m-y H:i:s')) {
+			else if ($wall->open_until < date('Y-m-d H:i:s')) {
 				$wall->open_until = "Automatically closed ({$wall->open_until})";
 			}
 		}
 
-		return View::make('session.index')
-			->with('walls', $walls);
+		if (empty($walls))
+		{
+			return View::make('session.index')->with('walls', $walls)->with('info', 'No sessions available.');
+		}
+		else
+		{
+			return View::make('session.index')->with('walls', $walls);
+		}
 	}
 
 	/**
@@ -83,7 +93,7 @@ class SessionController extends Controller
 		$wall->open_until = $request->input('open_until');
 		$wall->save();
 
-		Session::flash('info', 'Successfully created wall.');
+		Session::flash('success', 'Successfully created wall.');
 
 		return Redirect::to('session');
 	}
@@ -141,7 +151,7 @@ class SessionController extends Controller
 			'user_id' 	=> 'required|numeric|min:1',
 			'name'    	=> 'required',
 			'password'	=> 'confirmed',
-			'open_until' => 'date_format:Y-m-d H:i:s',
+			'open_until' => 'date',
 		]);
 
 		$wall = Wall::find($id);
@@ -158,7 +168,7 @@ class SessionController extends Controller
 		$wall->open_until = $request->input('open_until');
 		$wall->save();
 
-		Session::flash('info', 'Successfully updated wall.');
+		Session::flash('success', 'Successfully updated wall.');
 
 		return Redirect::to('session');
 	}
@@ -175,7 +185,24 @@ class SessionController extends Controller
 		$wall = Wall::find($id);
 		$wall->delete();
 
-		Session::flash('info', 'Successfully closed the wall.');
+		Session::flash('success', 'Successfully closed the wall.');
+
+		return Redirect::to('session');
+	}
+
+	/**
+	 * Add (active) the specified wall to storage.
+	 *
+	 * @param  int $id
+	 * @return Response
+	 */
+	public
+	function revertDestroy($id)
+	{
+		$wall = Wall::onlyTrashed()->find($id);
+		$wall->restore();
+
+		Session::flash('success', 'Successfully opened the wall.');
 
 		return Redirect::to('session');
 	}

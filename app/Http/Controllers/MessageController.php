@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Event;
 use App\Wall;
 use Illuminate\Http\Request;
 
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\View;
 use App\Http\Requests\StoreMessageRequest;
 use App\Http\Requests\ModeratorMessageHandleRequest;
 use App\Message;
+use App\Events\NewMessageEvent;
 
 use Validator;
 use Hash;
@@ -28,7 +30,7 @@ class MessageController extends Controller
 	 */
 	public function store(StoreMessageRequest $request)
 	{
-    	$message = new Message();
+    $message = new Message();
 		$message->user_id = $request->input('user_id');
 		$message->wall_id = $request->input('wall_id');
 		$message->channel_id = $request->input('channel_id');
@@ -36,7 +38,7 @@ class MessageController extends Controller
 		$message->anonymous =$request->input('anonymous');
 
 		$message->created_at = date('Y-m-d H:i:s');
-		
+
 		if ($request->has('question_id'))
 		{
 			$message->question_id = $request->input('question_id');
@@ -49,11 +51,14 @@ class MessageController extends Controller
 		$saved = $message->save();
 		if ($saved)
 		{
-			return redirect()->back()->with('success', 'Saved succesfully');
+			$client = new \Capi\Clients\GuzzleClient();
+			$response = $client->post('broadcast', 'msg1.msg',['message' => $message]);
+
+			return redirect()->back()->with('success', 'Message saved successfully.');
 		}
 		else
 		{
-			return redirect()->back()->with('danger', 'Message could not be saved');
+			return redirect()->back()->with('error', 'Message could not be saved.');
 		}
 
 	}
@@ -69,10 +74,10 @@ class MessageController extends Controller
 		$message = Message::where('id',$id);
 		$deleted = $message->delete();
 		if($deleted){
-			return redirect()->back()->with('success', 'Destroyed succesfully');
+			return redirect()->back()->with('success', 'Message destroyed successfully.');
 		}
 		else{
-			return redirect()->back()->with('danger', 'Message could not be destroyed');
+			return redirect()->back()->with('error', 'Message could not be destroyed.');
 		}
 	}
 
@@ -89,21 +94,28 @@ class MessageController extends Controller
 		$message = Message::where("id", "=", $message_id)->first();
 		if ($message)
 		{
-			$message->moderation_level = 0;
+			if($message->moderation_level != 0){
+				$message->moderation_level = 0;
+			}
+
+
 			$message->moderator_id = $userid;
 			$saved = $message->save();
 			if ($saved)
 			{
-				return redirect()->back()->with("success", "Message was accepted");
+				$client = new \Capi\Clients\GuzzleClient();
+				$response = $client->post('broadcast', 'msg1.msg.moda',['message' => $message]);
+
+				return redirect()->back()->with("success", "Message was accepted.");
 			}
 			else
 			{
-				return redirect()->back()->with("danger", "Message could not be saved");
+				return redirect()->back()->with("error", "Message could not be saved.");
 			}
 		}
 		else
 		{
-			return redirect()->back()->with("danger", "No message found with this id to be moderated by you");
+			return redirect()->back()->with("error", "No message found with this id to be moderated by you.");
 		}
 	}
 
@@ -125,16 +137,19 @@ class MessageController extends Controller
 			$saved = $message->save();
 			if ($saved)
 			{
-				return redirect()->back()->with("success", "Message was blocked");
+				$client = new \Capi\Clients\GuzzleClient();
+				$response = $client->post('broadcast', 'msg1.msg.modd',['message' => $message]);
+
+				return redirect()->back()->with("success", "Message was blocked.");
 			}
 			else
 			{
-				return redirect()->back()->with("danger", "Message could not be saved");
+				return redirect()->back()->with("error", "Message could not be saved.");
 			}
 		}
 		else
 		{
-			return redirect()->back()->with("danger", "No message found with this id to be moderated by you");
+			return redirect()->back()->with("error", "No message found with this id to be moderated by you.");
 		}
 	}
 }

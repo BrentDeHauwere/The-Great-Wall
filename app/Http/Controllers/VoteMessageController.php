@@ -6,6 +6,7 @@ use App\Wall;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Requests\VoteMessageRequest;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
@@ -28,62 +29,51 @@ class VoteMessageController extends Controller
 	 */
 	public function store(VoteMessageRequest $request)
 	{
-    $message_vote = new MessageVote();
+    	$message_vote = new MessageVote();
 		$message_vote->message_id = $request->input('message_id');
 		$message_vote->user_id = $request->input('user_id');
-		$saved = $message_vote->save();
-		if ($saved)
+
+		if(!MessageVote::where('message_id', $message_vote->message_id)
+						->where('user_id', $message_vote->user_id)
+						->exists())
 		{
-			$message = Message::where('id', '=', 'message_id')->first();
-			$message->count++;
-			$savedM = $message->save;
-			if ($savedM)
+			$saved = $message_vote->save();
+			if ($saved)
 			{
-				return redirect()->back()->with('success', 'Message vote success');
+				$message = Message::where('id', $message_vote->message_id)->first();
+				$message->count++;
+				$savedM = $message->save();
+
+				if ($savedM)
+				{
+					$client = new \Capi\Clients\GuzzleClient();
+					$response = $client->post('broadcast', 'msg1.msg.vote',['messagevote' => $message_vote]);
+					return redirect()->back()->with('success', 'Message vote success.');
+				}
+				else
+				{
+					$message_vote->delete();
+					return redirect()->back()->with('error', 'Message could not be incremented.');
+				}
+
+				return redirect()->back()->with('success', 'Message vote success.');
 			}
 			else
 			{
-				$message_vote->delete();
-
-				return redirect()->back()->with('danger', 'Message could not be incremented');
+				return redirect()->back()->with('error', 'New message vote could not be saved.');
 			}
 		}
 		else
 		{
-			return redirect()->back()->with('danger', 'New message vote could not be saved');
-		}
-	}
+			MessageVote::where('message_id', $message_vote->message_id)
+				->where('user_id', $message_vote->user_id)
+				->delete();
 
-	/**
-	 * Remove (inactive) the specified vote on a message from storage.
-	 *
-	 * @param  int $id
-	 * @return Response
-	 */
-	public
-	function destroy($id)
-	{
-    $messagevote = MessageVote::where('id','=',$id);
-    $deleted = $messagevote->delete();
-    if ($deleted)
-		{
-			$message = Message::where('id', '=', $messagevote->message_id)->first();
+			$message = Message::where('id', $message_vote->message_id)->first();
 			$message->count--;
-			$savedM = $message->save;
-			if ($savedM)
-			{
-				return redirect()->back()->with('success', 'Message unvote success');
-			}
-			else
-			{
-				$message_vote->delete();
+			$savedM = $message->save();
 
-				return redirect()->back()->with('error', 'Message could not be unincremented');
-			}
-		}
-		else
-		{
-			return redirect()->back()->with('error', 'Message vote could not be undone');
+			return redirect()->back()->with('succes', 'Message vote is revoked.');
 		}
 	}
 }

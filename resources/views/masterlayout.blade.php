@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="shortcut icon" href="favicon.ico">
+		<link rel="shortcut icon" href="/favicon.ico">
 		<title>EhackB - @yield('title')</title>
 		<script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
 		<script src="{{asset('/js/smoothscroll.js')}}"></script>
@@ -15,7 +15,7 @@
 		<link rel="stylesheet" href="/css/style.css"/>
 		-->
 
-		<!-- Semantic UI -->
+		<!-- Semantic UI - CSS -->
 		<link rel="stylesheet" type="text/css" href="/semantic/dist/semantic.min.css">
 		<link rel="stylesheet" type="text/css" href="/css/customize_semantic.css">
 
@@ -39,23 +39,28 @@
 		</script>
 	</head>
 	<body>
-
-		<div class="ui inverted segment noradius">
+		<div class="ui inverted segment" id="navigation">
 			<div class="ui inverted secondary pointing menu">
-				<a class="item" href="{{ route('home') }}" id="home">
-					Home
-				</a>
-				<a class="item" href="{{ action('SessionController@index') }}" id="moderate">
-					Moderate
-				</a>
-				<a class="item" href="{{ action('BlacklistController@index') }}" id="blacklist">
-					Blacklist
-				</a>
+				@if(Auth::user()->role == 'Moderator')
+					<a class="item" href="{{ action('WallController@index') }}" id="home">
+						Home
+					</a>
+					<a class="item" href="{{ action('SessionController@index') }}" id="moderate">
+						Moderate
+					</a>
+					<a class="item" href="{{ action('BlacklistController@index') }}" id="blacklist">
+						Blacklist
+					</a>
+				@else
+					<a class="item" href="{{ action('WallController@index') }}" id="home">
+						The Great Wall &nbsp; <small>Home</small>
+					</a>
+				@endif
 				<div class="right menu">
 					<div class="ui dropdown item" id="user">
-						Username <i class="user icon icon_customized"></i>
+						{{ Auth::user()->name }} <i class="user icon icon_customized"></i>
 						<div class="menu">
-							<a class="item">Logout</a>
+							<a class="item" href="{{ action('UserController@logout') }}">Logout</a>
 							<a class="item">More</a>
 							<a class="item">More</a>
 						</div>
@@ -63,31 +68,54 @@
 				</div>
 			</div>
 		</div>
+		<div id="navigation_margin">
+		</div>
 
 		@if(session()->has('success'))
 			@success({{ session('success') }})
+		@elseif(!empty($success))
+			@success({{ $success }})
 		@endif
 
 		@if(session()->has('warning'))
 			@warning({{ session('warning') }})
+		@elseif(!empty($warning))
+			@warning({{ $warning }})
 		@endif
 
-		@if(session()->has('danger'))
-			@danger({{ session('danger') }})
+		@if(session()->has('error'))
+			@error({{ session('error') }})
+		@elseif(!empty($error))
+			@error({{ $error }})
 		@endif
 
 		@if(session()->has('info'))
 			@info({{ session('info') }})
+		@elseif(!empty($info))
+			@info({{ $info }})
 		@endif
+
+		<script>
+			$('.message .close')
+				.on('click', function() {
+					$(this)
+						.closest('.message')
+						.transition('fade')
+					;
+				})
+			;
+		</script>
 
 		@yield('content')
 
-		<footer>
+		<div id="footer_margin">
+		</div>
+		<!--<footer>
 			<p>Made by Brent De Hauwere, Eli Boey, Jonas De Pelsmaeker and Kamiel Klumpers</p>
-		</footer>
+		</footer>-->
 		@yield('footer')
 
-			<!-- Semantic UI -->
+			<!-- Semantic UI - JS -->
 		<script src="/semantic/dist/semantic.min.js"></script>
 		<script src="/js/customize_semantic.js"></script>
 	</body>

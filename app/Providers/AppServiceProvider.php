@@ -21,27 +21,35 @@ class AppServiceProvider extends ServiceProvider
 			$text = explode('"', $text)[1];
 			$text = explode(')', $text)[0];*/
 			$text = substr($text, 1, -1);
+
 			return
-			'
-			<div class="alert alert-warning alert-dismissible" role="alert">
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <strong>Warning! </strong> '.$text.'
-            </div>
-            ';
+				"
+			<div class='ui warning message'>
+				<div class='header'>
+    				All hands on deck
+  				</div>
+  				<i class='close icon'></i>
+  				{$text}
+			</div>
+			";
 		});
-		Blade::directive('danger', function ($text)
+		Blade::directive('error', function ($text)
 		{
 			/*$text = explode('(', $text)[1];
 			$text = explode('"', $text)[1];
 			$text = explode(')', $text)[0];*/
 			$text = substr($text, 1, -1);
+
 			return
-				'
-			<div class="alert alert-danger alert-dismissible" role="alert">
-              <button type="button" class="close" data-dismiss="alert" aria-label="close"><span aria-hidden="true">&times;</span></button>
-              <strong>Danger! </strong> '.$text.'
-            </div>
-            ';
+				"
+			<div class='ui error message'>
+				<div class='header'>
+    				Alright {{ explode(' ', Auth::user()->name)[0] }}... Calm your tits
+  				</div>
+  				<i class='close icon'></i>
+  				{$text}
+			</div>
+			";
 		});
 		Blade::directive('info', function ($text)
 		{
@@ -50,12 +58,15 @@ class AppServiceProvider extends ServiceProvider
 			$text = explode(')', $text)[0];*/
 			$text = substr($text, 1, -1);
 			return
-				'
-			<div class="alert alert-info alert-dismissible" role="alert">
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <strong>Info! </strong> '.$text.'
-            </div>
-            ';
+				"
+			<div class='ui info message'>
+				<div class='header'>
+    				Information
+  				</div>
+  				<i class='close icon'></i>
+  				{$text}
+			</div>
+			";
 		});
 		Blade::directive('success', function ($text)
 		{
@@ -64,21 +75,25 @@ class AppServiceProvider extends ServiceProvider
 			$text = explode(')', $text)[0];*/
 			$text = substr($text, 1, -1);
 			return
-				'
-			<div class="alert alert-success alert-dismissible" role="alert">
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <strong>Success! </strong> '.$text.'
-            </div>
-            ';
+				"
+			<div class='ui success message'>
+				<div class='header'>
+    				Success
+  				</div>
+  				<i class='close icon'></i>
+  				{$text}
+			</div>
+			";
 		});
-		Blade::directive('helper', function($namevar){
+		Blade::directive('helper', function ($namevar)
+		{
 			$namevar = explode('(', $namevar)[1];
 			$namevar = explode(')', $namevar)[0];
 
 			return '<?php
-						if($errors->has('.$namevar.')){
+						if($errors->has(' . $namevar . ')){
 
-							echo "<span class=\"help-block\"><p class=\"red\">".$errors->first('.$namevar.')."</p></span>";
+							echo "<span class=\"help-block\"><p class=\"red\">".$errors->first(' . $namevar . ')."</p></span>";
 						}
 					?>';
 		});
