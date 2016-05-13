@@ -66,7 +66,12 @@ Route::group(['middleware' => ['web']], function () {
 	Route::resource('pollchoice', 'PollChoiceController',['only' => ['store', 'destroy']]);
 	Route::resource('votemessage', 'VoteMessageController',['only' => ['store', 'destroy']]);
 	Route::resource('votepoll', 'VotePollController',['only' => ['store', 'destroy']]);
+	Route::resource('moderator', 'ModeratorController',['only' => ['show']]);
 
+	Route::get('ajax/messages/{id}','WallController@ajaxMessage');
+	Route::get('wall/update/{id}','WallController@updateShow');
+	Route::post('wall/enter','WallController@enterWallWithPassword');
+	Route::resource('wall', 'WallController',['only' => ['index','show']]);
 });
 
 Route::group(['prefix' => 'api', 'middleware' => ['web']], function () {

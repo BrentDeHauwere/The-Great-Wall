@@ -40,12 +40,16 @@ class VoteMessageController extends Controller
 			$saved = $message_vote->save();
 			if ($saved)
 			{
+
 				$message = Message::where('id', $message_vote->message_id)->first();
 				$message->count++;
 				$savedM = $message->save();
 
 				if ($savedM)
 				{
+					$client = new \Capi\Clients\GuzzleClient();
+					$response = $client->post('broadcast', 'msg1.msg.vote',['messagevote' => $message_vote]);
+					
 					return redirect()->back()->with('success', 'Message vote success.');
 				}
 				else
@@ -54,6 +58,10 @@ class VoteMessageController extends Controller
 
 					return redirect()->back()->with('error', 'Message could not be incremented.');
 				}
+
+
+
+				return redirect()->back()->with('success', 'Message vote success.');
 			}
 			else
 			{
