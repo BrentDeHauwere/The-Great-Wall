@@ -10,7 +10,7 @@
 @section('page','home')
 
 @section('content')
-	<div class=" container messagesContainer center-block">
+	<div class=" container messagesContainer center-block ">
 		<h3>{{$wall->name}}</h3>
 
 		@foreach($posts as $post)
@@ -268,4 +268,24 @@
 
 @section('footer')
 	<script text="text/javascript" src="{{ asset('js/messagewall.js') }}"></script>
+	<script>
+		$(window).scroll(function() {
+			if($(window).scrollTop() + $(window).height() == $(document).height()){
+				console.log("botoom");
+				var nextPage = 1;
+				var url = $(location).attr('href');
+				var request = $.ajax({
+					method: "GET",
+					url: url + "?page=" + nextPage,
+					contentType: "html"
+				});
+				nextPage++;
+
+				request.done(function(html) {
+					console.log("ajax done");
+					$("body").append(html);
+				});
+			}
+		});
+	</script>
 @stop
