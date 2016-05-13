@@ -112,11 +112,23 @@ class SessionController extends Controller
 		$messages = Message::with("votes", "user")->where("wall_id", "=", $id)->get();
 		$polls = Poll::with("choices.votes", "user")->where("wall_id", "=", $id)->get();
 
-		$result = DB::select(DB::raw("SELECT id,user_id,text,moderation_level,created_at,'M' FROM messages UNION SELECT id,user_id,question,moderation_level,created_at,'P' FROM polls ORDER BY created_at desc"));
+		$result = DB::select(DB::raw("SELECT id,user_id,text,moderation_level,created_at,'M' FROM messages WHERE wall_id = {$id} UNION SELECT id,user_id,question,moderation_level,created_at,'P' FROM polls WHERE wall_id = {$id} ORDER BY created_at desc"));
+
+		if (count($result) == 0)
+		{
+			return View::make('session.show')
+				->with('wall', $wall)
+				->with("messages",$messages)
+				->with("polls",$polls)
+				->with("result",json_decode(json_encode($result),true))
+				->with('info', 'No messages or polls available on this session');
+		}
 
 		return View::make('session.show')
 			->with('wall', $wall)
-			->with("messages",$messages)->with("polls",$polls)->with("result",json_decode(json_encode($result),true));
+			->with("messages",$messages)
+			->with("polls",$polls)
+			->with("result",json_decode(json_encode($result),true));
 	}
 
 	/**
