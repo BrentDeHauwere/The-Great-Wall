@@ -33,33 +33,38 @@ Route::group(['middleware' => 'web'], function () {
 		Route::get('/', ['as' => 'home', function() {
 			// User should be logged in, therefore will have a role
 			// Based on the role, we will redirect the user to the correct page
-			// TO DO: get the role of the user
-			$role = 'Bezoeker';
+			$role = Auth::user()->role;
 
 			switch ($role) {
-				case 'Bezoeker':
+				case 'Visitor':
+					return redirect()->action('WallController@index');
+					break;
+				case 'Speaker':
 					return redirect()->action('WallController@index');
 					break;
 				case 'Moderator':
 					return redirect()->action('SessionController@index');
 					break;
 				default:
-					App::abort(401);
+					abort(403);
 					break;
 			}
 		}]);
 
-		// ---------- SESSIONS ----------
-		// Views
-		Route::resource('session', 'SessionController');
-		Route::post('session/{id}/revertDestroy', 'SessionController@revertDestroy');
-		// Actions (performed on a session view)
-		Route::post('message/accept','MessageController@accept');
-		Route::post('message/decline','MessageController@decline');
+		Route::group(['middleware' => 'moderator'], function ()
+		{
+			// ---------- SESSIONS ----------
+			// Views
+			Route::resource('session', 'SessionController');
+			Route::post('session/{id}/revertDestroy', 'SessionController@revertDestroy');
+			// Actions (performed on a session view)
+			Route::post('message/accept', 'MessageController@accept');
+			Route::post('message/decline', 'MessageController@decline');
 
-		// ---------- BLACKLIST ----------
-		// Blacklist - Moderator
-		Route::resource('blacklist', 'BlacklistController');
+			// ---------- BLACKLIST ----------
+			// Blacklist - Moderator
+			Route::resource('blacklist', 'BlacklistController');
+		});
 
 		// ---------- WALLS ----------
 		// Views
