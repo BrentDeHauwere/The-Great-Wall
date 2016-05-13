@@ -1,6 +1,6 @@
 @extends('masterlayout')
 
-@section('title', 'Edit Wall: ' . $wall->name)
+@section('title', 'Edit Session: ' . $wall->name)
 
 @section('page','moderate')
 
