@@ -25,7 +25,6 @@ class WallController extends Controller
 	 *
 	 * return view walls.blade.php with walls
 	 */
-
 	public function index()
 	{
 		$walls = DB::table('walls')->select('walls.*', 'users.name as username')->leftJoin('users', 'walls.user_id', '=', 'users.id')
@@ -36,7 +35,7 @@ class WallController extends Controller
 					->orWhere('open_until', '>', date('Y-m-d H:i:s'));
 			})
 			->get();
-		
+
 		return view('wall.index')->with('walls', $walls);
 	}
 
@@ -73,7 +72,6 @@ class WallController extends Controller
 			$posts = new LengthAwarePaginator(array_slice($posts, $offset, $perPage, true), count($posts), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
 
 			//END CODE FOR Pagination
-
 			return view('wall.show')->with('posts', $posts)->with('wall', $wall);//->with('result',$result);
 		}
 		else
@@ -169,6 +167,58 @@ class WallController extends Controller
 	function create()
 	{
 		return view('wall_create');
+	}
+
+	public function ajaxMessage($id){
+		$wall = Wall::find($id);
+
+		if ($wall!=null && empty( $wall->password ) )
+		{
+
+			$messages;
+			$polls;
+			if(session()->has('wall'.$wall->id)){
+				$messages = Message::with('votes')->where('created_at',session('wall'.$wall->id))->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
+				$polls = Poll::with('choices.votes')->where('created_at',session('wall'.$wall->id))->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
+			}
+			else{
+				$polls = Poll::with('choices.votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
+				$messages = Message::with('votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
+			}
+
+			$posts = $this->sortMessagesPolls($messages, $polls);
+			session(['wall'.$wall->id => date("Y-m-d H:i:s")]);
+			return view('ajax.messages')->with('posts', $posts)->with('wall', $wall);//->with('result',$result);
+		}
+	}
+
+	public function updateShow(Request $request,$id){
+		$wall = Wall::findOrFail($id);
+		if ($wall->deleted_at != null || $wall->open_until == 0 || $wall->open_until < date('d-m-y H:i:s'))
+		{
+			abort(404);
+		}
+
+		if ($wall != null && empty($wall->password))
+		{
+			$messages = Message::with('votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
+			$polls = Poll::with('choices.votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
+
+			$posts = $this->sortMessagesPolls($messages, $polls);
+
+			//BEGIN CODE FOR PAGINATION
+			//Source: https://laracasts.com/discuss/channels/laravel/laravel-pagination-not-working-with-array-instead-of-collection
+			$page = $request->input('page'); // Get the current page or default to 1, this is what you miss!
+			$perPage = 5;
+			$offset = ($page * $perPage) - $perPage;
+
+			$request = new Request();
+
+			$posts = new LengthAwarePaginator(array_slice($posts, $offset, $perPage, true), count($posts), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
+
+			//END CODE FOR Pagination
+			return view('wall.updateshow')->with('posts', $posts)->with('wall', $wall);//->with('result',$result);
+		}
 	}
 
 }

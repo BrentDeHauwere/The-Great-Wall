@@ -29,7 +29,7 @@ class AddConstraintsPollVotesTable extends Migration
         Schema::table('poll_votes', function (Blueprint $table) {
             $table->dropForeign('poll_votes_poll_choice_id_foreign');
             $table->dropForeign('poll_votes_user_id_foreign');
-            $table->dropPrimary('poll_votes_choice_id_user_id_primary');
+            $table->dropPrimary('poll_votes_poll_choice_id_user_id_primary');
         });
     }
 }

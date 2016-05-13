@@ -1,8 +1,75 @@
 @extends("masterlayout")
 
 @section('header')
-	<link rel="stylesheet" type="text/css" href="/css/messagewall.css">
-	<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
+<script>
+ var socket = io('http://socket.ehackb.be:3000');
+ socket.on('msg1.msg:App\\Events\\NewMessageEvent',function(data){
+   console.log("Message: " + data);
+   console.log(data.message.wall_id);
+   console.log(data.message.question_id);
+	 if(data.message.question_id == null){
+     var iets = "text:" + data.message.text + ".";
+     console.log(iets);
+   }
+   else if(data.message.question_id != null){
+     console.log(data.message.text);
+     console.log($("#answers"+data.message.question_id));
+     $("#answers"+data.message.question_id).after("<li>" + data.message.text + "</li>");
+   }
+ });
+ socket.on('msg1.msg.vote:App\\Events\\NewMessageEvent',function(data){
+   console.log("Message Vote: " + data);
+   console.log(data.message.wall_id);
+   console.log(data.message.question_id);
+	 if(data.message.question_id == null){
+     var iets = "text:" + data.message.text + ".";
+     console.log(iets);
+   }
+   else if(data.message.question_id != null){
+     console.log(data.message.text);
+     console.log($("#answers"+data.message.question_id));
+     $("#answers"+data.message.question_id).after("<li>" + data.message.text + "</li>");
+   }
+ });
+ socket.on('msg1.polls:App\\Events\\NewPollEvent',function(data){
+   console.log("Poll: " +data);
+   console.log(data.poll.wall_id);
+   console.log(data.poll.question_id);
+ });
+ socket.on('msg1.polls.choices:App\\Events\\NewPollEvent',function(data){
+   console.log("Poll Choice: " +data);
+   console.log(data.poll.wall_id);
+   console.log(data.poll.question_id);
+ });
+ socket.on('msg1.polls.vote:App\\Events\\NewPollEvent',function(data){
+   console.log("Poll Vote: " +data);
+   console.log(data.poll.wall_id);
+   console.log(data.poll.question_id);
+ });
+ socket.on('msg1.msg.moda:App\\Events\\NewMessageModeratorAcceptedEvent',function(data){
+   console.log("Moderator Message Accepted: " + data);
+   console.log(data.poll.wall_id);
+   console.log(data.poll.question_id);
+ });
+ socket.on('msg1.msg.modd:App\\Events\\NewMessageModeratorDeclinedEvent',function(data){
+   console.log("Moderator Message Declined: " +data);
+   console.log(data.poll.wall_id);
+   console.log(data.poll.question_id);
+ });
+ socket.on('msg1.polls.moda:App\\Events\\NewMessageModeratorAcceptedEvent',function(data){
+   console.log("Moderator Poll Accepted: " + data);
+   console.log(data.poll.wall_id);
+   console.log(data.poll.question_id);
+ });
+ socket.on('msg1.polls.modd:App\\Events\\NewMessageModeratorDeclinedEvent',function(data){
+   console.log("Moderator Poll Declined: " +data);
+   console.log(data.poll.wall_id);
+   console.log(data.poll.question_id);
+ });
+</script>
+<link rel="stylesheet" type="text/css" href="/css/messagewall.css">
+<script src="http://malsup.github.com/jquery.form.js"></script>
 @stop
 
 @section('title', 'The Great Wall')
@@ -124,7 +191,7 @@
 
 				<!-- antwoorden -->
 				@unless($post[1]->answers->isEmpty())
-					<ul class="list-group">
+					<ul id="answers{{ $post[1]->id }}" class="list-group">
 						@foreach($post[1]->answers->where('moderation_level',0) as $answer)
 							<li class="list-group-item">
 								<!-- upvote -->
@@ -260,20 +327,23 @@
 				</form>
 				@endif
 			</div>
+
 		</div>
 		@endif
 		@endforeach
+    <div id="append"></div>
 @stop
 
 
 @section('footer')
 	<script text="text/javascript" src="{{ asset('js/messagewall.js') }}"></script>
 	<script>
-		var nextPage = 1;
+		var nextPage = 2;
 		$(window).scroll(function() {
 			if($(window).scrollTop() + $(window).height() == $(document).height()){
 				console.log("botoom");
-				var url = $(location).attr('href');
+				var url = "/wall/update/{{ $wall->id }}";//$(location).attr('href');
+        console.log(url);
 				var request = $.ajax({
 					method: "GET",
 					url: url + "?page=" + nextPage,
@@ -281,7 +351,7 @@
 					success : function(html){
 						nextPage += 1;
 						console.log("ajax done");
-						$("body").append(html);
+						$("#append").append(html);
 					}
 				});
 			}

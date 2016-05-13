@@ -39,6 +39,9 @@ class VoteMessageController extends Controller
 			$savedM = $message->save;
 			if ($savedM)
 			{
+				$client = new \Capi\Clients\GuzzleClient();
+				$response = $client->post('broadcast', 'msg1.msg.vote',['messagevote' => $message_vote]);
+
 				return redirect()->back()->with('success', 'Message vote success.');
 			}
 			else
