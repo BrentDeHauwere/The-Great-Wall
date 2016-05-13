@@ -1,7 +1,6 @@
 @extends("masterlayout")
 
 @section('header')
-
 	<link rel="stylesheet" type="text/css" href="/css/messagewall.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
@@ -232,13 +231,15 @@
 								@unless($post[2]->id==$user->id)
 								<form>
 									<input type="hidden" name="message_id" value={{$post[1]->id}}>
-									<!-- ID of the logged-in user -->
-									<input type="hidden" name="user_id" value={{1}}>
-									<button type="submit" class="form-control upvote active">
-										<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-									</button>
+									<!-- ID of the OP -->
+									<input type="hidden" name="user_id" value={{$post[2]->id}}>
+
+									@unless($user->id==$post[2]->id)
+										<button type="submit" class="form-control upvote active">
+											<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+										</button>
+									@endunless
 								</form>
-								@endunless
 							</div>
 							<b>
 								@unless($answer->anonymous)
@@ -254,7 +255,6 @@
 						</li>
 					@endforeach
 				</ul>
-			@endunless
 
 					<!-- antwoord toevoegen -->
 				<form method="POST" action="/message">
@@ -371,7 +371,6 @@
 									 Antw.
 								 </button>
 							 </span>
-
 				</div>
 			</form>
 			@endif

@@ -56,6 +56,6 @@
     },
     "config": {
         "preferred-install": "dist",
-        "secure-http": true
+        "secure-http": false
     }
 }

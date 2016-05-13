@@ -56,6 +56,7 @@ class VoteMessageController extends Controller
 					return redirect()->back()->with('error', 'Message could not be incremented.');
 				}
 
+				return redirect()->back()->with('success', 'Message vote success.');
 			}
 			else
 			{

@@ -75,7 +75,6 @@ class WallController extends Controller
 
 			//END CODE FOR Pagination
 
-
 			// user that's logged in.
 			$loggedInUser = 1;
 
@@ -224,9 +223,7 @@ class WallController extends Controller
 		return '';
 	}
 
-
-	public
-	function ajaxMessage($id)
+	public function ajaxMessage($id)
 	{
 		$wall = Wall::find($id);
 
@@ -280,5 +277,4 @@ class WallController extends Controller
 			return view('wall.updateshow')->with('posts', $posts)->with('wall', $wall);//->with('result',$result);
 		}
 	}
-
 }
