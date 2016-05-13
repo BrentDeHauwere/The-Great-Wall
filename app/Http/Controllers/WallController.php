@@ -38,7 +38,14 @@ class WallController extends Controller
 			})
 			->get();
 
-		return view('wall.index')->with('walls', $walls);
+		if (empty($walls))
+		{
+			return view('wall.index')->with('walls', $walls)->with('info', 'No walls available.');
+		}
+		else
+		{
+			return view('wall.index')->with('walls', $walls);
+		}
 	}
 
 
