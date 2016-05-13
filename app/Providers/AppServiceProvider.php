@@ -44,7 +44,7 @@ class AppServiceProvider extends ServiceProvider
 				"
 			<div class='ui error message'>
 				<div class='header'>
-    				Alright Judy... Calm your tits
+    				Alright {{ explode(' ', Auth::user()->name)[0] }}... Calm your tits
   				</div>
   				<i class='close icon'></i>
   				{$text}
