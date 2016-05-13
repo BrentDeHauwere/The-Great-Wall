@@ -22,57 +22,63 @@
 |
 */
 
-Route::group(['middleware' => ['web']], function () {
+Route::group(['middleware' => 'web'], function () {
+	// ---------- AUTHENTICATION ----------
+	Route::get('login','UserController@index');
+	Route::post('login','UserController@login');
+	Route::get('logout','UserController@logout');
 
-	// ---------- INDEX ----------
-	Route::get('/', ['as' => 'home', function() {
-		// User should be logged in, therefore will have a role
-		// Based on the role, we will redirect the user to the correct page
-		// TO DO: get the role of the user
-		$role = 'Bezoeker';
+	Route::group(['middleware' => 'user'], function () {
+		// ---------- INDEX ----------
+		Route::get('/', ['as' => 'home', function() {
+			// User should be logged in, therefore will have a role
+			// Based on the role, we will redirect the user to the correct page
+			// TO DO: get the role of the user
+			$role = 'Bezoeker';
 
-		switch ($role) {
-			case 'Bezoeker':
-				return redirect()->action('WallController@index');
-				break;
-			case 'Moderator':
-				return redirect()->action('SessionController@index');
-				break;
-			default:
-				App::abort(401);
-				break;
-		}
-	}]);
+			switch ($role) {
+				case 'Bezoeker':
+					return redirect()->action('WallController@index');
+					break;
+				case 'Moderator':
+					return redirect()->action('SessionController@index');
+					break;
+				default:
+					App::abort(401);
+					break;
+			}
+		}]);
 
-	// ---------- SESSIONS ----------
-	// Views
-	Route::resource('session', 'SessionController');
-	Route::post('session/{id}/revertDestroy', 'SessionController@revertDestroy');
-	// Actions (performed on a session view)
-	Route::post('message/accept','MessageController@accept');
-	Route::post('message/decline','MessageController@decline');
+		// ---------- SESSIONS ----------
+		// Views
+		Route::resource('session', 'SessionController');
+		Route::post('session/{id}/revertDestroy', 'SessionController@revertDestroy');
+		// Actions (performed on a session view)
+		Route::post('message/accept','MessageController@accept');
+		Route::post('message/decline','MessageController@decline');
 
-	// ---------- BLACKLIST ----------
-	// Blacklist - Moderator
-	Route::resource('blacklist', 'BlacklistController');
+		// ---------- BLACKLIST ----------
+		// Blacklist - Moderator
+		Route::resource('blacklist', 'BlacklistController');
 
-	// ---------- WALLS ----------
-	// Views
-	Route::resource('wall', 'WallController',['only' => ['index','show']]);
-	// Wall - Actions to perform on a wall
-	Route::post('wall/enter','WallController@enterWallWithPassword');
-	Route::resource('message', 'MessageController',['only' => ['store', 'destroy']]);
-	Route::resource('poll', 'PollController',['only' => ['store', 'destroy']]);
-	Route::resource('pollchoice', 'PollChoiceController',['only' => ['store', 'destroy']]);
-	Route::resource('votemessage', 'VoteMessageController',['only' => ['store', 'destroy']]);
-	Route::resource('votepoll', 'VotePollController',['only' => ['store', 'destroy']]);
+		// ---------- WALLS ----------
+		// Views
+		Route::resource('wall', 'WallController',['only' => ['index','show']]);
+		// Wall - Actions to perform on a wall
+		Route::post('wall/enter','WallController@enterWallWithPassword');
+		Route::resource('message', 'MessageController',['only' => ['store', 'destroy']]);
+		Route::resource('poll', 'PollController',['only' => ['store', 'destroy']]);
+		Route::resource('pollchoice', 'PollChoiceController',['only' => ['store', 'destroy']]);
+		Route::resource('votemessage', 'VoteMessageController',['only' => ['store', 'destroy']]);
+		Route::resource('votepoll', 'VotePollController',['only' => ['store', 'destroy']]);
 
-});
+	});
 
-Route::group(['prefix' => 'api', 'middleware' => ['web']], function () {
-	Route::get('walls', 'ApiController@walls');
-	Route::get('messages', 'ApiController@messages');
-	Route::get('polls', 'ApiController@polls');
-	Route::get('blacklist', 'ApiController@blacklist');
-	Route::get('{requestedPage}', 'ApiController@badPage');
+	Route::group(['prefix' => 'api', 'middleware' => ['web']], function () {
+		Route::get('walls', 'ApiController@walls');
+		Route::get('messages', 'ApiController@messages');
+		Route::get('polls', 'ApiController@polls');
+		Route::get('blacklist', 'ApiController@blacklist');
+		Route::get('{requestedPage}', 'ApiController@badPage');
+	});
 });

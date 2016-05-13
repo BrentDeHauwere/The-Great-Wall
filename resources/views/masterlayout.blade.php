@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="shortcut icon" href="favicon.ico">
+		<link rel="shortcut icon" href="/favicon.ico">
 		<title>EhackB - @yield('title')</title>
 		<script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
 		<script src="{{asset('/js/smoothscroll.js')}}"></script>
@@ -52,9 +52,9 @@
 				</a>
 				<div class="right menu">
 					<div class="ui dropdown item" id="user">
-						Username <i class="user icon icon_customized"></i>
+						{{ Auth::user()->name }} <i class="user icon icon_customized"></i>
 						<div class="menu">
-							<a class="item">Logout</a>
+							<a class="item" href="{{ action('UserController@logout') }}">Logout</a>
 							<a class="item">More</a>
 							<a class="item">More</a>
 						</div>
