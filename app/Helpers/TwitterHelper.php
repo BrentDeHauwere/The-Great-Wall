@@ -7,13 +7,15 @@ use Thujohn\Twitter\Twitter;
 
 class TwitterHelper
 {
-	public static function retrieveTweets(Wall $wall)
+	public static function checkForTweets(Wall $wall)
 	{
-		$tweets = Twitter::getSearch(['q'     => '#' . $wall->hashtag,
-							'result_type' => 'recent',
-							'format' => 'array']);
+		$tweets = Twitter::getSearch(['q'           => '#' . $wall->hashtag,
+									  'result_type' => 'recent',
+									  'format'      => 'array']);
+		dd($tweets);
+		transformTweets($tweets);
 	}
-
+	
 	private function transformResponse($tweets)
 	{
 		$transformedTweets = [];
