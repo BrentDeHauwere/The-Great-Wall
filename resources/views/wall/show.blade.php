@@ -251,7 +251,7 @@
 									@endunless
 									<small>
 										{{
-											\App\Http\Controllers\WallController::humanTimeDifference($post[1]->created_at)
+											\App\Http\Controllers\WallController::humanTimeDifference($answer->created_at)
 										}}
 									</small>
 									<p class="answer">{{$answer->text}}</p>
