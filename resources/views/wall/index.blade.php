@@ -5,6 +5,13 @@
 @section('page','home')
 
 @section('content')
+	<div class="body_customized" style="height: 51px">
+		<div class="ui icon input search medium">
+			<input type="text" placeholder="Search..." id="search_input">
+			<i class="search icon"></i>
+		</div>
+	</div>
+
 	<div class="body_customized">
 		<div class="ui divided items" id="walls">
 			@foreach ($walls as $wall)
@@ -47,4 +54,19 @@
 			@endforeach
 		</div>
 	</div>
+
+	<script src="/js/jquery.tablesort.js"></script>
+	<script>
+		$('.items').tablesort();
+
+		var $rows = $('.items .item');
+		$('#search_input').keyup(function() {
+			var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+			$rows.show().filter(function() {
+				var text = $(this).find('.header').text().replace(/\s+/g, ' ').toLowerCase();
+				return !~text.indexOf(val);
+			}).hide();
+		});
+	</script>
 @stop

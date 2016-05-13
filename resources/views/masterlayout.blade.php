@@ -110,9 +110,9 @@
 
 		<div id="footer_margin">
 		</div>
-		<!--<footer>
-			<p>Made by Brent De Hauwere, Eli Boey, Jonas De Pelsmaeker and Kamiel Klumpers</p>
-		</footer>-->
+		<footer>
+			<p>Copyright EhackB | Made by Brent De Hauwere, Eli Boey, Jonas De Pelsmaeker and Kamiel Klumpers</p>
+		</footer>
 		@yield('footer')
 
 			<!-- Semantic UI - JS -->
