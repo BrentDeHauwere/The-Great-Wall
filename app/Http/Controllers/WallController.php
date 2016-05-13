@@ -33,7 +33,7 @@ class WallController extends Controller
 			->where('walls.deleted_at', null)
 			->where(function ($query)
 			{
-				$query->where('open_until', 0)
+				$query->where('open_until', null)
 					->orWhere('open_until', '>', date('Y-m-d H:i:s'));
 			})
 			->get();
