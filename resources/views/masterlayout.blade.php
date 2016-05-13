@@ -41,7 +41,7 @@
 	<body>
 		<div class="ui inverted segment" id="navigation">
 			<div class="ui inverted secondary pointing menu">
-				<a class="item" href="{{ route('home') }}" id="home">
+				<a class="item" href="{{ action('WallController@index') }}" id="home">
 					Home
 				</a>
 				<a class="item" href="{{ action('SessionController@index') }}" id="moderate">
