@@ -46,14 +46,16 @@ class VoteMessageController extends Controller
 
 				if ($savedM)
 				{
+					$client = new \Capi\Clients\GuzzleClient();
+					$response = $client->post('broadcast', 'msg1.msg.vote',['messagevote' => $message_vote]);
 					return redirect()->back()->with('success', 'Message vote success.');
 				}
 				else
 				{
 					$message_vote->delete();
-
 					return redirect()->back()->with('error', 'Message could not be incremented.');
 				}
+
 			}
 			else
 			{

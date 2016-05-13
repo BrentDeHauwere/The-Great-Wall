@@ -104,9 +104,9 @@
 
 		<div id="footer_margin">
 		</div>
-		<footer>
+		<!--<footer>
 			<p>Made by Brent De Hauwere, Eli Boey, Jonas De Pelsmaeker and Kamiel Klumpers</p>
-		</footer>
+		</footer>-->
 		@yield('footer')
 
 			<!-- Semantic UI - JS -->

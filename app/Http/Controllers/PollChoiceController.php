@@ -42,6 +42,9 @@ class PollChoiceController extends Controller
 
 		if ( $succes == true )
 		{
+			$client = new \Capi\Clients\GuzzleClient();
+			$response = $client->post('broadcast', 'msg1.polls.choices',['pollchoice' => $pollChoice]);
+
 			return redirect()->back()->with('success', 'Pollchoice success');
 		}
 		else

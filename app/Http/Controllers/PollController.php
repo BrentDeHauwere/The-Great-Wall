@@ -65,6 +65,7 @@ class PollController extends Controller
 
 				if ( $savedChoice )
 				{
+
 					$succes = true;
 				} else {
 					$succes = false;
@@ -74,6 +75,9 @@ class PollController extends Controller
 
 		if ( $succes == true )
 		{
+			$client = new \Capi\Clients\GuzzleClient();
+			$response = $client->post('broadcast', 'msg1.polls',['poll' => $poll]);
+
 			return redirect()->back()->with('success', 'Poll success');
 		}
 		else
