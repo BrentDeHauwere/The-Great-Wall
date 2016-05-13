@@ -30,8 +30,7 @@ class BlacklistController extends Controller
 	 *
 	 * @return Response
 	 */
-	public function create(Request $request)
-	{
+	public function create(Request $request){
     //The request gets oftewel a message_id or a poll_id, depending on the button which was pressed
     $message_id = $request->input('message_id');
     $poll_id = $request->input('poll_id');
