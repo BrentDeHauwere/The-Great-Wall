@@ -29,7 +29,8 @@ class StorePollRequest extends Request
 			'moderator_id' => 'exists:users,id',
 			'question' => 'required|string',
 			'addable' => 'required|string',
-			'choices.*' => 'required|string'
+			'choices.*' => 'required|string',
+			'channel_id' => 'required|exists:channels,id'
 		];
 	}
 }

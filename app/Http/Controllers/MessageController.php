@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Event;
 use App\Wall;
 use Illuminate\Http\Request;
 
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\View;
 use App\Http\Requests\StoreMessageRequest;
 use App\Http\Requests\ModeratorMessageHandleRequest;
 use App\Message;
+use App\Events\NewMessageEvent;
 
 use Validator;
 use Hash;
@@ -28,7 +30,7 @@ class MessageController extends Controller
 	 */
 	public function store(StoreMessageRequest $request)
 	{
-    	$message = new Message();
+    $message = new Message();
 		$message->user_id = $request->input('user_id');
 		$message->wall_id = $request->input('wall_id');
 		$message->channel_id = $request->input('channel_id');
@@ -36,7 +38,7 @@ class MessageController extends Controller
 		$message->anonymous =$request->input('anonymous');
 
 		$message->created_at = date('Y-m-d H:i:s');
-		
+
 		if ($request->has('question_id'))
 		{
 			$message->question_id = $request->input('question_id');
@@ -49,6 +51,9 @@ class MessageController extends Controller
 		$saved = $message->save();
 		if ($saved)
 		{
+			$client = new \Capi\Clients\GuzzleClient();
+			$response = $client->post('broadcast', 'msg1.msg',['message' => $message]);
+
 			return redirect()->back()->with('success', 'Message saved successfully.');
 		}
 		else
@@ -89,11 +94,18 @@ class MessageController extends Controller
 		$message = Message::where("id", "=", $message_id)->first();
 		if ($message)
 		{
-			$message->moderation_level = 0;
+			if($message->moderation_level != 0){
+				$message->moderation_level = 0;
+			}
+
+
 			$message->moderator_id = $userid;
 			$saved = $message->save();
 			if ($saved)
 			{
+				$client = new \Capi\Clients\GuzzleClient();
+				$response = $client->post('broadcast', 'msg1.msg.moda',['message' => $message]);
+
 				return redirect()->back()->with("success", "Message was accepted.");
 			}
 			else
@@ -125,6 +137,9 @@ class MessageController extends Controller
 			$saved = $message->save();
 			if ($saved)
 			{
+				$client = new \Capi\Clients\GuzzleClient();
+				$response = $client->post('broadcast', 'msg1.msg.modd',['message' => $message]);
+
 				return redirect()->back()->with("success", "Message was blocked.");
 			}
 			else
