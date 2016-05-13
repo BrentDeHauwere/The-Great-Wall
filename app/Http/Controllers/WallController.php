@@ -12,9 +12,11 @@ use App\MessageVote;
 use App\Poll;
 use App\PollChoice;
 use App\PollVote;
+use App\User;
 use Illuminate\Http\Request;
 use Hash;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request as IllRequest;
 
@@ -72,7 +74,13 @@ class WallController extends Controller
 			$posts = new LengthAwarePaginator(array_slice($posts, $offset, $perPage, true), count($posts), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
 
 			//END CODE FOR Pagination
-			return view('wall.show')->with('posts', $posts)->with('wall', $wall);//->with('result',$result);
+
+			// user that's logged in.
+			$loggedInUser=2;
+
+			$user = User::with('pollVotes', 'messageVotes')->where('id', $loggedInUser)->first();
+
+			return view('wall.show')->with('posts', $posts)->with('wall', $wall)->with('user', $user);
 		}
 		else
 		{
@@ -111,18 +119,18 @@ class WallController extends Controller
 		/* Sort messages / poll into a chronologically ordered 2D array */
 		$posts = [];
 
-		if (!$polls->isEmpty())
+		if ( ! $polls->isEmpty() )
 		{
 			foreach ($polls as $poll)
 			{
-				array_push($posts, array('p', $poll));
+				array_push($posts, array( 'p', $poll, $poll->user()->first()));
 			}
 		}
 		else
 		{
 			foreach ($messages as $message)
 			{
-				array_push($posts, array('m', $message));
+				array_push($posts, array( 'm', $message, $message->user()->first()));
 			}
 		}
 
@@ -143,15 +151,15 @@ class WallController extends Controller
 				{
 					if ($message->created_at > $post[1]->created_at)
 					{
-						$arr = array('m', $message);
-						array_splice($posts, $counter, 0, array($arr));
-						unset($messages[ $msgCounter ]);
+						$arr = array( 'm', $message, $message->user()->first() );
+						array_splice($posts, $counter, 0, array( $arr ));
+						unset( $messages[ $msgCounter ] );
 						break;
 					}
 					elseif ($message->create_at < $post[1]->created_at)
 					{
-						array_push($posts, array('m', $message));
-						unset($messages[ $msgCounter ]);
+						array_push($posts, array( 'm', $message, $message->user()->first()));
+						unset( $messages[ $msgCounter ] );
 						break;
 					}
 					$counter += 1;
@@ -168,14 +176,58 @@ class WallController extends Controller
 		return view('wall_create');
 	}
 
+
+	/**
+	 * src: https://gist.github.com/T3hArco/72b29dfdc2bf48bf8d11ec8c770b24d8
+	 * Provides a humanized time string
+	 * Based on http://stackoverflow.com/questions/1416697/converting-timestamp-to-time-ago-in-php-e-g-1-day-ago-2-days-ago
+	 * @param DateTime $time raw date
+	 * @return string humanized time
+	 */
+	public static function humanTimeDifference($time)
+	{
+		$time = strtotime($time);
+
+		$elapsed = time() - $time;
+		if ( $elapsed < 10 )
+			return "just now";
+
+		$singular = array( 365 * 24 * 60 * 60 => 'year',
+						   30 * 24 * 60 * 60  => 'month',
+						   24 * 60 * 60       => 'day',
+						   60 * 60            => 'hour',
+						   60                 => 'minute',
+						   1                  => 'second',
+		);
+
+		$plural = array( 'year'    => 'years',
+						 'month'   => 'months',
+						 'day'     => 'days',
+						 'hour'     => 'hours',
+						 'minute'  => 'minutes',
+						 'second' => 'seconds',
+		);
+
+		foreach ($singular as $seconds => $humanized)
+		{
+			$difference = $elapsed / $seconds;
+
+			if ( $difference >= 1 )
+			{
+				$rounded = round($difference);
+
+				return $rounded . ' ' . ( $rounded > 1 ? $plural[ $humanized ] : $humanized ) . " ago";
+			}
+		}
+
+		return '';
+	}
+
 	public function ajaxMessage($id){
 		$wall = Wall::find($id);
 
 		if ($wall!=null && empty( $wall->password ) )
 		{
-
-			$messages;
-			$polls;
 			if(session()->has('wall'.$wall->id)){
 				$messages = Message::with('votes')->where('created_at',session('wall'.$wall->id))->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 				$polls = Poll::with('choices.votes')->where('created_at',session('wall'.$wall->id))->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
@@ -219,5 +271,4 @@ class WallController extends Controller
 			return view('wall.updateshow')->with('posts', $posts)->with('wall', $wall);//->with('result',$result);
 		}
 	}
-
 }
