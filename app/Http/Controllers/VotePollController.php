@@ -6,6 +6,7 @@ use App\Wall;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Http\Requests\VotePollRequest;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
@@ -20,8 +21,6 @@ use Hash;
 
 class VotePollController extends Controller
 {
-
-
 	/**
 	 * Store a newly created vote on a poll in storage.
 	 *
@@ -29,15 +28,28 @@ class VotePollController extends Controller
 	 */
 	public function store(VotePollRequest $request)
 	{
-    $poll_vote = new PollVote();
+    	$poll_vote = new PollVote();
 		$poll_vote->poll_choice_id = $request->input('poll_choice_id');
 		$poll_vote->user_id = $request->input('user_id');
+
+		// Message::where('id',$id);
+		//$pollID = Poll::where('id', );
+
+		// TODO: niet meerdere keren op 1 poll stemmen
+		/*dd(PollChoice::where('id', $poll_vote->poll_choice_id));
+
+		if(!(PollChoice::where('poll_id'))){
+			return redirect()->back()->with('danger', 'New poll vote could not be saved');
+		} */
+
 		$saved = $poll_vote->save();
 		if ($saved)
 		{
-			$pollchoice = PollChoice::where('id', '=', 'message_id')->first();
+			$pollchoice = PollChoice::where('id', $poll_vote->poll_choice_id)->first();
+
 			$pollchoice->count++;
 			$savedChoice = $pollchoice->save();
+
 			if ($savedChoice)
 			{
 				return redirect()->back()->with('success', 'Poll vote success');
@@ -45,7 +57,6 @@ class VotePollController extends Controller
 			else
 			{
 				$poll_vote->delete();
-
 				return redirect()->back()->with('danger', 'Poll choice could not be incremented');
 			}
 		}
@@ -64,20 +75,20 @@ class VotePollController extends Controller
 	public
 	function destroy($id)
 	{
-    $messagevote = PollVote::where('id','=',$id);
-    $deleted = $messagevote->delete();
+    $pollvote = PollVote::where('id','=',$id);
+    $deleted = $pollvote->delete();
     if ($deleted)
 		{
-			$message = PollChoice::where('id', '=', $messagevote->message_id)->first();
-			$message->count--;
-			$savedM = $message->save;
-			if ($savedM)
+			$poll = PollChoice::where('id', '=', $pollvote->poll_id)->first();
+			$poll->count--;
+			$savedP = $poll->save;
+			if ($savedP)
 			{
 				return redirect()->back()->with('success', 'Poll unvote success');
 			}
 			else
 			{
-				$message_vote->delete();
+				$pollvote->delete();
 
 				return redirect()->back()->with('danger', 'Poll could not be unincremented');
 			}

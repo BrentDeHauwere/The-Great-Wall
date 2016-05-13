@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class VotePollRequest extends Request
+class StorePollChoiceRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,11 @@ class VotePollRequest extends Request
     public function rules()
     {
         return [
-        'user_id' => 'required|exists:users,id',
-        'poll_choice_id' => 'required|exists:poll_choices,id',
+            'poll_id' => 'required|exists:polls,id',
+            'user_id' => 'required|exists:users,id',
+            'text' => 'required|string',
+            // 'moderator_id' => 'exists:users,id',
+            'moderation_level' => 'integer',
         ];
     }
 }

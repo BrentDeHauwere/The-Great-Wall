@@ -6,12 +6,17 @@
     margin: 0;
 }
 
-.message .panel-body {
-
-}
-
 .message .panel {
     margin-bottom: 10px;
+}
+
+.answer {
+    color: #000;
+}
+
+.active {
+    background-color: #f5f5f5;
+    color: #000;
 }
 
 .message form {
@@ -34,16 +39,19 @@
     margin: 0;
 }
 
-.optionContainer {
+.choiceContainer {
     margin: auto;
+    background-color: #fff;
 }
 
-.optionContainer .progress-bar {
+.choiceContainer .progress-bar {
     color: #333;
 }
 
 .btn.vote {
     padding: 4px;
+    border-radius: 5px;
+    display: inline-block;
 }
 
 textarea {

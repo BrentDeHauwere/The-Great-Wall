@@ -30,7 +30,7 @@ class MessageController extends Controller
 	 */
 	public function store(StoreMessageRequest $request)
 	{
-    $message = new Message();
+    	$message = new Message();
 		$message->user_id = $request->input('user_id');
 		$message->wall_id = $request->input('wall_id');
 		$message->channel_id = $request->input('channel_id');

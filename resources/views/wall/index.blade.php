@@ -6,6 +6,7 @@
 
 @section('content')
 	<div class="ui divided items" id="walls">
+
 		@foreach ($walls as $wall)
 			<div class="item">
 				<div class="image">
