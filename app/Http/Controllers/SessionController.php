@@ -48,8 +48,14 @@ class SessionController extends Controller
 			}
 		}
 
-		return View::make('session.index')
-			->with('walls', $walls);
+		if (empty($walls))
+		{
+			return View::make('session.index')->with('walls', $walls)->with('info', 'No sessions available.');
+		}
+		else
+		{
+			return View::make('session.index')->with('walls', $walls);
+		}
 	}
 
 	/**
