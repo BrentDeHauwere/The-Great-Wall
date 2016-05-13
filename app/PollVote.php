@@ -20,4 +20,12 @@ class PollVote extends Model
     {
         return $this->belongsTo('App\PollChoice');
     }
+
+    /**
+     * Get the user that owns the vote.
+     */
+    public function user()
+    {
+        return $this->hasOne('App\User', 'id', 'user_id');
+    }
 }

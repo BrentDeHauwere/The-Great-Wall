@@ -20,7 +20,7 @@
 	<form action="{{ action('BlacklistController@store') }}" method="POST">
 		<div class="form-group">
 			<label for="reason">Reason</label>
-			<input id="reason" type="text" name="reason" class="form-control" autofocus="">
+			<input id="reason" type="text" name="reason" class="form-control" autofocus="" value="{{ old('reason') }}">
 		</div>
     <input type="hidden" name="user_id" value="{{ $user_id }}">
 		<input type="hidden" name="message_id" value="{{ $message_id }}">

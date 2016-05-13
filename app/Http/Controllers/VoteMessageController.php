@@ -39,18 +39,18 @@ class VoteMessageController extends Controller
 			$savedM = $message->save;
 			if ($savedM)
 			{
-				return redirect()->back()->with('success', 'Message vote success');
+				return redirect()->back()->with('success', 'Message vote success.');
 			}
 			else
 			{
 				$message_vote->delete();
 
-				return redirect()->back()->with('danger', 'Message could not be incremented');
+				return redirect()->back()->with('error', 'Message could not be incremented.');
 			}
 		}
 		else
 		{
-			return redirect()->back()->with('danger', 'New message vote could not be saved');
+			return redirect()->back()->with('error', 'New message vote could not be saved.');
 		}
 	}
 
@@ -72,13 +72,13 @@ class VoteMessageController extends Controller
 			$savedM = $message->save;
 			if ($savedM)
 			{
-				return redirect()->back()->with('success', 'Message unvote success');
+				return redirect()->back()->with('success', 'Message unvote success.');
 			}
 			else
 			{
-				$message_vote->delete();
+				$messagevote->delete();
 
-				return redirect()->back()->with('error', 'Message could not be unincremented');
+				return redirect()->back()->with('error', 'Message could not be unincremented.');
 			}
 		}
 		else
