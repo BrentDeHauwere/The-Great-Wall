@@ -26,7 +26,7 @@ class SessionController extends Controller
 	 */
 	public function index()
 	{
-		$walls = Wall::withTrashed()->orderBy('name')->get();
+		$walls = Wall::withTrashed()->with('user')->orderBy('name')->get();
 
 		foreach($walls as $wall){
 			if (!empty($wall->password)){
@@ -108,12 +108,14 @@ class SessionController extends Controller
 	public function show($id)
 	{
 		$userid = 1; //getfromloggedinuser
-		$messages = Message::with("votes")->where("wall_id", "=", $id)->get();
-		$polls = Poll::with("choices.votes")->where("wall_id", "=", $id)->get();
+		$wall = Wall::findOrFail($id);
+		$messages = Message::with("votes", "user")->where("wall_id", "=", $id)->get();
+		$polls = Poll::with("choices.votes", "user")->where("wall_id", "=", $id)->get();
 
-		$result = DB::select(DB::raw("SELECT id,text,moderation_level,created_at,'M' FROM messages UNION SELECT id,question,moderation_level,created_at,'P' FROM polls ORDER BY created_at desc"));
+		$result = DB::select(DB::raw("SELECT id,user_id,text,moderation_level,created_at,'M' FROM messages UNION SELECT id,user_id,question,moderation_level,created_at,'P' FROM polls ORDER BY created_at desc"));
 
 		return View::make('session.show')
+			->with('wall', $wall)
 			->with("messages",$messages)->with("polls",$polls)->with("result",json_decode(json_encode($result),true));
 	}
 
