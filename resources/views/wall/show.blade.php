@@ -10,7 +10,6 @@
 	 if(data.message.question_id == null){
      var iets = "text:" + data.message.text + ".";
      console.log(iets);
-     $("#title").after(iets);
    }
    else if(data.message.question_id != null){
      console.log(data.message.text);
