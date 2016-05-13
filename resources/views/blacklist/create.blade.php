@@ -11,7 +11,7 @@
 		<form class="ui form" action="{{ action('BlacklistController@store') }}" method="post">
 			<div class="field">
 				<label for="reason">Reason</label>
-				<input type="text" name="reason" placeholder="Reason" id="reason" autofocus="" value="{{ old('reason') }}">
+				<textarea name="reason" placeholder="Reason" id="reason" autofocus="">{{ old('reason') }}</textarea>
 			</div>
 			<input type="hidden" name="user_id" value="{{ $user_id }}">
 			<input type="hidden" name="message_id" value="{{ $message_id }}">

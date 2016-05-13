@@ -11,7 +11,7 @@
 		<form class="ui form" action="{{action('BlacklistController@update', $blacklistedUser->id)}}" method="post">
 			<div class="field">
 				<label for="reason">Reason</label>
-				<input type="text" name="reason" placeholder="Reason" id="reason" value="{{ $blacklistedUser->reason }}">
+				<textarea name="reason" placeholder="Reason" id="reason" autofocus="">{{ $blacklistedUser->reason }}</textarea>
 			</div>
 			{{ csrf_field() }}
 			<input type="hidden" name="_method" value="put">
