@@ -30,7 +30,7 @@ class MessageController extends Controller
 	 */
 	public function store(StoreMessageRequest $request)
 	{
-    	$message = new Message();
+    $message = new Message();
 		$message->user_id = $request->input('user_id');
 		$message->wall_id = $request->input('wall_id');
 		$message->channel_id = $request->input('channel_id');
@@ -51,7 +51,9 @@ class MessageController extends Controller
 		$saved = $message->save();
 		if ($saved)
 		{
-			Event::fire(new NewMessageEvent($message));
+			$client = new \Capi\Clients\GuzzleClient();
+			$response = $client->post('broadcast', 'msg1.msg',['message' => $message]);
+
 			return redirect()->back()->with('success', 'Message saved successfully.');
 		}
 		else
@@ -101,6 +103,9 @@ class MessageController extends Controller
 			$saved = $message->save();
 			if ($saved)
 			{
+				$client = new \Capi\Clients\GuzzleClient();
+				$response = $client->post('broadcast', 'msg1.msg.moda',['message' => $message]);
+
 				return redirect()->back()->with("success", "Message was accepted.");
 			}
 			else
@@ -132,6 +137,9 @@ class MessageController extends Controller
 			$saved = $message->save();
 			if ($saved)
 			{
+				$client = new \Capi\Clients\GuzzleClient();
+				$response = $client->post('broadcast', 'msg1.msg.modd',['message' => $message]);
+
 				return redirect()->back()->with("success", "Message was blocked.");
 			}
 			else

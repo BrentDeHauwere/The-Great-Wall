@@ -3,8 +3,8 @@
 @section('header')
 <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
 <script>
- var socket = io('http://localhost:3000');
- socket.on('messagewall1.wall.{{ $wall->id }}.messages:App\\Events\\NewMessageEvent',function(data){
+ var socket = io('http://socket.ehackb.be:3000');
+ socket.on('msg1.msg:App\\Events\\NewMessageEvent',function(data){
    console.log("Message: " + data);
    console.log(data.message.wall_id);
    console.log(data.message.question_id);
@@ -18,18 +18,52 @@
      $("#answers"+data.message.question_id).after("<li>" + data.message.text + "</li>");
    }
  });
- socket.on('messagewall1.wall.{{ $wall->id }}.polls:App\\Events\\NewPollEvent',function(data){
+ socket.on('msg1.msg.vote:App\\Events\\NewMessageEvent',function(data){
+   console.log("Message Vote: " + data);
+   console.log(data.message.wall_id);
+   console.log(data.message.question_id);
+	 if(data.message.question_id == null){
+     var iets = "text:" + data.message.text + ".";
+     console.log(iets);
+   }
+   else if(data.message.question_id != null){
+     console.log(data.message.text);
+     console.log($("#answers"+data.message.question_id));
+     $("#answers"+data.message.question_id).after("<li>" + data.message.text + "</li>");
+   }
+ });
+ socket.on('msg1.polls:App\\Events\\NewPollEvent',function(data){
    console.log("Poll: " +data);
    console.log(data.poll.wall_id);
    console.log(data.poll.question_id);
  });
- socket.on('messagewall1.wall.{{ $wall->id }}.message.moderator.accepted:App\\Events\\NewMessageModeratorAcceptedEvent',function(data){
-   console.log("Moderator Accepted: " + data);
+ socket.on('msg1.polls.choices:App\\Events\\NewPollEvent',function(data){
+   console.log("Poll Choice: " +data);
    console.log(data.poll.wall_id);
    console.log(data.poll.question_id);
  });
- socket.on('messagewall1.wall.{{ $wall->id }}.message.moderator.declined:App\\Events\\NewMessageModeratorDeclinedEvent',function(data){
-   console.log("Moderator Declined: " +data);
+ socket.on('msg1.polls.vote:App\\Events\\NewPollEvent',function(data){
+   console.log("Poll Vote: " +data);
+   console.log(data.poll.wall_id);
+   console.log(data.poll.question_id);
+ });
+ socket.on('msg1.msg.moda:App\\Events\\NewMessageModeratorAcceptedEvent',function(data){
+   console.log("Moderator Message Accepted: " + data);
+   console.log(data.poll.wall_id);
+   console.log(data.poll.question_id);
+ });
+ socket.on('msg1.msg.modd:App\\Events\\NewMessageModeratorDeclinedEvent',function(data){
+   console.log("Moderator Message Declined: " +data);
+   console.log(data.poll.wall_id);
+   console.log(data.poll.question_id);
+ });
+ socket.on('msg1.polls.moda:App\\Events\\NewMessageModeratorAcceptedEvent',function(data){
+   console.log("Moderator Poll Accepted: " + data);
+   console.log(data.poll.wall_id);
+   console.log(data.poll.question_id);
+ });
+ socket.on('msg1.polls.modd:App\\Events\\NewMessageModeratorDeclinedEvent',function(data){
+   console.log("Moderator Poll Declined: " +data);
    console.log(data.poll.wall_id);
    console.log(data.poll.question_id);
  });

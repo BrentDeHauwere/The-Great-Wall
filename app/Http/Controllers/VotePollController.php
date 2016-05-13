@@ -52,6 +52,9 @@ class VotePollController extends Controller
 
 			if ($savedChoice)
 			{
+				$client = new \Capi\Clients\GuzzleClient();
+				$response = $client->post('broadcast', 'msg1.polls.vote',['pollvote' => $poll_vote]);
+
 				return redirect()->back()->with('success', 'Poll vote success.');
 			}
 			else
