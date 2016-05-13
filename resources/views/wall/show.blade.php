@@ -208,13 +208,14 @@
 				<h4 class="panel-title">
 					@unless($post[1]->anonymous)
 						{{$post[2]->name}}
-
-						@else
-							Anoniem
-							@endunless
-							<small> {{
-									\App\Http\Controllers\WallController::humanTimeDifference($post[1]->created_at)
-								}}</small>
+					@else
+						Anoniem
+					@endunless
+					<small>
+						{{
+							\App\Http\Controllers\WallController::humanTimeDifference($post[1]->created_at)
+						}}
+					</small>
 				</h4>
 			</div>
 			<div class="panel-body messageBody">
@@ -229,39 +230,41 @@
 							<!-- upvote -->
 							<div class="buttons pull-right">
 								@unless($post[2]->id==$user->id)
-								<form>
-									<input type="hidden" name="message_id" value={{$post[1]->id}}>
-									<!-- ID of the OP -->
-									<input type="hidden" name="user_id" value={{$post[2]->id}}>
+									<form>
+										<input type="hidden" name="message_id" value={{$post[1]->id}}>
+										<!-- ID of the OP -->
+										<input type="hidden" name="user_id" value={{$post[2]->id}}>
 
-									@unless($user->id==$post[2]->id)
-										<button type="submit" class="form-control upvote active">
-											<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-										</button>
-									@endunless
-								</form>
-							</div>
-							<b>
-								@unless($answer->anonymous)
-									{{$post[2]->name}}
-									@else
-										Anoniem
+										@unless($user->id==$post[2]->id)
+											<button type="submit" class="form-control upvote active">
+												<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+											</button>
 										@endunless
-										<small> {{
-											\App\Http\Controllers\WallController::humanTimeDifference($post[1]->created_at)
-											}}</small>
-							</b>
+									</form>
+								@endunless
+							</div>
+
+							@unless($answer->anonymous)
+								{{$answer->user->name}}
+							@else
+								Anoniem
+							@endunless
+							<small>
+								{{
+									\App\Http\Controllers\WallController::humanTimeDifference($post[1]->created_at)
+								}}
+							</small>
 							<p class="answer">{{$answer->text}}</p>
 						</li>
 					@endforeach
 				</ul>
 
-					<!-- antwoord toevoegen -->
+				<!-- antwoord toevoegen -->
 				<form method="POST" action="/message">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					<input type="hidden" name="question_id" value="{{$post[1]->id}}">
 					<input type="hidden" name="channel_id" value="{{1}}">
-					<input type="hidden" name="user_id" value="{{1}}">
+					<input type="hidden" name="user_id" value="{{$user->id}}">
 					<input type="hidden" name="wall_id" value="{{$wall->id}}">
 					<div class="input-group">
 						<div class="input-group-addon input-wall">
@@ -275,6 +278,7 @@
 							 </span>
 					</div>
 				</form>
+			@endunless
 		</div>
 	</div>
 	@endif
