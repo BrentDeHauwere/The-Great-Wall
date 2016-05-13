@@ -186,13 +186,13 @@
 			<div class="panel-heading">
 				<!-- upvote -->
 				<div class="buttons pull-right">
-					@unless($post[2]->id==$user->id)
+					@unless($post[2]->id==Auth::user()->id)
 						<form method="POST" action="/votemessage">
 							<input type="hidden" name="_token" value="{{ csrf_token() }}">
 							<input type="hidden" name="message_id" value="{{$post[1]->id}}">
-							<input type="hidden" name="user_id" value="{{$user->id}}">
+							<input type="hidden" name="user_id" value="{{Auth::user()->id}}">
 
-							@if($user->messageVotes()->where('message_id',$post[1]->id)->first())
+							@if(Auth::user()->messageVotes()->where('message_id',$post[1]->id)->first())
 								<button class="active" type="submit">
 									<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
 								</button>
@@ -208,14 +208,14 @@
 				<h4 class="panel-title">
 					@unless($post[1]->anonymous)
 						{{$post[2]->name}}
-					@else
-						Anoniem
-					@endunless
-					<small>
-						{{
-							\App\Http\Controllers\WallController::humanTimeDifference($post[1]->created_at)
-						}}
-					</small>
+						@else
+							Anoniem
+							@endunless
+							<small>
+								{{
+									\App\Http\Controllers\WallController::humanTimeDifference($post[1]->created_at)
+								}}
+							</small>
 				</h4>
 			</div>
 			<div class="panel-body messageBody">
@@ -229,13 +229,13 @@
 						<li class="list-group-item">
 							<!-- upvote -->
 							<div class="buttons pull-right">
-								@unless($post[2]->id==$user->id)
+								@unless($post[2]->id==Auth::user()->id)
 									<form>
 										<input type="hidden" name="message_id" value={{$post[1]->id}}>
 										<!-- ID of the OP -->
 										<input type="hidden" name="user_id" value={{$post[2]->id}}>
 
-										@unless($user->id==$post[2]->id)
+										@unless(Auth::user()->id==$post[2]->id)
 											<button type="submit" class="form-control upvote active">
 												<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
 											</button>
@@ -246,25 +246,26 @@
 
 							@unless($answer->anonymous)
 								{{$answer->user->name}}
-							@else
-								Anoniem
-							@endunless
-							<small>
-								{{
-									\App\Http\Controllers\WallController::humanTimeDifference($post[1]->created_at)
-								}}
-							</small>
-							<p class="answer">{{$answer->text}}</p>
+								@else
+									Anoniem
+									@endunless
+									<small>
+										{{
+											\App\Http\Controllers\WallController::humanTimeDifference($post[1]->created_at)
+										}}
+									</small>
+									<p class="answer">{{$answer->text}}</p>
 						</li>
 					@endforeach
 				</ul>
+				@endunless
 
-				<!-- antwoord toevoegen -->
+					<!-- antwoord toevoegen -->
 				<form method="POST" action="/message">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					<input type="hidden" name="question_id" value="{{$post[1]->id}}">
 					<input type="hidden" name="channel_id" value="{{1}}">
-					<input type="hidden" name="user_id" value="{{$user->id}}">
+					<input type="hidden" name="user_id" value="{{Auth::user()->id}}">
 					<input type="hidden" name="wall_id" value="{{$wall->id}}">
 					<div class="input-group">
 						<div class="input-group-addon input-wall">
@@ -278,7 +279,7 @@
 							 </span>
 					</div>
 				</form>
-			@endunless
+
 		</div>
 	</div>
 	@endif
@@ -316,9 +317,9 @@
 								<!-- OK button -->
 								<input type="hidden" name="_token" value="{{ csrf_token() }}">
 								<input type="hidden" name="poll_choice_id" value={{$choice->id}}>
-								<input type="hidden" name="user_id" value={{$user->id}}>
+								<input type="hidden" name="user_id" value={{Auth::user()->id}}>
 
-								@if($user->pollVotes()->where('poll_choice_id',$choice->id)->first())
+								@if(Auth::user()->pollVotes()->where('poll_choice_id',$choice->id)->first())
 									<button type="submit" class="btn btn-default vote active">
 										<span class="glyphicon glyphicon-ok" area-hidden="true"></span>
 									</button>
@@ -369,7 +370,7 @@
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					<input type="hidden" name="user_id" value={{1}}>
 					<input type="hidden" name="poll_id" value={{$post[1]->id}}>
-					<input type="text" name="text" class="form-control" placeholder="Uw antwoord">
+					<input type="text" name="text" class="form-control" placeholder="Uw optie">
 							<span class="input-group-btn">
 								 <button class="btn btn-default" type="submit">
 									 Antw.
