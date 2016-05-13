@@ -12,4 +12,12 @@ class Blacklist extends Model
 	 * @var bool
 	 */
 	public $timestamps = false;
+
+	/**
+	 * Get the user that owns the blacklist record.
+	 */
+	public function user()
+	{
+		return $this->hasOne('App\User', 'id', 'user_id');
+	}
 }

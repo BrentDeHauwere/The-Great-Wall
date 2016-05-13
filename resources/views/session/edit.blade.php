@@ -54,5 +54,4 @@
 
 		<input type="submit" value="Edit the wall" class="btn btn-default">
 	</form>
-	{{ 'open tot' . $wall->open_until }}
 @endsection

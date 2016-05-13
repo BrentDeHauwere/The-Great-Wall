@@ -104,18 +104,17 @@ class VotePollController extends Controller
 
 			if ( $savedChoice )
 			{
-				return redirect()->back()->with('success', 'Poll vote success');
+				return redirect()->back()->with('success', 'Poll vote success.');
 			}
 			else
 			{
 				$poll_vote->delete();
-
-				return redirect()->back()->with('danger', 'Poll vote could not be incremented');
+				return redirect()->back()->with('error', 'Poll choice could not be incremented.');
 			}
 		}
 		else
 		{
-			// return redirect()->back()->with('danger', 'New poll vote could not be saved');
+			return redirect()->back()->with('error', 'New poll vote could not be saved.');
 		}
 	}
 
@@ -137,18 +136,17 @@ class VotePollController extends Controller
 			$savedP = $poll->save;
 			if ( $savedP )
 			{
-				return redirect()->back()->with('success', 'Poll unvote success');
+				return redirect()->back()->with('success', 'Poll unvote success.');
 			}
 			else
 			{
 				$pollvote->delete();
-
-				return redirect()->back()->with('danger', 'Poll could not be unincremented');
+				return redirect()->back()->with('error', 'Poll could not be unincremented.');
 			}
 		}
 		else
 		{
-			return redirect()->back()->with('danger', 'Poll vote could not be undone');
+			return redirect()->back()->with('error', 'Poll vote could not be undone.');
 		}
 	}
 }

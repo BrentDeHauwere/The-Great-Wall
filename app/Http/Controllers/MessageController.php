@@ -49,11 +49,11 @@ class MessageController extends Controller
 		$saved = $message->save();
 		if ($saved)
 		{
-			return redirect()->back()->with('success', 'Saved succesfully');
+			return redirect()->back()->with('success', 'Message saved successfully.');
 		}
 		else
 		{
-			return redirect()->back()->with('danger', 'Message could not be saved');
+			return redirect()->back()->with('error', 'Message could not be saved.');
 		}
 
 	}
@@ -69,10 +69,10 @@ class MessageController extends Controller
 		$message = Message::where('id',$id);
 		$deleted = $message->delete();
 		if($deleted){
-			return redirect()->back()->with('success', 'Destroyed succesfully');
+			return redirect()->back()->with('success', 'Message destroyed successfully.');
 		}
 		else{
-			return redirect()->back()->with('danger', 'Message could not be destroyed');
+			return redirect()->back()->with('error', 'Message could not be destroyed.');
 		}
 	}
 
@@ -94,16 +94,16 @@ class MessageController extends Controller
 			$saved = $message->save();
 			if ($saved)
 			{
-				return redirect()->back()->with("success", "Message was accepted");
+				return redirect()->back()->with("success", "Message was accepted.");
 			}
 			else
 			{
-				return redirect()->back()->with("danger", "Message could not be saved");
+				return redirect()->back()->with("error", "Message could not be saved.");
 			}
 		}
 		else
 		{
-			return redirect()->back()->with("danger", "No message found with this id to be moderated by you");
+			return redirect()->back()->with("error", "No message found with this id to be moderated by you.");
 		}
 	}
 
@@ -125,16 +125,16 @@ class MessageController extends Controller
 			$saved = $message->save();
 			if ($saved)
 			{
-				return redirect()->back()->with("success", "Message was blocked");
+				return redirect()->back()->with("success", "Message was blocked.");
 			}
 			else
 			{
-				return redirect()->back()->with("danger", "Message could not be saved");
+				return redirect()->back()->with("error", "Message could not be saved.");
 			}
 		}
 		else
 		{
-			return redirect()->back()->with("danger", "No message found with this id to be moderated by you");
+			return redirect()->back()->with("error", "No message found with this id to be moderated by you.");
 		}
 	}
 }
