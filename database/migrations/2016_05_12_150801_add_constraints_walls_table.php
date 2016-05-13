@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBlacklistsTable extends Migration
+class AddConstraintsWallsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,11 +12,8 @@ class CreateBlacklistsTable extends Migration
      */
     public function up()
     {
-        Schema::create('blacklists', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id')->unsigned()->unique();
-            $table->longText('reason');
-            $table->dateTime('created_at');
+        Schema::table('walls', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -27,6 +24,8 @@ class CreateBlacklistsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('blacklists');
+        Schema::table('walls', function (Blueprint $table) {
+            $table->dropForeign('walls_user_id_foreign');
+        });
     }
 }

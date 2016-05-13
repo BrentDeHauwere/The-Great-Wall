@@ -15,7 +15,7 @@
 		<link rel="stylesheet" href="/css/style.css"/>
 		-->
 
-		<!-- Semantic UI -->
+		<!-- Semantic UI - CSS -->
 		<link rel="stylesheet" type="text/css" href="/semantic/dist/semantic.min.css">
 		<link rel="stylesheet" type="text/css" href="/css/customize_semantic.css">
 
@@ -39,8 +39,7 @@
 		</script>
 	</head>
 	<body>
-
-		<div class="ui inverted segment noradius">
+		<div class="ui inverted segment" id="navigation">
 			<div class="ui inverted secondary pointing menu">
 				<a class="item" href="{{ route('home') }}" id="home">
 					Home
@@ -63,31 +62,54 @@
 				</div>
 			</div>
 		</div>
+		<div id="navigation_margin">
+		</div>
 
 		@if(session()->has('success'))
 			@success({{ session('success') }})
+		@elseif(!empty($success))
+			@success({{ $success }})
 		@endif
 
 		@if(session()->has('warning'))
 			@warning({{ session('warning') }})
+		@elseif(!empty($warning))
+			@warning({{ $warning }})
 		@endif
 
-		@if(session()->has('danger'))
-			@danger({{ session('danger') }})
+		@if(session()->has('error'))
+			@error({{ session('error') }})
+		@elseif(!empty($error))
+			@error({{ $error }})
 		@endif
 
 		@if(session()->has('info'))
 			@info({{ session('info') }})
+		@elseif(!empty($info))
+			@info({{ $info }})
 		@endif
+
+		<script>
+			$('.message .close')
+				.on('click', function() {
+					$(this)
+						.closest('.message')
+						.transition('fade')
+					;
+				})
+			;
+		</script>
 
 		@yield('content')
 
+		<div id="footer_margin">
+		</div>
 		<footer>
 			<p>Made by Brent De Hauwere, Eli Boey, Jonas De Pelsmaeker and Kamiel Klumpers</p>
 		</footer>
 		@yield('footer')
 
-			<!-- Semantic UI -->
+			<!-- Semantic UI - JS -->
 		<script src="/semantic/dist/semantic.min.js"></script>
 		<script src="/js/customize_semantic.js"></script>
 	</body>

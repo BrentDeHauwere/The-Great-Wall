@@ -38,4 +38,12 @@ class Wall extends Model
     {
         return $this->hasMany('App\Poll');
     }
+
+    /**
+     * Get the user that owns the wall.
+     */
+    public function user()
+    {
+        return $this->hasOne('App\User', 'id', 'user_id');
+    }
 }
