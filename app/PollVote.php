@@ -18,7 +18,7 @@ class PollVote extends Model
      */
     public function choice()
     {
-        return $this->belongsTo('App\PollChoice');
+        return $this->belongsTo('App\PollChoice','poll_choice_id','id');
     }
 
     /**

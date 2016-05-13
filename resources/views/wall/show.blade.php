@@ -13,8 +13,7 @@
 
 @section('content')
 	<div class=" container messagesContainer center-block">
-		<h3>{{$wall->name}}</h3>
-
+		<h3>{{$wall->name." - ".$user->name}}</h3>
 		@foreach($posts as $post)
 
 		@if($post[0]=='m')
@@ -25,18 +24,35 @@
 				<div class="panel-heading">
 					<!-- upvote -->
 					<div class="buttons pull-right">
+						@unless($post[2]->id==$user->id)
+							<form method="POST" action="/votemessage">
+								<input type="hidden" name="_token" value="{{ csrf_token() }}">
+								<input type="hidden" name="message_id" value="{{$post[1]->id}}">
+								<input type="hidden" name="user_id" value="{{$user->id}}">
 
-						<a class="">
-							<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-						</a>
+								@if($user->messageVotes()->where('message_id',$post[1]->id)->first())
+									<button class="active" type="submit">
+										<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+									</button>
+								@else
+									<button class="" type="submit">
+										<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+									</button>
+								@endif
+							</form>
+						@endunless
+						{{"upvotes: ".$post[1]->count}}
 					</div>
 					<h4 class="panel-title">
 						@unless($post[1]->anonymous)
-							{{$post[1]->user_id}}
+							{{$post[2]->name}}
+
 							@else
 								Anoniem
 								@endunless
-								<small>at {{$post[1]->created_at}}</small>
+								<small> {{
+									\App\Http\Controllers\WallController::humanTimeDifference($post[1]->created_at)
+								}}</small>
 					</h4>
 				</div>
 				<div class="panel-body messageBody">
@@ -52,20 +68,25 @@
 								<div class="buttons pull-right">
 									<form>
 										<input type="hidden" name="message_id" value={{$post[1]->id}}>
-										<!-- ID of the logged-in user -->
-										<input type="hidden" name="user_id" value={{1}}>
-										<button type="submit" class="form-control upvote active">
-											<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-										</button>
+										<!-- ID of the OP -->
+										<input type="hidden" name="user_id" value={{$post[2]->id}}>
+
+										@unless($user->id==$post[2]->id)
+											<button type="submit" class="form-control upvote active">
+												<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+											</button>
+										@endunless
 									</form>
 								</div>
 								<b>
 									@unless($answer->anonymous)
-										{{$answer->user_id}}
+										{{$post[2]->name}}
 										@else
 											Anoniem
 											@endunless
-											<small> at {{$answer->created_at}}</small>
+											<small> {{
+											\App\Http\Controllers\WallController::humanTimeDifference($post[1]->created_at)
+											}}</small>
 								</b>
 								<p class="answer">{{$answer->text}}</p>
 							</li>
@@ -101,8 +122,10 @@
 		<div class="row message poll">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h4 class="panel-title">{{$post[1]->user_id}}
-						<small>{{$post[1]->created_at}}</small>
+					<h4 class="panel-title">{{$post[2]->name}}
+						<small>{{
+						\App\Http\Controllers\WallController::humanTimeDifference($post[1]->created_at)
+						}}</small>
 					</h4>
 				</div>
 				<div class="panel-body messageBody">
@@ -127,10 +150,18 @@
 									<!-- OK button -->
 									<input type="hidden" name="_token" value="{{ csrf_token() }}">
 									<input type="hidden" name="poll_choice_id" value={{$choice->id}}>
-									<input type="hidden" name="user_id" value={{1}}>
-									<button type="submit" class="btn btn-default vote">
-										<span class="glyphicon glyphicon-ok" area-hidden="true"></span>
-									</button>
+									<input type="hidden" name="user_id" value={{$user->id}}>
+
+									@if($user->pollVotes()->where('poll_choice_id',$choice->id)->first())
+										<button type="submit" class="btn btn-default vote active">
+											<span class="glyphicon glyphicon-ok" area-hidden="true"></span>
+										</button>
+									@else
+										<button type="submit" class="btn btn-default vote">
+											<span class="glyphicon glyphicon-ok" area-hidden="true"></span>
+										</button>
+									@endif
+
 									<span class="progress-opt">{{$choice->text}}</span>
 								</form>
 							</div>
@@ -172,7 +203,7 @@
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 						<input type="hidden" name="user_id" value={{1}}>
 						<input type="hidden" name="poll_id" value={{$post[1]->id}}>
-						<input type="text"  name="text" class="form-control" placeholder="Uw antwoord">
+						<input type="text" name="text" class="form-control" placeholder="Uw antwoord">
 							<span class="input-group-btn">
 								 <button class="btn btn-default" type="submit">
 									 Antw.

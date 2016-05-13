@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Requests\VotePollRequest;
+use DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
@@ -43,7 +44,6 @@ class VotePollController extends Controller
 			$query->where('user_id', $poll_vote->user_id);
 		} ])->where('id', $pollChoice->poll_id)->first();
 
-
 		// check if multiple votes already exist, if so --> delete them
 		$existingVotes = 0;
 		foreach ($poll->choices as $choice)
@@ -65,12 +65,17 @@ class VotePollController extends Controller
 			{
 				foreach ($choice->votes as $vote)
 				{
-					// PollVote::destroy([$vote->poll_choice_id, $vote->user_id]);
-					$votes=Pollvote::with(['choice.votes' => function ($query) use ($vote)
+					// kga hier toch nen pv van moeten opstellen
+					$pv = $choice->votes->filter(function ($v) use ($poll_vote)
 					{
-						$query->where('user_id', $vote->user_id);
-					}])->delete();
-					$choice->count-=1;
+						return ($v->user_id==$poll_vote->user_id);
+					})
+					->first();
+
+					DB::delete('delete from poll_votes where poll_choice_id = ? and user_id = ?',
+						array($pv->poll_choice_id, $pv->user_id));
+					
+					$choice->count -= 1;
 					$choice->save();
 				}
 			}
@@ -109,6 +114,7 @@ class VotePollController extends Controller
 			else
 			{
 				$poll_vote->delete();
+
 				return redirect()->back()->with('error', 'Poll choice could not be incremented.');
 			}
 		}
@@ -141,6 +147,7 @@ class VotePollController extends Controller
 			else
 			{
 				$pollvote->delete();
+
 				return redirect()->back()->with('error', 'Poll could not be unincremented.');
 			}
 		}
