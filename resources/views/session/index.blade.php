@@ -1,6 +1,6 @@
 @extends('masterlayout')
 
-@section('title', 'Walls')
+@section('title', 'Sessions')
 
 @section('page','moderate')
 
