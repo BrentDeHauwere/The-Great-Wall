@@ -22,19 +22,16 @@
 |
 */
 
-Route::group(['middleware' => ['web']], function ()
-{
+Route::group(['middleware' => ['web']], function () {
 
 	// ---------- INDEX ----------
-	Route::get('/', ['as' => 'home', function ()
-	{
+	Route::get('/', ['as' => 'home', function() {
 		// User should be logged in, therefore will have a role
 		// Based on the role, we will redirect the user to the correct page
 		// TO DO: get the role of the user
 		$role = 'Bezoeker';
 
-		switch ($role)
-		{
+		switch ($role) {
 			case 'Bezoeker':
 				return redirect()->action('WallController@index');
 				break;
@@ -52,8 +49,8 @@ Route::group(['middleware' => ['web']], function ()
 	Route::resource('session', 'SessionController');
 	Route::post('session/{id}/revertDestroy', 'SessionController@revertDestroy');
 	// Actions (performed on a session view)
-	Route::post('message/accept', 'MessageController@accept');
-	Route::post('message/decline', 'MessageController@decline');
+	Route::post('message/accept','MessageController@accept');
+	Route::post('message/decline','MessageController@decline');
 
 	// ---------- BLACKLIST ----------
 	// Blacklist - Moderator
@@ -61,35 +58,21 @@ Route::group(['middleware' => ['web']], function ()
 
 	// ---------- WALLS ----------
 	// Views
-	Route::resource('wall', 'WallController', ['only' => ['index', 'show']]);
+	Route::resource('wall', 'WallController',['only' => ['index','show']]);
 	// Wall - Actions to perform on a wall
-	Route::post('wall/enter', 'WallController@enterWallWithPassword');
-	Route::resource('message', 'MessageController', ['only' => ['store', 'destroy']]);
-	Route::resource('poll', 'PollController', ['only' => ['store', 'destroy']]);
-	Route::resource('pollchoice', 'PollChoiceController', ['only' => ['store', 'destroy']]);
-	Route::resource('votemessage', 'VoteMessageController', ['only' => ['store', 'destroy']]);
-	Route::resource('votepoll', 'VotePollController', ['only' => ['store', 'destroy']]);
+	Route::post('wall/enter','WallController@enterWallWithPassword');
+	Route::resource('message', 'MessageController',['only' => ['store', 'destroy']]);
+	Route::resource('poll', 'PollController',['only' => ['store', 'destroy']]);
+	Route::resource('pollchoice', 'PollChoiceController',['only' => ['store', 'destroy']]);
+	Route::resource('votemessage', 'VoteMessageController',['only' => ['store', 'destroy']]);
+	Route::resource('votepoll', 'VotePollController',['only' => ['store', 'destroy']]);
 
 });
 
-Route::group(['prefix' => 'api', 'middleware' => ['web']], function ()
-{
+Route::group(['prefix' => 'api', 'middleware' => ['web']], function () {
 	Route::get('walls', 'ApiController@walls');
 	Route::get('messages', 'ApiController@messages');
 	Route::get('polls', 'ApiController@polls');
 	Route::get('blacklist', 'ApiController@blacklist');
 	Route::get('{requestedPage}', 'ApiController@badPage');
-});
-
-Route::group(['prefix' => 'twitter', 'middleware' => ['web']], function ()
-{
-	Route::get('{query}', function ($query)
-	{
-		$tweets = Twitter::getSearch(['q'           => "#" . $query,
-									  'result_type' => 'recent',
-									  'format'      => 'array']);
-
-
-		return response()->json($tweets);
-	});
 });

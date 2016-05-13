@@ -156,11 +156,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        /*
-         * Twitter API: https://github.com/thujohn/twitter
-         */
-        Thujohn\Twitter\TwitterServiceProvider::class,
-
     ],
 
     /*
@@ -207,10 +202,6 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-        /*
-         * Twitter API: https://github.com/thujohn/twitter
-         */
-        'Twitter' => Thujohn\Twitter\Facades\Twitter::class,
     ],
 
 ];
