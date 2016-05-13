@@ -134,7 +134,7 @@ class SessionController extends Controller
 		$wall->open_until = str_replace(' ', 'T', $wall->open_until);
 
 		return View::make('session.edit')
-			->with('wall', $wall)->with('success','Something');
+			->with('wall', $wall);
 	}
 
 	/**
