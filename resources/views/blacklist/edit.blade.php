@@ -5,7 +5,7 @@
 @section('page','blacklist')
 
 @section('content')
-	<h1>Edit - {{ $blacklistedUser->name }}</h1>
+	<h1>Edit - {{ $blacklistedUser->user->name }}</h1>
 
 	@if (count($errors) > 0)
 		<div class="alert alert-danger">
@@ -20,7 +20,7 @@
 	<form action="{{action('BlacklistController@update', $blacklistedUser->id)}}" method="post">
 		<div class="form-group">
 			<label for="reason">Reason</label>
-			<input id="reason" type="text" name="reason" class="form-control">
+			<input id="reason" type="text" name="reason" class="form-control" value="{{ $blacklistedUser->reason }}">
 		</div>
 		{{ csrf_field() }}
 		<input type="hidden" name="_method" value="put">

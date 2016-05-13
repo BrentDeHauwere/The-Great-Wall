@@ -27,8 +27,14 @@ class WallController extends Controller
 	 */
 	public function index()
 	{
-		$walls = DB::table('walls')->select('walls.*', 'users.name as username')->leftJoin('users', 'walls.user_id', '=', 'users.id')->where('walls.deleted_at', null)->Where('open_until', 0)->orWhere('open_until', '>', date('Y-m-d H:i:s'))->get();
-
+		$walls = DB::table('walls')->select('walls.*', 'users.name as username')->leftJoin('users', 'walls.user_id', '=', 'users.id')
+			->where('walls.deleted_at', null)
+			->where(function ($query) {
+				$query->where('open_until', 0)
+					->orWhere('open_until','>',date('Y-m-d H:i:s'));
+			})
+			->get();
+		
 		return view('wall.index')->with('walls', $walls);
 	}
 
@@ -69,7 +75,7 @@ class WallController extends Controller
 		}
 		else
 		{
-			redirect()->back()->with("error", "No password was provided");
+			redirect()->back()->with("error", "No password was provided.");
 		}
 	}
 
@@ -95,7 +101,7 @@ class WallController extends Controller
 		}
 		else
 		{
-			return redirect('wall/')->with('danger', "Wrong password. Please try again.");
+			return redirect('wall/')->with('error', "Wrong password. Please try again.");
 		}
 	}
 

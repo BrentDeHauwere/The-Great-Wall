@@ -1,22 +1,55 @@
-.noradius {
+/*
+ ========== OVERAL ==========
+ */
+.body_customized {
+	width: 90%;
+	margin: 0 auto;
+}
+
+.form_inline_customize {
+	display: inline;
+}
+
+.message {
+	width: 90%;
+	margin-left: auto !important;
+	margin-right: auto !important;
+	margin-top: 0 !important;
+}
+
+/*
+ ========== NAVIGATION ==========
+ */
+#navigation {
 	border-radius: 0 !important;
+	position: fixed;
+	width: 100%;
+	z-index: 1;
+}
+
+#navigation_margin {
+	height: 100px;
+	width: 100%;
 }
 
 .icon_customized {
 	margin-left: 5px !important;
 }
 
+
 /*
  ========== WALLS - Index ==========
  */
 #walls {
-	width: 90%;
-	margin: 0 auto;
 	padding: 14px;
 	border: 1px solid rgba(34,36,38,.15);
 	border-radius: 0.3em;
 }
 
+.search {
+	float: right;
+	margin-bottom: 14px;
+}
 
 /*
  ========== FOOTER ==========
@@ -28,10 +61,14 @@ footer {
 	background: black;
 	text-align: center;
 	bottom: 0;
-	position: absolute;
+	position: fixed;
 	width: 100%;
 }
 
 footer p {
 	line-height: 3em;
+}
+
+#footer_margin {
+	height: 5em;
 }
