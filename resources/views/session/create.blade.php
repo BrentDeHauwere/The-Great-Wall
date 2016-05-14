@@ -19,7 +19,7 @@
 			<div class="field required">
 				<label for="name">Speaker</label>
 				<div class="ui fluid selection dropdown required">
-					<input type="hidden" name="speaker">
+					<input type="hidden" name="speaker" value="{{ old('speaker') }}">
 					<i class="dropdown icon"></i>
 					<div class="default text">Select Speaker</div>
 					<div class="menu">
@@ -36,11 +36,32 @@
 								</div>
 							@endif
 						@endforeach
-
-
 					</div>
 				</div>
 				@helper('speaker')
+			</div>
+
+			<div class="field">
+				<label for="description">Description</label>
+				<textarea id="description" type="text" name="description" placeholder="Description">{{ old('description') }}</textarea>
+				@helper('description')
+			</div>
+
+			<div class="field">
+				<label for="hashtag">Hashtag (only if session is not password protected)</label>
+				<div class="ui labeled input">
+					<div class="ui basic blue label">
+						#
+					</div>
+					<input type="text" placeholder="TalkLaravel" name="hashtag" id="hashtag" value="{{ old('hashtag') }}">
+				</div>
+				@helper('hashtag')
+			</div>
+
+			<div class="field">
+				<label for="image">Image</label>
+				<input id="image" type="file" name="image" value="{{ old('image') }}">
+				@helper('image')
 			</div>
 
 			<div class="field">

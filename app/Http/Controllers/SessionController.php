@@ -85,16 +85,45 @@ class SessionController extends Controller
 	public function store(Request $request)
 	{
 		// Server-side validation
-		$this->validate($request, [
+		$validator = Validator::make($request->all(), [
 			'name'       => 'required',
 			'speaker'    => 'required|exists:users,id,role,Speaker',
+			'image'      => 'image',
 			'password'   => 'confirmed',
 			'open_until' => 'date',
 		]);
 
+		if ($request->input('password') != null && $request->input('hashtag') != null)
+		{
+			$validator->after(function($validator) {
+					$validator->errors()->add('hashtag', 'You can only add a hashtag if the session is not password protected.');
+			});
+		}
+
+		if ($validator->fails())
+		{
+			return redirect('session/create')
+				->withErrors($validator)
+				->withInput();
+		}
+
 		$wall = new Wall;
 		$wall->user_id = $request->input('speaker');
 		$wall->name = $request->input('name');
+		$wall->description = $request->input('description');
+		$wall->hashtag = $request->input('hashtag');
+
+		if ($request->hasFile('image') || $request->file('image')->isValid())
+		{
+			// We need the wall_id
+			$wall->save();
+
+			$destinationPath = storage_path() . '/app/wall_images';
+			$fileName = $wall->id;
+			$request->file('photo')->move($destinationPath, $fileName);
+			// TO DO: error message if needed
+		}
+
 		if ($request->has('password'))
 		{
 			$wall->password = Hash::make($request->input('password'));

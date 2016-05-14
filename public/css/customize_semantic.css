@@ -24,7 +24,7 @@
 	border-radius: 0 !important;
 	position: fixed;
 	width: 100%;
-	z-index: 1;
+	z-index: 10;
 }
 
 #navigation_margin {
@@ -71,4 +71,7 @@ footer p {
 
 #footer_margin {
 	height: 5em;
+	content: "";
+	display: table;
+	clear: both;
 }
