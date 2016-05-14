@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Wall;
 use Illuminate\Http\Request;
 
@@ -72,7 +73,8 @@ class SessionController extends Controller
 	 */
 	public function create()
 	{
-		return View::make('session.create');
+		$speakers = User::where('role', 'Speaker')->get();
+		return View::make('session.create')->withSpeakers($speakers);
 	}
 
 	/**
@@ -85,12 +87,13 @@ class SessionController extends Controller
 		// Server-side validation
 		$this->validate($request, [
 			'name'       => 'required',
+			'speaker'    => 'required|exists:users,id,role,Speaker',
 			'password'   => 'confirmed',
 			'open_until' => 'date',
 		]);
 
 		$wall = new Wall;
-		$wall->user_id = Auth::user()->id;
+		$wall->user_id = $request->input('speaker');
 		$wall->name = $request->input('name');
 		if ($request->has('password'))
 		{

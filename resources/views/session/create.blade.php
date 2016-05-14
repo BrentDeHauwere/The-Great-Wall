@@ -16,6 +16,33 @@
 				@helper('name')
 			</div>
 
+			<div class="field required">
+				<label for="name">Speaker</label>
+				<div class="ui fluid selection dropdown required">
+					<input type="hidden" name="speaker">
+					<i class="dropdown icon"></i>
+					<div class="default text">Select Speaker</div>
+					<div class="menu">
+						@foreach($speakers as $speaker)
+							@if($speaker->image == null)
+								<div class="item" data-value="{{ $speaker->id }}">
+									<i class="user icon"></i>
+									{{ $speaker->name }}
+								</div>
+							@else
+								<div class="item" data-value="{{ $speaker->id }}">
+									<img class="ui mini avatar image" src="{{ $speaker->image }}">
+									{{ $speaker->name }}
+								</div>
+							@endif
+						@endforeach
+
+
+					</div>
+				</div>
+				@helper('speaker')
+			</div>
+
 			<div class="field">
 				<label for="password">Password</label>
 				<input id="password" type="password" name="password" placeholder="Password">
