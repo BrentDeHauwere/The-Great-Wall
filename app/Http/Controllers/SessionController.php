@@ -194,9 +194,12 @@ class SessionController extends Controller
 		$wall = Wall::find($id);
 
 		// Required for datetime-local inputfield
-		$old_date_timestamp = strtotime($wall->open_until);
-		$wall->open_until = date('Y-m-d H:i', $old_date_timestamp);
-		$wall->open_until = str_replace(' ', 'T', $wall->open_until);
+		if ($wall->open_until != null)
+		{
+			$old_date_timestamp = strtotime($wall->open_until);
+			$wall->open_until = date('Y-m-d H:i', $old_date_timestamp);
+			$wall->open_until = str_replace(' ', 'T', $wall->open_until);
+		}
 
 		$speakers = User::where('role', 'Speaker')->get();
 
