@@ -80,9 +80,9 @@ class WallController extends Controller
 		if ($wall != null && empty($wall->password))
 		{
 			//Check for tweets
-			//if ($wall->hashtag != null){
-			//	TwitterHelper::checkForTweets($wall->hashtag, $id);
-			//}
+			if ($wall->hashtag != null){
+				TwitterHelper::checkForTweets($wall->hashtag, $id);
+			}
 
 			$messages = Message::with('votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 			$polls = Poll::with('choices.votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
