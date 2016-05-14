@@ -14,7 +14,7 @@
 			</div>
 			<thead class="full-width">
 				<tr>
-					<th colspan="6" class="no-sort">
+					<th colspan="7" class="no-sort">
 						<a class="ui right floated small primary labeled icon button" href="{{ action('SessionController@create') }}">
 							<i class="plus icon"></i> Add Session
 						</a>
@@ -28,6 +28,7 @@
 					<th>ID</th>
 					<th>Speaker</th>
 					<th>Name</th>
+					<th>Twitter</th>
 					<th>Protected</th>
 					<th>Open until</th>
 					<th class="no-sort" style="width: 332px">Actions</th>
@@ -39,6 +40,7 @@
 						<td>{{ $value->id }}</td>
 						<td>{{ $value->user->name }}</td>
 						<td>{{ $value->name }}</td>
+						<td>{{ $value->hashtag }}</td>
 						<td>{{ $value->password }}</td>
 						@if ($value->open_until == 'Infinity (not set)')
 							<td class="error"><i class="attention icon"></i> {{$value->open_until}}</td>
