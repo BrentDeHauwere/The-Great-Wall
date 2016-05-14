@@ -165,7 +165,7 @@ return [
 		/*
 		 * Twitter API
 		 */
-		Thujohn\Twitter\TwitterServiceProvider::class,
+		//Thujohn\Twitter\TwitterServiceProvider::class,
 
 	],
 
@@ -221,7 +221,7 @@ return [
 		/*
 		 * Twitter API
 		 */
-		'Twitter'       => Thujohn\Twitter\Facades\Twitter::class,
+		//'Twitter'       => Thujohn\Twitter\Facades\Twitter::class,
 	],
 
 ];
