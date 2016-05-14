@@ -29,8 +29,10 @@ class SessionController extends Controller
 	{
 		$walls = Wall::withTrashed()->with('user')->orderBy('name')->get();
 
-		foreach($walls as $wall){
-			if (!empty($wall->password)){
+		foreach ($walls as $wall)
+		{
+			if (!empty($wall->password))
+			{
 				$wall->password = "Yes";
 			}
 			else
@@ -38,13 +40,16 @@ class SessionController extends Controller
 				$wall->password = "No";
 			}
 
-			if ($wall->deleted_at != null) {
+			if ($wall->deleted_at != null)
+			{
 				$wall->open_until = 'Manually closed';
 			}
-			else if ($wall->open_until == 0) {
+			else if ($wall->open_until == 0)
+			{
 				$wall->open_until = 'Infinity (not set)';
 			}
-			else if ($wall->open_until < date('Y-m-d H:i:s')) {
+			else if ($wall->open_until < date('Y-m-d H:i:s'))
+			{
 				$wall->open_until = "Automatically closed ({$wall->open_until})";
 			}
 		}
@@ -78,8 +83,8 @@ class SessionController extends Controller
 	{
 		// Server-side validation
 		$this->validate($request, [
-			'name'    	=> 'required',
-			'password'	=> 'confirmed',
+			'name'       => 'required',
+			'password'   => 'confirmed',
 			'open_until' => 'date',
 		]);
 
@@ -90,7 +95,15 @@ class SessionController extends Controller
 		{
 			$wall->password = Hash::make($request->input('password'));
 		}
-		$wall->open_until = $request->input('open_until');
+
+		if ($request->input('open_until') == null)
+		{
+			$wall->open_until = null;
+		}
+		else
+		{
+			$wall->open_until = $request->input('open_until');
+		}
 		$wall->save();
 
 		Session::flash('success', 'Successfully created session.');
@@ -118,17 +131,17 @@ class SessionController extends Controller
 		{
 			return View::make('session.show')
 				->with('wall', $wall)
-				->with("messages",$messages)
-				->with("polls",$polls)
-				->with("result",json_decode(json_encode($result),true))
+				->with("messages", $messages)
+				->with("polls", $polls)
+				->with("result", json_decode(json_encode($result), true))
 				->with('info', 'No messages or polls available on this session');
 		}
 
 		return View::make('session.show')
 			->with('wall', $wall)
-			->with("messages",$messages)
-			->with("polls",$polls)
-			->with("result",json_decode(json_encode($result),true));
+			->with("messages", $messages)
+			->with("polls", $polls)
+			->with("result", json_decode(json_encode($result), true));
 	}
 
 	/**
@@ -162,9 +175,9 @@ class SessionController extends Controller
 	{
 		// Server-side validation
 		$this->validate($request, [
-			'user_id' 	=> 'required|numeric|min:1',
-			'name'    	=> 'required',
-			'password'	=> 'confirmed',
+			'user_id'    => 'required|numeric|min:1',
+			'name'       => 'required',
+			'password'   => 'confirmed',
 			'open_until' => 'date',
 		]);
 
