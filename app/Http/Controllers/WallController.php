@@ -19,6 +19,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request as IllRequest;
+use Auth;
 
 class WallController extends Controller
 {
@@ -93,12 +94,7 @@ class WallController extends Controller
 
 			//END CODE FOR Pagination
 
-			// user that's logged in.
-			$loggedInUser = 2;
-
-			$user = User::with('pollVotes', 'messageVotes')->where('id', $loggedInUser)->first();
-
-			return view('wall.show')->with('posts', $posts)->with('wall', $wall)->with('user', $user);
+			return view('wall.show')->with('posts', $posts)->with('wall', $wall)->with('user', Auth::user());
 		}
 		else
 		{
