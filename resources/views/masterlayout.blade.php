@@ -61,10 +61,17 @@
 					<div class="ui dropdown item" id="user">
 						{{ Auth::user()->name }} <i class="user icon icon_customized"></i>
 						<div class="menu">
-							<a class="item" id="setTwitterHandle">
-								<i class="twitter icon"></i>
-								Configure Twitter
-							</a>
+							@if (empty(Auth::user()->twitter_handle))
+								<a class="item" id="setTwitterHandle">
+									<i class="twitter icon"></i>
+									Configure Twitter
+								</a>
+							@else
+								<a class="item disabled">
+									<i class="twitter icon"></i>
+									{{ Auth::user()->twitter_handle }}
+								</a>
+							@endif
 							<a class="item" id="setProfilePicture">
 								<i class="file image outline icon"></i>
 								Set Picture
@@ -132,23 +139,25 @@
 					<div class="ui header">Post messages via your Twitter account.</div>
 					<p>It is possible to send messages to a wall via your Twitter account. Note that this is only possible on <strong>public</strong> walls.</p>
 					<p>Please fill in your Twitter handle (will be read-only after submit).</p>
-					<div class="ui labeled input {{ Auth::user()->twitter_handle != null ? "disabled" : "" }}}">
-						<div class="ui basic blue label">
-							@
+					<form action="{{ action('UserController@twitterHandle') }}" method="post" id="formTwitterHandle">
+						<div class="ui labeled input {{ Auth::user()->twitter_handle != null ? "disabled" : "" }}}">
+							<div class="ui basic blue label">
+								@
+							</div>
+							<input type="text" placeholder="BrentDeHauwere" name="twitter_handle" required>
 						</div>
-						<input type="text" placeholder="BrentDeHauwere">
-					</div>
-
+						{{ csrf_field() }}
+					</form>
 				</div>
 			</div>
 			<div class="actions">
 				<div class="ui black deny button">
 					Nope
 				</div>
-				<div class="ui positive right labeled icon button">
+				<button class="ui positive right labeled icon button" type="submit" form="formTwitterHandle">
 					Yep, that's me
 					<i class="checkmark icon"></i>
-				</div>
+				</button>
 			</div>
 		</div>
 
