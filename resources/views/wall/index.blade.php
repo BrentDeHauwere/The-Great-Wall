@@ -21,7 +21,7 @@
 			@foreach ($walls as $wall)
 				<div class="item">
 					<div class="image">
-						<img src="http://semantic-ui.com/images/wireframe/image.png">
+						<img src="{{ route('wall_images', ['filename' => $wall->id]) }}">
 					</div>
 					<div class="content">
 						<a class="header">{{ $wall->name }}</a>

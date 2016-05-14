@@ -81,6 +81,31 @@ Route::group(['middleware' => 'web'], function () {
 
 		// ----------- USER ----------
 		Route::post('twitterHandle', 'UserController@twitterHandle');
+
+		// ---------- WALL IMAGES ----------
+		Route::get('wall_images/{filename}', function ($filename)
+		{
+			$path = storage_path() . '/app/wall_images/' . $filename;
+
+			$paths = glob($path . '.*');
+			if (count($paths) == 1)
+			{
+				$path = $paths[0];
+			}
+
+			if(!File::exists($path))
+			{
+				$path = storage_path() . '/app/wall_images/' . 'none.png';
+			}
+
+			$file = File::get($path);
+			$type = File::mimeType($path);
+
+			$response = Response::make($file, 200);
+			$response->header("Content-Type", $type);
+
+			return $response;
+		})->name('wall_images');;
 	});
 
 	Route::group(['prefix' => 'api', 'middleware' => ['web']], function () {
