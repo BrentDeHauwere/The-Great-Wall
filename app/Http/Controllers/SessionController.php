@@ -44,7 +44,7 @@ class SessionController extends Controller
 			{
 				$wall->open_until = 'Manually closed';
 			}
-			else if ($wall->open_until == 0)
+			else if ($wall->open_until == null)
 			{
 				$wall->open_until = 'Infinity (not set)';
 			}
