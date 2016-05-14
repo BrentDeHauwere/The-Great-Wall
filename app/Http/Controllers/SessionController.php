@@ -17,6 +17,7 @@ use Validator;
 use Hash;
 use DB;
 use Auth;
+use App\Blacklist;
 
 class SessionController extends Controller
 {
@@ -44,7 +45,7 @@ class SessionController extends Controller
 			{
 				$wall->open_until = 'Manually closed';
 			}
-			else if ($wall->open_until == 0)
+			else if ($wall->open_until == null)
 			{
 				$wall->open_until = 'Infinity (not set)';
 			}
@@ -127,6 +128,7 @@ class SessionController extends Controller
 		$wall = Wall::findOrFail($id);
 		$messages = Message::with("votes", "user")->where("wall_id", "=", $id)->get();
 		$polls = Poll::with("choices.votes", "user")->where("wall_id", "=", $id)->get();
+		$blacklistedUserIDs = Blacklist::all('user_id')->toArray();
 
 		$result = DB::select(DB::raw("SELECT id,user_id,text,moderation_level,created_at,'M' FROM messages WHERE wall_id = {$id} UNION SELECT id,user_id,question,moderation_level,created_at,'P' FROM polls WHERE wall_id = {$id} ORDER BY created_at desc"));
 
@@ -137,6 +139,7 @@ class SessionController extends Controller
 				->with("messages", $messages)
 				->with("polls", $polls)
 				->with("result", json_decode(json_encode($result), true))
+				->with("blacklistedUserIDs", $blacklistedUserIDs)
 				->with('info', 'No messages or polls available on this session');
 		}
 
@@ -144,6 +147,7 @@ class SessionController extends Controller
 			->with('wall', $wall)
 			->with("messages", $messages)
 			->with("polls", $polls)
+			->with("blacklistedUserIDs", $blacklistedUserIDs)
 			->with("result", json_decode(json_encode($result), true));
 	}
 
