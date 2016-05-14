@@ -10,9 +10,8 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
 	/**
-	 * Authenticate a user.
+	 * Show the view to authenticate a user.
 	 *
-	 * @param Request
 	 * @return Response
 	 */
 	public function index()
@@ -43,7 +42,6 @@ class UserController extends Controller
 	/**
 	 * Log a user out.
 	 *
-	 * @param Request
 	 * @return Response
 	 */
 	public function logout()
