@@ -4,20 +4,33 @@ namespace App\Helpers;
 
 use App\Wall;
 use Thujohn\Twitter\Twitter;
+use App\Message;
 
 class TwitterHelper
 {
-	public static function checkForTweets(Wall $wall)
+	public static function checkForTweets($hashtag, $wallId)
 	{
-		$tweets = Twitter::getSearch(['q'           => '#' . $wall->hashtag,
-									  'result_type' => 'recent',
-									  'format'      => 'array']);
-		dd($tweets);
-		transformTweets($tweets);
+		$tweets = \Twitter::getSearch(['q'           => '#' . $hashtag,
+									   'result_type' => 'recent',
+									   'format'      => 'object']);
+		TwitterHelper::transformTweets($tweets, $wallId);
 	}
 	
-	private function transformResponse($tweets)
+	private static function transformTweets($tweets, $wallId)
 	{
 		$transformedTweets = [];
+
+		foreach ($tweets->statuses as $tweet)
+		{
+			$transformed = new Message();
+			$transformed->wall_id = $wallId;
+			$transformed->channel_id = 2;
+			$transformed->text = $tweet->text;
+			$transformed->created_at = $tweet->created_at;
+			$transformed->anonymous = 0;
+			$transformed->moderator_level = 0;
+			$transformed->count = 0;
+			dd($transformed);
+		}
 	}
 }
