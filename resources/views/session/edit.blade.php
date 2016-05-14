@@ -19,7 +19,7 @@
 			<div class="field required">
 				<label for="name">Speaker</label>
 				<div class="ui fluid selection dropdown required">
-					<input type="hidden" name="speaker">
+					<input type="hidden" name="speaker" value="{{ $wall->user_id }}">
 					<i class="dropdown icon"></i>
 					<div class="default text">Select Speaker</div>
 					<div class="menu">
