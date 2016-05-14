@@ -40,15 +40,14 @@ class WallController extends Controller
 					->orWhere('open_until', '>', date('Y-m-d H:i:s'));
 			})
 			->get();
+		$data['walls'] = $walls;
 
 		if (empty($walls))
 		{
-			return view('wall.index')->with('walls', $walls)->with('info', 'No walls available.');
+			$data['info'] = 'No walls available.';
 		}
-		else
-		{
-			return view('wall.index')->with('walls', $walls);
-		}
+
+		return view('wall.index')->with($data);
 	}
 
 

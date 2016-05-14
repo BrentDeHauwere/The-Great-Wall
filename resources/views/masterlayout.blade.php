@@ -39,6 +39,7 @@
 		</script>
 	</head>
 	<body>
+		<!-- NAVIGATION -->
 		<div class="ui inverted segment" id="navigation">
 			<div class="ui inverted secondary pointing menu">
 				@if(Auth::user()->role == 'Moderator')
@@ -60,9 +61,26 @@
 					<div class="ui dropdown item" id="user">
 						{{ Auth::user()->name }} <i class="user icon icon_customized"></i>
 						<div class="menu">
-							<a class="item" href="{{ action('UserController@logout') }}">Logout</a>
-							<a class="item">More</a>
-							<a class="item">More</a>
+							@if (empty(Auth::user()->twitter_handle))
+								<a class="item" id="setTwitterHandle">
+									<i class="twitter icon"></i>
+									Configure Twitter
+								</a>
+							@else
+								<a class="item disabled">
+									<i class="twitter icon"></i>
+									{{ Auth::user()->twitter_handle }}
+								</a>
+							@endif
+							<a class="item" id="setProfilePicture">
+								<i class="file image outline icon"></i>
+								Set Picture
+							</a>
+							<a class="ui red item" href="{{ action('UserController@logout') }}">
+								<i class="sign out icon"></i>
+								Logout
+							</a>
+
 						</div>
 					</div>
 				</div>
@@ -71,6 +89,7 @@
 		<div id="navigation_margin">
 		</div>
 
+		<!-- MESSAGE SYSTEM -->
 		@if(session()->has('success'))
 			@success({{ session('success') }})
 		@elseif(!empty($success))
@@ -104,6 +123,51 @@
 					;
 				})
 			;
+		</script>
+
+		<!-- SET TWITTER HANDLE MODAL -->
+		<div class="ui modal">
+			<i class="close icon"></i>
+			<div class="header">
+				Configure Twitter Handle
+			</div>
+			<div class="image content">
+				<div class="ui medium image">
+					<img src="https://g.twimg.com/Twitter_logo_blue.png">
+				</div>
+				<div class="description">
+					<div class="ui header">Post messages via your Twitter account.</div>
+					<p>It is possible to send messages to a wall via your Twitter account. Note that this is only possible on <strong>public</strong> walls.</p>
+					<p>Please fill in your Twitter handle (will be read-only after submit).</p>
+					<form action="{{ action('UserController@twitterHandle') }}" method="post" id="formTwitterHandle">
+						<div class="ui labeled input {{ Auth::user()->twitter_handle != null ? "disabled" : "" }}}">
+							<div class="ui basic blue label">
+								@
+							</div>
+							<input type="text" placeholder="BrentDeHauwere" name="twitter_handle" required>
+						</div>
+						{{ csrf_field() }}
+					</form>
+				</div>
+			</div>
+			<div class="actions">
+				<div class="ui black deny button">
+					Nope
+				</div>
+				<button class="ui positive right labeled icon button" type="submit" form="formTwitterHandle">
+					Yep, that's me
+					<i class="checkmark icon"></i>
+				</button>
+			</div>
+		</div>
+
+		<script>
+			$('#setTwitterHandle').click(function ()
+			{
+				$('.ui.modal')
+					.modal('show')
+				;
+			});
 		</script>
 
 		@yield('content')

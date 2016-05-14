@@ -5,6 +5,10 @@
 @section('page','home')
 
 @section('content')
+	@if (empty(Auth::user()->twitter_handle))
+		@info(Did you know that you can post messages via Twitter? What are you waiting for? Fill in your <a href="#" onclick="$( '#setTwitterHandle' ).trigger( 'click' );">Twitter handle</a>!)
+	@endif
+
 	<div class="body_customized" style="height: 51px">
 		<div class="ui icon input search medium">
 			<input type="text" placeholder="Search..." id="search_input">

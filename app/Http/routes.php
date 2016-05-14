@@ -79,6 +79,8 @@ Route::group(['middleware' => 'web'], function () {
 		Route::resource('votemessage', 'VoteMessageController',['only' => ['store', 'destroy']]);
 		Route::resource('votepoll', 'VotePollController',['only' => ['store', 'destroy']]);
 
+		// ----------- USER ----------
+		Route::post('twitterHandle', 'UserController@twitterHandle');
 	});
 
 	Route::group(['prefix' => 'api', 'middleware' => ['web']], function () {
