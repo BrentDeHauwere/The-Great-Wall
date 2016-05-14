@@ -75,7 +75,7 @@ class WallController extends Controller
 				abort(404);
 			}
 		}
-
+		
 		if ($wall != null && empty($wall->password))
 		{
 			//Check for tweets

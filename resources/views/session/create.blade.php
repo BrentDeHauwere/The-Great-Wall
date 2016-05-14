@@ -8,7 +8,7 @@
 	<div class="body_customized">
 		<h1>Add Session</h1>
 
-		<form class="ui form" action="{{action('SessionController@store')}}" method="post">
+		<form class="ui form" action="{{action('SessionController@store')}}" method="post" enctype="multipart/form-data">
 
 			<div class="field required">
 				<label for="name">Name</label>

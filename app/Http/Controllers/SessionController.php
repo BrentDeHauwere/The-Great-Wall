@@ -88,7 +88,7 @@ class SessionController extends Controller
 		$validator = Validator::make($request->all(), [
 			'name'       => 'required',
 			'speaker'    => 'required|exists:users,id,role,Speaker',
-			'image'      => 'image',
+			'image'    	 => 'image',
 			'password'   => 'confirmed',
 			'open_until' => 'date',
 		]);
@@ -113,15 +113,14 @@ class SessionController extends Controller
 		$wall->description = $request->input('description');
 		$wall->hashtag = $request->input('hashtag');
 
-		if ($request->hasFile('image') || $request->file('image')->isValid())
+		if ($request->hasFile('image'))
 		{
 			// We need the wall_id
 			$wall->save();
 
-			$destinationPath = storage_path() . '/app/wall_images';
-			$fileName = $wall->id;
-			$request->file('photo')->move($destinationPath, $fileName);
-			// TO DO: error message if needed
+			$destinationPath = storage_path() . '/app/wall_images/';
+			$fileName = $wall->id . '.' . $request->file('image')->getClientOriginalExtension();
+			$request->file('image')->move($destinationPath, $fileName);
 		}
 
 		if ($request->has('password'))
