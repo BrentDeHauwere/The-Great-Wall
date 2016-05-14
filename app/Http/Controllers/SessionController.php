@@ -16,6 +16,7 @@ use App\Poll;
 use Validator;
 use Hash;
 use DB;
+use Auth;
 
 class SessionController extends Controller
 {
@@ -77,14 +78,13 @@ class SessionController extends Controller
 	{
 		// Server-side validation
 		$this->validate($request, [
-			'user_id' 	=> 'required|numeric|min:1',
 			'name'    	=> 'required',
 			'password'	=> 'confirmed',
 			'open_until' => 'date',
 		]);
 
 		$wall = new Wall;
-		$wall->user_id = $request->input('user_id');
+		$wall->user_id = Auth::user()->id;
 		$wall->name = $request->input('name');
 		if ($request->has('password'))
 		{

@@ -11,12 +11,6 @@
 		<form class="ui form" action="{{action('SessionController@store')}}" method="post">
 
 			<div class="field required">
-				<label for="user_id">UserID</label>
-				<input id="user_id" type="number" name="user_id" value="{{ old('user_id') }}" placeholder="UserID">
-				@helper('user_id')
-			</div>
-
-			<div class="field required">
 				<label for="name">Name</label>
 				<input id="name" type="text" name="name" value="{{ old('name') }}" placeholder="Name">
 				@helper('name')
