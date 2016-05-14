@@ -15,7 +15,8 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
         "predis/predis": "^1.0",
-        "dealloc/client": "^0.0.2"
+        "dealloc/client": "^0.0.3",
+        "thujohn/twitter": "^2.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -65,40 +65,15 @@ class VoteMessageController extends Controller
 		}
 		else
 		{
-			return redirect()->back()->with('error', 'Message vote already exists.');
-		}
-	}
+			MessageVote::where('message_id', $message_vote->message_id)
+				->where('user_id', $message_vote->user_id)
+				->delete();
 
-	/**
-	 * Remove (inactive) the specified vote on a message from storage.
-	 *
-	 * @param  int $id
-	 * @return Response
-	 */
-	public
-	function destroy($id)
-	{
-    $messagevote = MessageVote::where('id','=',$id);
-    $deleted = $messagevote->delete();
-    if ($deleted)
-		{
-			$message = Message::where('id', '=', $messagevote->message_id)->first();
+			$message = Message::where('id', $message_vote->message_id)->first();
 			$message->count--;
-			$savedM = $message->save;
-			if ($savedM)
-			{
-				return redirect()->back()->with('success', 'Message unvote success.');
-			}
-			else
-			{
-				$messagevote->delete();
+			$savedM = $message->save();
 
-				return redirect()->back()->with('error', 'Message could not be unincremented.');
-			}
-		}
-		else
-		{
-			return redirect()->back()->with('error', 'Message vote could not be undone');
+			return redirect()->back()->with('succes', 'Message vote is revoked.');
 		}
 	}
 }

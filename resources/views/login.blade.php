@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
 		<!-- Site Properties -->
-		<title>Login Example - Semantic</title>
+		<title>The Great Wall - Login</title>
 		<link rel="stylesheet" type="text/css" href="/semantic/dist/components/reset.css">
 		<link rel="stylesheet" type="text/css" href="/semantic/dist/components/site.css">
 
@@ -75,7 +75,7 @@
 				<h2 class="ui blue image header">
 					<img src="/img/icon_blue.png" class="image">
 					<div class="content">
-						Login to The Great Wall
+						Login into The Great Wall
 					</div>
 				</h2>
 				<form class="ui large form" action="{{ action('UserController@login') }}" method="post">

@@ -5,7 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="shortcut icon" href="/favicon.ico">
-		<title>EhackB - @yield('title')</title>
+		<title>The Great Wall - @yield('title')</title>
 		<script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
 		<script src="{{asset('/js/smoothscroll.js')}}"></script>
 
@@ -41,15 +41,21 @@
 	<body>
 		<div class="ui inverted segment" id="navigation">
 			<div class="ui inverted secondary pointing menu">
-				<a class="item" href="{{ action('WallController@index') }}" id="home">
-					Home
-				</a>
-				<a class="item" href="{{ action('SessionController@index') }}" id="moderate">
-					Moderate
-				</a>
-				<a class="item" href="{{ action('BlacklistController@index') }}" id="blacklist">
-					Blacklist
-				</a>
+				@if(Auth::user()->role == 'Moderator')
+					<a class="item" href="{{ action('WallController@index') }}" id="home">
+						Home
+					</a>
+					<a class="item" href="{{ action('SessionController@index') }}" id="moderate">
+						Moderate
+					</a>
+					<a class="item" href="{{ action('BlacklistController@index') }}" id="blacklist">
+						Blacklist
+					</a>
+				@else
+					<a class="item" href="{{ action('WallController@index') }}" id="home">
+						The Great Wall &nbsp; <small>Home</small>
+					</a>
+				@endif
 				<div class="right menu">
 					<div class="ui dropdown item" id="user">
 						{{ Auth::user()->name }} <i class="user icon icon_customized"></i>
@@ -104,9 +110,9 @@
 
 		<div id="footer_margin">
 		</div>
-		<!--<footer>
-			<p>Made by Brent De Hauwere, Eli Boey, Jonas De Pelsmaeker and Kamiel Klumpers</p>
-		</footer>-->
+		<footer>
+			<p>Copyright EhackB | Made by Brent De Hauwere, Eli Boey, Jonas De Pelsmaeker and Kamiel Klumpers</p>
+		</footer>
 		@yield('footer')
 
 			<!-- Semantic UI - JS -->

@@ -17,6 +17,7 @@ class UsersTableSeeder extends Seeder
 			['id' => 2, 'name' => 'Eli Boey', 'role' => 'Visitor', 'email' => 'eli@gmail.com', 'password' => Hash::make('secret')],
 			['id' => 3, 'name' => 'Jonas De Pelsmaeker', 'role' => 'Speaker', 'email' => 'jonas@gmail.com', 'password' => Hash::make('secret')],
 			['id' => 4, 'name' => 'Kamiel Klumpers', 'role' => 'Moderator', 'email' => 'kamiel@gmail.com', 'password' => Hash::make('secret')],
+			['id' => 5, 'name' => 'Admin Nistrator', 'role' => 'Moderator', 'email' => 'admin@gmail.com', 'password' => Hash::make('secret')],
 		]);
 	}
 }

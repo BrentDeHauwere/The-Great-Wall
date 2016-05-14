@@ -5,27 +5,19 @@
 @section('page','blacklist')
 
 @section('content')
-	<h1>Ban user - {{ $username }}</h1>
+	<div class="body_customized">
+		<h1>Ban User - {{ $username }}</h1>
 
-	 @if (count($errors) > 0)
-		<div class="alert alert-danger">
-			<ul>
-				@foreach ($errors->all() as $error)
-					<li>{{ $error }}</li>
-				@endforeach
-			</ul>
-		</div>
-	@endif
-
-	<form action="{{ action('BlacklistController@store') }}" method="POST">
-		<div class="form-group">
-			<label for="reason">Reason</label>
-			<input id="reason" type="text" name="reason" class="form-control" autofocus="" value="{{ old('reason') }}">
-		</div>
-    <input type="hidden" name="user_id" value="{{ $user_id }}">
-		<input type="hidden" name="message_id" value="{{ $message_id }}">
-		<input type="hidden" name="poll_id" value="{{ $poll_id }}">
-		{{ csrf_field() }}
-		<input type="submit" value="Ban" class="btn btn-default">
-	</form>
+		<form class="ui form" action="{{ action('BlacklistController@store') }}" method="post">
+			<div class="field">
+				<label for="reason">Reason</label>
+				<textarea name="reason" placeholder="Reason" id="reason" autofocus="">{{ old('reason') }}</textarea>
+			</div>
+			<input type="hidden" name="user_id" value="{{ $user_id }}">
+			<input type="hidden" name="message_id" value="{{ $message_id }}">
+			<input type="hidden" name="poll_id" value="{{ $poll_id }}">
+			{{ csrf_field() }}
+			<button class="ui button primary right floated" type="submit">Submit</button>
+		</form>
+	</div>
 @endsection

@@ -1,6 +1,6 @@
 @extends('masterlayout')
 
-@section('title', 'Walls')
+@section('title', 'Sessions')
 
 @section('page','moderate')
 
@@ -26,7 +26,7 @@
 				</tr>
 				<tr>
 					<th>ID</th>
-					<th>User ID</th>
+					<th>Speaker</th>
 					<th>Name</th>
 					<th>Protected</th>
 					<th>Open until</th>
@@ -37,7 +37,7 @@
 				@foreach($walls as $key => $value)
 					<tr>
 						<td>{{ $value->id }}</td>
-						<td>{{ $value->user_id }}</td>
+						<td>{{ $value->user->name }}</td>
 						<td>{{ $value->name }}</td>
 						<td>{{ $value->password }}</td>
 						@if ($value->open_until == 'Infinity (not set)')
