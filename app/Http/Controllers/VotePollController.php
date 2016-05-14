@@ -74,7 +74,7 @@ class VotePollController extends Controller
 
 					DB::delete('delete from poll_votes where poll_choice_id = ? and user_id = ?',
 						array($pv->poll_choice_id, $pv->user_id));
-					
+
 					$choice->count -= 1;
 					$choice->save();
 				}
@@ -109,8 +109,8 @@ class VotePollController extends Controller
 
 			if ( $savedChoice )
 			{
-				$client = new \Capi\Clients\GuzzleClient();
-				$response = $client->post('broadcast', 'msg1.polls.vote',['pollvote' => $poll_vote]);
+				/*$client = new \Capi\Clients\GuzzleClient();
+				$response = $client->post('broadcast', 'msg1.polls.vote',['pollvote' => $poll_vote]);*/
 
 				return redirect()->back()->with('success', 'Poll vote success.');
 			}

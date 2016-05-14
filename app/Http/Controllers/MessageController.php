@@ -1,3 +1,4 @@
+
 <?php
 
 namespace App\Http\Controllers;
@@ -51,8 +52,8 @@ class MessageController extends Controller
 		$saved = $message->save();
 		if ($saved)
 		{
-			$client = new \Capi\Clients\GuzzleClient();
-			$response = $client->post('broadcast', 'msg1.msg',['message' => $message]);
+			/*$client = new \Capi\Clients\GuzzleClient();
+			$response = $client->post('broadcast', 'msg1.msg',['message' => $message]);*/
 
 			return redirect()->back()->with('success', 'Message saved successfully.');
 		}
@@ -103,8 +104,8 @@ class MessageController extends Controller
 			$saved = $message->save();
 			if ($saved)
 			{
-				$client = new \Capi\Clients\GuzzleClient();
-				$response = $client->post('broadcast', 'msg1.msg.moda',['message' => $message]);
+				/*$client = new \Capi\Clients\GuzzleClient();
+				$response = $client->post('broadcast', 'msg1.msg.moda',['message' => $message]);*/
 
 				return redirect()->back()->with("success", "Message was accepted.");
 			}
@@ -137,8 +138,8 @@ class MessageController extends Controller
 			$saved = $message->save();
 			if ($saved)
 			{
-				$client = new \Capi\Clients\GuzzleClient();
-				$response = $client->post('broadcast', 'msg1.msg.modd',['message' => $message]);
+				/*$client = new \Capi\Clients\GuzzleClient();
+				$response = $client->post('broadcast', 'msg1.msg.modd',['message' => $message]);*/
 
 				return redirect()->back()->with("success", "Message was blocked.");
 			}
