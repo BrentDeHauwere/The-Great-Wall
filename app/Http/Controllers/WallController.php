@@ -68,7 +68,7 @@ class WallController extends Controller
 		//als er een einddatum is ingesteld en verstreken --> 404
 		if ($wall->open_until != null)
 		{
-			if ($wall->open_unitl < date('d-m-y H:i:s'))
+			if ($wall->open_unitl > date('d-m-y H:i:s'))
 			{
 				abort(404);
 			}
