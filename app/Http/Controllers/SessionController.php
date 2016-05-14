@@ -104,6 +104,9 @@ class SessionController extends Controller
 		{
 			$wall->open_until = $request->input('open_until');
 		}
+
+		$wall->created_at = new \DateTime();
+
 		$wall->save();
 
 		Session::flash('success', 'Successfully created session.');
