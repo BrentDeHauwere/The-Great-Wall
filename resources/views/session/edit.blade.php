@@ -11,15 +11,36 @@
 		<form class="ui form" action="{{action('SessionController@update', $wall->id)}}" method="post">
 
 			<div class="field required">
-				<label for="user_id">UserID</label>
-				<input id="user_id" type="number" name="user_id" value="{{ $wall->user_id }}" placeholder="UserID">
-				@helper('user_id')
-			</div>
-
-			<div class="field required">
 				<label for="name">Name</label>
 				<input id="name" type="text" name="name" value="{{ $wall->name }}" placeholder="Name">
 				@helper('name')
+			</div>
+
+			<div class="field required">
+				<label for="name">Speaker</label>
+				<div class="ui fluid selection dropdown required">
+					<input type="hidden" name="speaker">
+					<i class="dropdown icon"></i>
+					<div class="default text">Select Speaker</div>
+					<div class="menu">
+						@foreach($speakers as $speaker)
+							@if($speaker->image == null)
+								<div class="item" data-value="{{ $speaker->id }}">
+									<i class="user icon"></i>
+									{{ $speaker->name }}
+								</div>
+							@else
+								<div class="item" data-value="{{ $speaker->id }}">
+									<img class="ui mini avatar image" src="{{ $speaker->image }}">
+									{{ $speaker->name }}
+								</div>
+							@endif
+						@endforeach
+
+
+					</div>
+				</div>
+				@helper('speaker')
 			</div>
 
 			<div class="field">

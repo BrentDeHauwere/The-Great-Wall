@@ -170,8 +170,11 @@ class SessionController extends Controller
 		$wall->open_until = date('Y-m-d H:i', $old_date_timestamp);
 		$wall->open_until = str_replace(' ', 'T', $wall->open_until);
 
+		$speakers = User::where('role', 'Speaker')->get();
+
 		return View::make('session.edit')
-			->with('wall', $wall);
+			->with('wall', $wall)
+			->withSpeakers($speakers);;
 	}
 
 	/**
@@ -185,14 +188,14 @@ class SessionController extends Controller
 	{
 		// Server-side validation
 		$this->validate($request, [
-			'user_id'    => 'required|numeric|min:1',
 			'name'       => 'required',
+			'speaker'    => 'required|exists:users,id,role,Speaker',
 			'password'   => 'confirmed',
 			'open_until' => 'date',
 		]);
 
 		$wall = Wall::find($id);
-		$wall->user_id = $request->input('user_id');
+		$wall->user_id = $request->input('speaker');
 		$wall->name = $request->input('name');
 		if ($request->has('password'))
 		{
