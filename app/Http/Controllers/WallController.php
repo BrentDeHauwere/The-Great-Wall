@@ -71,7 +71,7 @@ class WallController extends Controller
 		//als er een einddatum is ingesteld en verstreken --> 404
 		if ($wall->open_until != null)
 		{
-			if ($wall->open_unitl > date('d-m-y H:i:s'))
+			if ($wall->open_until < date('Y-m-d H:i:s'))
 			{
 				abort(404);
 			}
@@ -105,7 +105,7 @@ class WallController extends Controller
 		}
 		else
 		{
-			redirect()->back()->with("error", "No password was provided.");
+			return redirect()->action('WallController@index')->with("error", "No password was provided.");
 		}
 	}
 
@@ -271,7 +271,7 @@ class WallController extends Controller
 	public function updateShow(Request $request, $id)
 	{
 		$wall = Wall::findOrFail($id);
-		if ($wall->deleted_at != null || $wall->open_until == 0 || $wall->open_until < date('d-m-y H:i:s'))
+		if ($wall->deleted_at != null || $wall->open_until == 0 || $wall->open_until < date('Y-m-d H:i:s'))
 		{
 			abort(404);
 		}
