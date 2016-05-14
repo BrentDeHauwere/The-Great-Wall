@@ -132,7 +132,7 @@
 					<div class="ui header">Post messages via your Twitter account.</div>
 					<p>It is possible to send messages to a wall via your Twitter account. Note that this is only possible on <strong>public</strong> walls.</p>
 					<p>Please fill in your Twitter handle (will be read-only after submit).</p>
-					<div class="ui labeled input">
+					<div class="ui labeled input {{ Auth::user()->twitter_handle != null ? "disabled" : "" }}}">
 						<div class="ui basic blue label">
 							@
 						</div>
@@ -153,8 +153,7 @@
 		</div>
 
 		<script>
-			//$('#setTwitterHandle').click(function ()
-			$(document).ready(function()
+			$('#setTwitterHandle').click(function ()
 			{
 				$('.ui.modal')
 					.modal('show')
