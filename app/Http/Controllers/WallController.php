@@ -59,11 +59,19 @@ class WallController extends Controller
 	{
 		$wall = Wall::findOrFail($id);
 
-		//dd($wall);
-
-		if ($wall->deleted_at != null || $wall->open_until == 0 || $wall->open_until < date('d-m-y H:i:s'))
+		//404 als wall verwijderd is
+		if ($wall->deleted_at != null)
 		{
 			abort(404);
+		}
+
+		//als er een einddatum is ingesteld en verstreken --> 404
+		if ($wall->open_until != null)
+		{
+			if ($wall->open_unitl < date('d-m-y H:i:s'))
+			{
+				abort(404);
+			}
 		}
 
 		if ($wall != null && empty($wall->password))
@@ -86,7 +94,7 @@ class WallController extends Controller
 			//END CODE FOR Pagination
 
 			// user that's logged in.
-			$loggedInUser=2;
+			$loggedInUser = 2;
 
 			$user = User::with('pollVotes', 'messageVotes')->where('id', $loggedInUser)->first();
 
@@ -129,18 +137,18 @@ class WallController extends Controller
 		/* Sort messages / poll into a chronologically ordered 2D array */
 		$posts = [];
 
-		if ( ! $polls->isEmpty() )
+		if (!$polls->isEmpty())
 		{
 			foreach ($polls as $poll)
 			{
-				array_push($posts, array( 'p', $poll, $poll->user()->first()));
+				array_push($posts, array('p', $poll, $poll->user()->first()));
 			}
 		}
 		else
 		{
 			foreach ($messages as $message)
 			{
-				array_push($posts, array( 'm', $message, $message->user()->first()));
+				array_push($posts, array('m', $message, $message->user()->first()));
 			}
 		}
 
@@ -161,15 +169,15 @@ class WallController extends Controller
 				{
 					if ($message->created_at > $post[1]->created_at)
 					{
-						$arr = array( 'm', $message, $message->user()->first() );
-						array_splice($posts, $counter, 0, array( $arr ));
-						unset( $messages[ $msgCounter ] );
+						$arr = array('m', $message, $message->user()->first());
+						array_splice($posts, $counter, 0, array($arr));
+						unset($messages[ $msgCounter ]);
 						break;
 					}
 					elseif ($message->create_at < $post[1]->created_at)
 					{
-						array_push($posts, array( 'm', $message, $message->user()->first()));
-						unset( $messages[ $msgCounter ] );
+						array_push($posts, array('m', $message, $message->user()->first()));
+						unset($messages[ $msgCounter ]);
 						break;
 					}
 					$counter += 1;
@@ -200,61 +208,66 @@ class WallController extends Controller
 		$time = strtotime($time);
 
 		$elapsed = time() - $time;
-		if ( $elapsed < 10 )
+		if ($elapsed < 10)
 			return "just now";
 
-		$singular = array( 365 * 24 * 60 * 60 => 'year',
-						   30 * 24 * 60 * 60  => 'month',
-						   24 * 60 * 60       => 'day',
-						   60 * 60            => 'hour',
-						   60                 => 'minute',
-						   1                  => 'second',
+		$singular = array(365 * 24 * 60 * 60 => 'year',
+						  30 * 24 * 60 * 60  => 'month',
+						  24 * 60 * 60       => 'day',
+						  60 * 60            => 'hour',
+						  60                 => 'minute',
+						  1                  => 'second',
 		);
 
-		$plural = array( 'year'    => 'years',
-						 'month'   => 'months',
-						 'day'     => 'days',
-						 'hour'     => 'hours',
-						 'minute'  => 'minutes',
-						 'second' => 'seconds',
+		$plural = array('year'   => 'years',
+						'month'  => 'months',
+						'day'    => 'days',
+						'hour'   => 'hours',
+						'minute' => 'minutes',
+						'second' => 'seconds',
 		);
 
 		foreach ($singular as $seconds => $humanized)
 		{
 			$difference = $elapsed / $seconds;
 
-			if ( $difference >= 1 )
+			if ($difference >= 1)
 			{
 				$rounded = round($difference);
 
-				return $rounded . ' ' . ( $rounded > 1 ? $plural[ $humanized ] : $humanized ) . " ago";
+				return $rounded . ' ' . ($rounded > 1 ? $plural[ $humanized ] : $humanized) . " ago";
 			}
 		}
 
 		return '';
 	}
 
-	public function ajaxMessage($id){
+	public function ajaxMessage($id)
+	{
 		$wall = Wall::find($id);
 
-		if ($wall!=null && empty( $wall->password ) )
+		if ($wall != null && empty($wall->password))
 		{
-			if(session()->has('wall'.$wall->id)){
-				$messages = Message::with('votes')->where('created_at',session('wall'.$wall->id))->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
-				$polls = Poll::with('choices.votes')->where('created_at',session('wall'.$wall->id))->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
+			if (session()->has('wall' . $wall->id))
+			{
+				$messages = Message::with('votes')->where('created_at', session('wall' . $wall->id))->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
+				$polls = Poll::with('choices.votes')->where('created_at', session('wall' . $wall->id))->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 			}
-			else{
+			else
+			{
 				$polls = Poll::with('choices.votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 				$messages = Message::with('votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 			}
 
 			$posts = $this->sortMessagesPolls($messages, $polls);
-			session(['wall'.$wall->id => date("Y-m-d H:i:s")]);
+			session(['wall' . $wall->id => date("Y-m-d H:i:s")]);
+
 			return view('ajax.messages')->with('posts', $posts)->with('wall', $wall);//->with('result',$result);
 		}
 	}
 
-	public function updateShow(Request $request,$id){
+	public function updateShow(Request $request, $id)
+	{
 		$wall = Wall::findOrFail($id);
 		if ($wall->deleted_at != null || $wall->open_until == 0 || $wall->open_until < date('d-m-y H:i:s'))
 		{
