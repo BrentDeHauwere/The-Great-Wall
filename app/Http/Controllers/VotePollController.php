@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Event;
 use App\Wall;
 use Illuminate\Http\Request;
 
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\View;
 use App\Poll;
 use App\PollChoice;
 use App\PollVote;
+use App\Events\NewPollVoteEvent;
 
 use Validator;
 use Hash;
@@ -111,7 +113,7 @@ class VotePollController extends Controller
 			{
 				/*$client = new \Capi\Clients\GuzzleClient();
 				$response = $client->post('broadcast', 'msg1.polls.vote',['pollvote' => $poll_vote]);*/
-
+				Event::fire(new NewPollVoteEvent($poll_vote,$pollchoice,$pollchoice->poll));
 				return redirect()->back()->with('success', 'Poll vote success.');
 			}
 			else
