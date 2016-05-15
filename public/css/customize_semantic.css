@@ -36,6 +36,10 @@
 	width: 100%;
 }
 
+#user{
+	height:42px;
+}
+
 .icon_customized {
 	margin-left: 5px !important;
 }
