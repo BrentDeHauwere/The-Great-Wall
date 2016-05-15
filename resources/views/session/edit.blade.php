@@ -24,20 +24,11 @@
 					<div class="default text">Select Speaker</div>
 					<div class="menu">
 						@foreach($speakers as $speaker)
-							@if($speaker->image == null)
-								<div class="item" data-value="{{ $speaker->id }}">
-									<i class="user icon"></i>
-									{{ $speaker->name }}
-								</div>
-							@else
-								<div class="item" data-value="{{ $speaker->id }}">
-									<img class="ui mini avatar image" src="{{ $speaker->image }}">
-									{{ $speaker->name }}
-								</div>
-							@endif
+							<div class="item" data-value="{{ $speaker->id }}">
+								<img class="ui mini avatar image circular" src="{{ route('user_images', ['filename' => $speaker->id]) }}">
+								{{ $speaker->name }}
+							</div>
 						@endforeach
-
-
 					</div>
 				</div>
 				@helper('speaker')
