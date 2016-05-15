@@ -55,6 +55,8 @@ Route::group(['middleware' => 'web'], function () {
 		{
 			// ---------- SESSIONS ----------
 			// Views
+			Route::get('session/multiple', 'SessionController@multiple');
+			Route::get('session/showMultiple', 'SessionController@showMultiple');
 			Route::resource('session', 'SessionController');
 			Route::post('session/{id}/revertDestroy', 'SessionController@revertDestroy');
 			// Actions (performed on a session view)
@@ -118,7 +120,7 @@ Route::group(['middleware' => 'web'], function () {
 			{
 				$path = $paths[0];
 			}
-			
+
 			if(!File::exists($path))
 			{
 				$path = storage_path() . '/app/user_images/' . 'none.png';

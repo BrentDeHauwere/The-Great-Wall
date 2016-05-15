@@ -27,66 +27,96 @@
 		});
 	</script>
 
-	<div class="body_customized">
+<div class="body_customized">
+	@if(isset($wall))
 		<h1>Session: {{ $wall->name }}</h1>
+	@else
+		<h1>
+			Sessions:
+			{{ $walls[0]->name }}
+			@for($i = 1;$i < $walls->count();$i++)
+				{{ ", ".$walls[$i]->name}}
+			@endfor
+		</h1>
+	@endif
 
-		<div class="ui cards four stackable">
-			@foreach($result as $row)
-				<div class="card">
-					<div class="content">
-						<img class="right floated mini ui image" src="http://semantic-ui.com/images/avatar/large/elliot.jpg">
-						<div class="header">
-							{{ \App\User::find($row['user_id'])->name }}
-						</div>
-						<div class="meta">
-							{{ $wall->name }}
-						</div>
-						<div class="description">
-							{{ $row['text'] }}
-						</div>
-					</div>
-					<div class="extra content">
 
-						<div class="ui three buttons">
-							@if($row['M'] == "M")
-								<button type="submit" class="ui basic green button {{ $row['moderation_level'] == 0 ? "disabled" : "" }}" form="{{ "M_{$row['id']}_A" }}">Approve</button>
-								<button type="submit" class="ui basic red button {{ $row['moderation_level'] == 1 ? "disabled" : "" }}" form="{{ "M_{$row['id']}_D" }}">Decline</button>
-								<button class="ui basic grey button {{ in_array($row['user_id'], array_column($blacklistedUserIDs, 'user_id')) == 1 ? "disabled" : "" }}" form="{{ "M_{$row['id']}_B" }}">Block</button>
-							@elseif($row['M'] == "P")
-								<button type="submit" class="ui basic green button {{ $row['moderation_level'] == 0 ? "disabled" : "" }}" form="{{ "P_{$row['id']}_A" }}">Approve</button>
-								<button type="submit" class="ui basic red button {{ $row['moderation_level'] == 1 ? "disabled" : "" }}" form="{{ "P_{$row['id']}_D" }}">Decline</button>
-								<button class="ui basic grey button {{ in_array($row['user_id'], array_column($blacklistedUserIDs, 'user_id')) }}" form="{{ "P_{$row['id']}_B" }}">Block</button>
-							@endif
-						</div>
+	<div class="ui cards four stackable">
+	@foreach($posts as $post)
 
-						<form method="post" action="{{ action('MessageController@accept') }}" id="{{ "M_{$row['id']}_A" }}">
-							<input type="hidden" name="_token" value="{{ csrf_token() }}">
-							<input type="hidden" name="message_id" value="{{ $row['id'] }}">
-						</form>
-						<form method="post" action="{{ action('MessageController@decline') }}" id="{{ "M_{$row['id']}_D" }}">
-							<input type="hidden" name="_token" value="{{ csrf_token() }}">
-							<input type="hidden" name="message_id" value="{{ $row['id'] }}">
-						</form>
-						<form method="get" action="{{action('BlacklistController@create')}}" id="{{ "M_{$row['id']}_B" }}">
-							<input type="hidden" name="message_id" value="{{ $row['id'] }}">
-						</form>
-
-						<!-- KAMIEL: FIX YOUR SHIT -->
-						<form method="post" action="{{ action('MessageController@accept') }}" id="{{ "P_{$row['id']}_A" }}">
-							<input type="hidden" name="_token" value="{{ csrf_token() }}">
-							<input type="hidden" name="message_id" value="{{ $row['id'] }}">
-						</form>
-						<form method="post" action="{{ action('MessageController@decline') }}" id="{{ "P_{$row['id']}_D" }}">
-							<input type="hidden" name="_token" value="{{ csrf_token() }}">
-							<input type="hidden" name="message_id" value="{{ $row['id'] }}">
-						</form>
-						<form method="get" action="{{action('BlacklistController@create')}}" id="{{ "P_{$row['id']}_B" }}">
-							<input type="hidden" name="poll_id" value="{{ $row['id'] }}">
-						</form>
-
-					</div>
+	@if($post[0]=='m')
+		<div class="card">
+			<div class="content">
+				<img class="right floated mini ui image" src="http://semantic-ui.com/images/avatar/large/elliot.jpg">
+				<div class="header">
+					{{ \App\User::find($post[1]->user_id)->name }}
 				</div>
-			@endforeach
+				<div class="meta">
+					{{ $post[1]->wall->name }}
+				</div>
+				<div class="description">
+					{{ $post[1]->text }}
+				</div>
+			</div>
+			<div class="extra content">
+
+				<div class="ui three buttons">
+						<button type="submit" class="ui basic green button {{ $post[1]->moderation_level == 0 ? "disabled" : "" }}" form="{{ "M_{$post[1]->id}_A" }}">Approve</button>
+						<button type="submit" class="ui basic red button {{ $post[1]->moderation_level == 1 ? "disabled" : "" }}" form="{{ "M_{$post[1]->id}_D" }}">Decline</button>
+						<button class="ui basic grey button {{ in_array($post[1]->user_id, array_column($blacklistedUserIDs, 'user_id')) == 1 ? "disabled" : "" }}" form="{{ "M_{$post[1]->id}_B" }}">Block</button>
+				</div>
+
+				<form method="post" action="{{ action('MessageController@accept') }}" id="{{ "M_{$post[1]->id}_A" }}">
+					<input type="hidden" name="_token" value="{{ csrf_token() }}">
+					<input type="hidden" name="message_id" value="{{ $post[1]->id }}">
+				</form>
+				<form method="post" action="{{ action('MessageController@decline') }}" id="{{ "M_{$post[1]->id}_D" }}">
+					<input type="hidden" name="_token" value="{{ csrf_token() }}">
+					<input type="hidden" name="message_id" value="{{ $post[1]->id }}">
+				</form>
+				<form method="get" action="{{action('BlacklistController@create')}}" id="{{ "M_{$post[1]->id}_B" }}">
+					<input type="hidden" name="message_id" value="{{ $post[1]->id }}">
+				</form>
+			</div>
 		</div>
+		@elseif($post[0]=='p')
+		<div class="card">
+			<div class="content">
+				<img class="right floated mini ui image" src="http://semantic-ui.com/images/avatar/large/elliot.jpg">
+				<div class="header">
+					{{ \App\User::find($post[1]->user_id)->name }}
+				</div>
+				<div class="meta">
+					{{ $post[1]->wall->name }}
+				</div>
+				<div class="description">
+					{{ $post[1]->question }}
+				</div>
+			</div>
+			<div class="extra content">
+
+				<div class="ui three buttons">
+						<button type="submit" class="ui basic green button {{ $post[1]->moderation_level == 0 ? "disabled" : "" }}" form="{{ "P_{$post[1]->id}_A" }}">Approve</button>
+						<button type="submit" class="ui basic red button {{ $post[1]->moderation_level == 1 ? "disabled" : "" }}" form="{{ "P_{$post[1]->id}_D" }}">Decline</button>
+						<button class="ui basic grey button {{ in_array($post[1]->user_id, array_column($blacklistedUserIDs, 'user_id')) == 1 ? "disabled" : "" }}" form="{{ "P_{$post[1]->id}_B" }}">Block</button>
+				</div>
+
+				<!-- KAMIEL: FIX YOUR SHIT -->
+				<form method="post" action="{{ action('MessageController@accept') }}" id="{{ "P_{$post[1]->id}_A" }}">
+					<input type="hidden" name="_token" value="{{ csrf_token() }}">
+					<input type="hidden" name="message_id" value="{{ $post[1]->id }}">
+				</form>
+				<form method="post" action="{{ action('MessageController@decline') }}" id="{{ "P_{$post[1]->id}_D" }}">
+					<input type="hidden" name="_token" value="{{ csrf_token() }}">
+					<input type="hidden" name="message_id" value="{{ $post[1]->id }}">
+				</form>
+				<form method="get" action="{{action('BlacklistController@create')}}" id="{{ "P_{$post[1]->id}_B" }}">
+					<input type="hidden" name="poll_id" value="{{ $post[1]->id }}">
+				</form>
+			</div>
+		</div>
+		@endif
+	@endforeach
 	</div>
+</div>
 @stop
