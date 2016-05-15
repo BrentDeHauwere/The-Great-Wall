@@ -61,7 +61,7 @@
 					<td>
 						<button class="ui basic button" type="submit">
 							<i class="icon dashboard"></i>
-							Beheer meerdere walls
+							Beheer selected walls
 						</button>
 					</td>
 				</tr>
