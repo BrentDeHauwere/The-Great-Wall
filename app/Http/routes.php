@@ -118,7 +118,7 @@ Route::group(['middleware' => 'web'], function () {
 			{
 				$path = $paths[0];
 			}
-
+			
 			if(!File::exists($path))
 			{
 				$path = storage_path() . '/app/user_images/' . 'none.png';

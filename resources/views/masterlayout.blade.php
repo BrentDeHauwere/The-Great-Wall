@@ -60,12 +60,8 @@
 				@endif
 				<div class="right menu">
 					<div class="ui dropdown item" id="user">
-						@if(count(glob(storage_path() . '/app/user_images/' . Auth::user()->id . '.*')) != 0)
-							{{ Auth::user()->name }}
-							<img class="ui avatar image icon_customized grey" src="{{ route('user_images', ['filename' => $speaker->id]) }}">
-						@else
-							{{ Auth::user()->name }} <i class="user icon icon_customized"></i>
-						@endif
+						{{ Auth::user()->name }}
+						<img class="ui avatar image icon_customized grey" src="{{ route('user_images', ['filename' => Auth::user()->id]) }}">
 						<div class="menu">
 							@if (empty(Auth::user()->twitter_handle))
 								<a class="item" id="setTwitterHandle">
@@ -80,7 +76,8 @@
 							@endif
 							<form id="setUserImage" method="post" action="{{ action('UserController@image') }}" enctype="multipart/form-data">{{ csrf_field() }}</form>
 							<a class="item">
-								<label for="imageUser" class="ui icon" style="cursor: pointer"><i class="file image outline icon"></i>Set Picture</label>
+								<label for="imageUser" class="ui icon" style="cursor: pointer"><i class="file image outline icon"></i>Set
+									Picture</label>
 								<input type="file" id="imageUser" name="image" form="setUserImage" style="display:none">
 							</a>
 							<a class="ui red item" href="{{ action('UserController@logout') }}">
@@ -180,8 +177,10 @@
 
 		<!-- SUBMIT USER IMAGE WHEN SELECTED -->
 		<script type="text/javascript">
-			$(function() {
-				$('#imageUser').change(function (){
+			$(function ()
+			{
+				$('#imageUser').change(function ()
+				{
 					$('#setUserImage').submit();
 				});
 			});

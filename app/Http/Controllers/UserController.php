@@ -96,13 +96,13 @@ class UserController extends Controller
 		}
 
 		// First check if there was an image uploaded already, if so remove
-		$paths = glob(storage_path() . '/app/wall_images/' . Auth::user()->id . '*');
+		$paths = glob(storage_path() . '/app/user_images/' . Auth::user()->id . '*');
 		if (count($paths) != 0)
 		{
 			unlink($paths[0]);
 		}
 
-		$destinationPath = storage_path() . '/app/wall_images/';
+		$destinationPath = storage_path() . '/app/user_images/';
 		$fileName = Auth::user()->id . '.' . $request->file('image')->getClientOriginalExtension();
 		$request->file('image')->move($destinationPath, $fileName);
 
