@@ -7,7 +7,7 @@
 @section('content')
 	<form method="GET" action="{{ action('SessionController@showMultiple')}}">
 	<div class="body_customized">
-		<table class="ui celled sortable table" id="table">
+		<table class="ui compact celled definition sortable table" id="table">
 
 			<div class="ui icon input search medium">
 				<input type="text" placeholder="Search..." id="search_input">
@@ -26,18 +26,24 @@
 					</th>
 				</tr>
 				<tr>
+					<th>Beheer</th>
 					<th>ID</th>
 					<th>Speaker</th>
 					<th>Name</th>
 					<th>Twitter</th>
 					<th>Protected</th>
 					<th>Open until</th>
-					<th class="no-sort" style="width: 332px">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
 				@foreach($walls as $key => $value)
 					<tr>
+						<td>
+							<div class="ui fitted slider checkbox">
+							  <input type="checkbox" name="beheer[]" value="{{ $value->id }}">
+							  <label></label>
+							</div>
+						</td>
 						<td>{{ $value->id }}</td>
 						<td>{{ $value->user->name }}</td>
 						<td>{{ $value->name }}</td>
@@ -48,12 +54,6 @@
 						@else
 							<td>{{ $value->open_until }}</td>
 						@endif
-						<td>
-							<div class="ui checkbox">
-							  <input type="checkbox" name="beheer[]" value="{{ $value->id }}">
-							  <label>Beheer deze wall</label>
-							</div>
-						</td>
 					</tr>
 				@endforeach
 				<tr>
