@@ -66,6 +66,44 @@ class SessionController extends Controller
 		}
 	}
 
+	public function multiple(){
+		$walls = Wall::withTrashed()->with('user')->orderBy('name')->get();
+
+		foreach ($walls as $wall)
+		{
+			if (!empty($wall->password))
+			{
+				$wall->password = "Yes";
+			}
+			else
+			{
+				$wall->password = "No";
+			}
+
+			if ($wall->deleted_at != null)
+			{
+				$wall->open_until = 'Manually closed';
+			}
+			else if ($wall->open_until == null)
+			{
+				$wall->open_until = 'Infinity (not set)';
+			}
+			else if ($wall->open_until < date('Y-m-d H:i:s'))
+			{
+				$wall->open_until = "Automatically closed ({$wall->open_until})";
+			}
+		}
+
+		if (empty($walls))
+		{
+			return View::make('session.multiple')->with('walls', $walls)->with('info', 'No sessions available.');
+		}
+		else
+		{
+			return View::make('session.multiple')->with('walls', $walls);
+		}
+	}
+
 	/**
 	 * Show the form for creating a new wall.
 	 *
@@ -155,31 +193,119 @@ class SessionController extends Controller
 	 */
 	public function show($id)
 	{
-		$userid = 1; //getfromloggedinuser
+		$userid = Auth::user()->id; //getfromloggedinuser
 		$wall = Wall::findOrFail($id);
 		$messages = Message::with("votes", "user")->where("wall_id", "=", $id)->get();
 		$polls = Poll::with("choices.votes", "user")->where("wall_id", "=", $id)->get();
 		$blacklistedUserIDs = Blacklist::all('user_id')->toArray();
 
-		$result = DB::select(DB::raw("SELECT id,user_id,text,moderation_level,created_at,'M' FROM messages WHERE wall_id = {$id} UNION SELECT id,user_id,question,moderation_level,created_at,'P' FROM polls WHERE wall_id = {$id} ORDER BY created_at desc"));
+		$posts = $this->sortMessagesPolls($messages, $polls);
 
-		if (count($result) == 0)
+
+		if (count($posts) == 0)
 		{
 			return View::make('session.show')
 				->with('wall', $wall)
-				->with("messages", $messages)
-				->with("polls", $polls)
-				->with("result", json_decode(json_encode($result), true))
+				->with("posts", $posts)
 				->with("blacklistedUserIDs", $blacklistedUserIDs)
 				->with('info', 'No messages or polls available on this session');
 		}
 
 		return View::make('session.show')
 			->with('wall', $wall)
-			->with("messages", $messages)
-			->with("polls", $polls)
-			->with("blacklistedUserIDs", $blacklistedUserIDs)
-			->with("result", json_decode(json_encode($result), true));
+			->with('posts',$posts)
+			->with("blacklistedUserIDs", $blacklistedUserIDs);
+	}
+
+	/**
+	 * Display multiple walls.
+	 *
+	 * @param  int $id
+	 * @return Response
+	 */
+	public function showMultiple(Request $request)
+	{
+
+		if(!$request->has('beheer') || empty($request->input('beheer'))){
+			return redirect()->back()->with('info','Please select atleast one wall.');
+		}
+		$userid = Auth::user()->id;
+		$walls = Wall::whereIn('id',$request->input('beheer'))->get();
+		$messages = Message::with("votes", "user")->whereIn("wall_id", $request->input('beheer'))->get();
+		$polls = Poll::with("choices.votes", "user")->whereIn("wall_id", $request->input('beheer'))->get();
+		$blacklistedUserIDs = Blacklist::all('user_id')->toArray();
+
+		$posts = $this->sortMessagesPolls($messages, $polls);
+		if (count($posts) == 0)
+		{
+			return View::make('session.show')
+				->with('walls', $walls)
+				->with('posts',$posts)
+				->with("blacklistedUserIDs", $blacklistedUserIDs)
+				->with('info', 'No messages or polls available on this session');
+		}
+
+		return View::make('session.show')
+			->with('walls', $walls)
+			->with('posts',$posts)
+			->with("blacklistedUserIDs", $blacklistedUserIDs);
+	}
+
+	private function sortMessagesPolls($messages, $polls)
+	{
+		/* Sort messages / poll into a chronologically ordered 2D array */
+		$posts = [];
+
+		if (!$polls->isEmpty())
+		{
+			foreach ($polls as $poll)
+			{
+				array_push($posts, array('p', $poll, $poll->user()->first()));
+			}
+		}
+		else
+		{
+			foreach ($messages as $message)
+			{
+				array_push($posts, array('m', $message, $message->user()->first()));
+			}
+		}
+
+		$msgCounter = 0;
+
+		if ($messages != null)
+		{
+			foreach ($messages->where('question_id', NULL) as $message)
+			{
+				$counter = 0;
+
+				if ($polls->isEmpty())
+				{
+					break;
+				}
+
+				foreach ($posts as $post)
+				{
+					if ($message->created_at > $post[1]->created_at)
+					{
+						$arr = array('m', $message, $message->user()->first());
+						array_splice($posts, $counter, 0, array($arr));
+						unset($messages[ $msgCounter ]);
+						break;
+					}
+					elseif ($message->create_at < $post[1]->created_at)
+					{
+						array_push($posts, array('m', $message, $message->user()->first()));
+						unset($messages[ $msgCounter ]);
+						break;
+					}
+					$counter += 1;
+				}
+				$msgCounter += 1;
+			}
+		}
+
+		return $posts;
 	}
 
 	/**

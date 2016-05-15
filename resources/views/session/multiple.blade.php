@@ -5,6 +5,7 @@
 @section('page','moderate')
 
 @section('content')
+	<form method="GET" action="{{ action('SessionController@showMultiple')}}">
 	<div class="body_customized">
 		<table class="ui celled sortable table" id="table">
 
@@ -48,49 +49,26 @@
 							<td>{{ $value->open_until }}</td>
 						@endif
 						<td>
-							<a class="ui basic button" href="{{ action('SessionController@show', $value->id) }}">
-								<i class="icon dashboard"></i>
-								Show
-							</a>
-							<a class="ui basic button" href="{{ action('SessionController@edit', $value->id) }}">
-								<i class="icon edit"></i>
-								Edit
-							</a>
-							@if ($value->open_until == 'Manually closed')
-								<form action="{{action('SessionController@revertDestroy', $value->id)}}" method="post" class="form_inline_customize">
-									<input type="hidden" name="_token" value="{{ csrf_token() }}"/>
-									<button class="ui basic green button" type="submit" style="margin-right: 0px">
-										<i class="icon unhide"></i>
-										Reopen
-									</button>
-								</form>
-							@else
-								<form action="{{action('SessionController@destroy', $value->id)}}" method="post" class="form_inline_customize">
-									<input type="hidden" name="_token" value="{{ csrf_token() }}"/>
-									<input type="hidden" name="_method" value="delete"/>
-									<button class="ui basic red button" type="submit" style="margin-right: 0px">
-										<i class="icon hide"></i>
-										Close
-									</button>
-								</form>
-							@endif
+							<div class="ui checkbox">
+							  <input type="checkbox" name="beheer[]" value="{{ $value->id }}">
+							  <label>Beheer deze wall</label>
+							</div>
 						</td>
 					</tr>
 				@endforeach
 				<tr>
 					<td colspan="6"></td>
 					<td>
-						<a class="ui basic button" href="{{ action('SessionController@multiple') }}">
+						<button class="ui basic button" type="submit">
 							<i class="icon dashboard"></i>
 							Beheer meerdere walls
-						</a>
+						</button>
 					</td>
 				</tr>
 			</tbody>
 		</table>
-
 	</div>
-
+	</form>
 	<script src="/js/jquery.tablesort.js"></script>
 	<script>
 		$('table').tablesort();
