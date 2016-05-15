@@ -93,7 +93,7 @@ class AppServiceProvider extends ServiceProvider
 			return '<?php
 						if($errors->has(' . $namevar . ')){
 
-							echo "<div class=\"ui pointing red basic label\" style=\"margin-bottom: 14px\">".$errors->first(' . $namevar . ')."</span>";
+							echo "<div class=\"ui pointing red basic label\" style=\"margin-bottom: 14px\">".$errors->first(' . $namevar . ')."</div>";
 						}
 					?>';
 		});

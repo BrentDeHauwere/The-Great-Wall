@@ -8,18 +8,53 @@
 	<div class="body_customized">
 		<h1>Edit - {{ $wall->name }}</h1>
 
-		<form class="ui form" action="{{action('SessionController@update', $wall->id)}}" method="post">
-
-			<div class="field required">
-				<label for="user_id">UserID</label>
-				<input id="user_id" type="number" name="user_id" value="{{ $wall->user_id }}" placeholder="UserID">
-				@helper('user_id')
-			</div>
+		<form class="ui form" action="{{action('SessionController@update', $wall->id)}}" method="post" enctype="multipart/form-data">
 
 			<div class="field required">
 				<label for="name">Name</label>
 				<input id="name" type="text" name="name" value="{{ $wall->name }}" placeholder="Name">
 				@helper('name')
+			</div>
+
+			<div class="field required">
+				<label for="name">Speaker</label>
+				<div class="ui fluid selection dropdown required">
+					<input type="hidden" name="speaker" value="{{ $wall->user_id }}">
+					<i class="dropdown icon"></i>
+					<div class="default text">Select Speaker</div>
+					<div class="menu">
+						@foreach($speakers as $speaker)
+							<div class="item" data-value="{{ $speaker->id }}">
+								<img class="ui mini avatar image circular" src="{{ route('user_images', ['filename' => $speaker->id]) }}">
+								{{ $speaker->name }}
+							</div>
+						@endforeach
+					</div>
+				</div>
+				@helper('speaker')
+			</div>
+
+			<div class="field">
+				<label for="description">Description</label>
+				<textarea id="description" type="text" name="description" placeholder="Description">{{ $wall->description }}</textarea>
+				@helper('description')
+			</div>
+
+			<div class="field">
+				<label for="hashtag">Hashtag (only if session is not password protected)</label>
+				<div class="ui labeled input">
+					<div class="ui basic blue label">
+						#
+					</div>
+					<input type="text" placeholder="TalkLaravel" name="hashtag" id="hashtag" value="{{ $wall->hashtag }}">
+				</div>
+				@helper('hashtag')
+			</div>
+
+			<div class="field">
+				<label for="image">Image</label>
+				<input id="image" type="file" name="image">
+				@helper('image')
 			</div>
 
 			<div class="field">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Wall;
 use Illuminate\Http\Request;
 
@@ -72,7 +73,8 @@ class SessionController extends Controller
 	 */
 	public function create()
 	{
-		return View::make('session.create');
+		$speakers = User::where('role', 'Speaker')->get();
+		return View::make('session.create')->withSpeakers($speakers);
 	}
 
 	/**
@@ -83,15 +85,44 @@ class SessionController extends Controller
 	public function store(Request $request)
 	{
 		// Server-side validation
-		$this->validate($request, [
+		$validator = Validator::make($request->all(), [
 			'name'       => 'required',
+			'speaker'    => 'required|exists:users,id,role,Speaker',
+			'image'    	 => 'image',
 			'password'   => 'confirmed',
 			'open_until' => 'date',
 		]);
 
+		if ($request->input('password') != null && $request->input('hashtag') != null)
+		{
+			$validator->after(function($validator) {
+					$validator->errors()->add('hashtag', 'You can only add a hashtag if the session is not password protected.');
+			});
+		}
+
+		if ($validator->fails())
+		{
+			return redirect('session/create')
+				->withErrors($validator)
+				->withInput();
+		}
+
 		$wall = new Wall;
-		$wall->user_id = Auth::user()->id;
+		$wall->user_id = $request->input('speaker');
 		$wall->name = $request->input('name');
+		$wall->description = $request->input('description');
+		$wall->hashtag = $request->input('hashtag');
+
+		if ($request->hasFile('image'))
+		{
+			// We need the wall_id
+			$wall->save();
+
+			$destinationPath = storage_path() . '/app/wall_images/';
+			$fileName = $wall->id . '.' . $request->file('image')->getClientOriginalExtension();
+			$request->file('image')->move($destinationPath, $fileName);
+		}
+
 		if ($request->has('password'))
 		{
 			$wall->password = Hash::make($request->input('password'));
@@ -163,12 +194,18 @@ class SessionController extends Controller
 		$wall = Wall::find($id);
 
 		// Required for datetime-local inputfield
-		$old_date_timestamp = strtotime($wall->open_until);
-		$wall->open_until = date('Y-m-d H:i', $old_date_timestamp);
-		$wall->open_until = str_replace(' ', 'T', $wall->open_until);
+		if ($wall->open_until != null)
+		{
+			$old_date_timestamp = strtotime($wall->open_until);
+			$wall->open_until = date('Y-m-d H:i', $old_date_timestamp);
+			$wall->open_until = str_replace(' ', 'T', $wall->open_until);
+		}
+
+		$speakers = User::where('role', 'Speaker')->get();
 
 		return View::make('session.edit')
-			->with('wall', $wall);
+			->with('wall', $wall)
+			->withSpeakers($speakers);;
 	}
 
 	/**
@@ -181,16 +218,51 @@ class SessionController extends Controller
 	function update(Request $request, $id)
 	{
 		// Server-side validation
-		$this->validate($request, [
-			'user_id'    => 'required|numeric|min:1',
+		$validator = Validator::make($request->all(), [
 			'name'       => 'required',
+			'speaker'    => 'required|exists:users,id,role,Speaker',
+			'image'    	 => 'image',
 			'password'   => 'confirmed',
 			'open_until' => 'date',
 		]);
 
+		if ($request->input('password') != null && $request->input('hashtag') != null)
+		{
+			$validator->after(function($validator) {
+				$validator->errors()->add('hashtag', 'You can only add a hashtag if the session is not password protected.');
+			});
+		}
+
+		if ($validator->fails())
+		{
+			return redirect('session/create')
+				->withErrors($validator)
+				->withInput();
+		}
+
 		$wall = Wall::find($id);
-		$wall->user_id = $request->input('user_id');
+		$wall->user_id = $request->input('speaker');
 		$wall->name = $request->input('name');
+		$wall->description = $request->input('description');
+		$wall->hashtag = $request->input('hashtag');
+
+		if ($request->hasFile('image'))
+		{
+			// We need the wall_id
+			$wall->save();
+
+			// First check if there was an image uploaded already, if so remove
+			$paths = glob(storage_path() . '/app/wall_images/' . $wall->id . '*');
+			if (count($paths) != 0)
+			{
+				unlink($paths[0]);
+			}
+
+			$destinationPath = storage_path() . '/app/wall_images/';
+			$fileName = $wall->id . '.' . $request->file('image')->getClientOriginalExtension();
+			$request->file('image')->move($destinationPath, $fileName);
+		}
+
 		if ($request->has('password'))
 		{
 			$wall->password = Hash::make($request->input('password'));
