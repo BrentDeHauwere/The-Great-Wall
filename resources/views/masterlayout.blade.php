@@ -54,13 +54,15 @@
 					</a>
 				@else
 					<a class="item" href="{{ action('WallController@index') }}" id="home">
-						The Great Wall &nbsp; <small>Home</small>
+						The Great Wall &nbsp;
+						<small>Home</small>
 					</a>
 				@endif
 				<div class="right menu">
 					<div class="ui dropdown item" id="user">
 						@if(count(glob(storage_path() . '/app/user_images/' . Auth::user()->id . '.*')) != 0)
-							{{ Auth::user()->name }} <img class="ui avatar image icon_customized grey" src="{{ route('user_images', ['filename' => $speaker->id]) }}">
+							{{ Auth::user()->name }}
+							<img class="ui avatar image icon_customized grey" src="{{ route('user_images', ['filename' => $speaker->id]) }}">
 						@else
 							{{ Auth::user()->name }} <i class="user icon icon_customized"></i>
 						@endif
@@ -76,9 +78,9 @@
 									{{ Auth::user()->twitter_handle }}
 								</a>
 							@endif
-							<a class="item" id="setProfilePicture">
-								<i class="file image outline icon"></i>
-								Set Picture
+							<a class="item">
+								<label for="file" class="ui icon" style="cursor: pointer"><i class="file image outline icon"></i>Set Picture</label>
+								<input type="file" id="file" style="display:none">
 							</a>
 							<a class="ui red item" href="{{ action('UserController@logout') }}">
 								<i class="sign out icon"></i>
@@ -120,7 +122,8 @@
 
 		<script>
 			$('.message .close')
-				.on('click', function() {
+				.on('click', function ()
+				{
 					$(this)
 						.closest('.message')
 						.transition('fade')
@@ -141,7 +144,8 @@
 				</div>
 				<div class="description">
 					<div class="ui header">Post messages via your Twitter account.</div>
-					<p>It is possible to send messages to a wall via your Twitter account. Note that this is only possible on <strong>public</strong> walls.</p>
+					<p>It is possible to send messages to a wall via your Twitter account. Note that this is only
+						possible on <strong>public</strong> walls.</p>
 					<p>Please fill in your Twitter handle (will be read-only after submit).</p>
 					<form action="{{ action('UserController@twitterHandle') }}" method="post" id="formTwitterHandle">
 						<div class="ui labeled input {{ Auth::user()->twitter_handle != null ? "disabled" : "" }}}">
