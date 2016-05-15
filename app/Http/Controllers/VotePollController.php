@@ -113,7 +113,7 @@ class VotePollController extends Controller
 			{
 				/*$client = new \Capi\Clients\GuzzleClient();
 				$response = $client->post('broadcast', 'msg1.polls.vote',['pollvote' => $poll_vote]);*/
-				Event::fire(new NewPollVoteEvent($poll_vote,$pollchoice,$pollchoice->poll));
+				Event::fire(new NewPollVoteEvent($poll_vote));
 				return redirect()->back()->with('success', 'Poll vote success.');
 			}
 			else
