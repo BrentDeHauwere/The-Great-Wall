@@ -105,7 +105,8 @@ Route::group(['middleware' => 'web'], function () {
 		})->name('wall_images');;
 
 		// ----------- USER ----------
-		Route::post('twitterHandle', 'UserController@twitterHandle');
+		Route::post('user/twitterHandle', 'UserController@twitterHandle');
+		Route::post('user/image', 'UserController@image');
 
 		// ---------- USER IMAGES ----------
 		Route::get('user_images/{filename}', function ($filename)

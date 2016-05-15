@@ -26,12 +26,13 @@ class UserController extends Controller
 	 * @param Request
 	 * @return Response
 	 */
-    public function login(Request $request)
+	public function login(Request $request)
 	{
 		$email = $request->input('email');
 		$password = $request->input('password');
 
-		if (Auth::attempt(['email' => $email, 'password' => $password])) {
+		if (Auth::attempt(['email' => $email, 'password' => $password]))
+		{
 			return redirect()->intended('/');
 		}
 		else
@@ -48,6 +49,7 @@ class UserController extends Controller
 	public function logout()
 	{
 		Auth::logout();
+
 		return redirect('login')->with('success', 'Successfully logged out.');
 	}
 
@@ -63,7 +65,7 @@ class UserController extends Controller
 			abort(403);
 
 		$this->validate($request, [
-			'twitter_handle'	=> 'required',
+			'twitter_handle' => 'required',
 		]);
 
 		$user = Auth::user();
@@ -71,5 +73,38 @@ class UserController extends Controller
 		$user->save();
 
 		return redirect()->back()->with('success', 'Your Twitter handle was set.');
+	}
+
+	/**
+	 * Set an image for a user.
+	 *
+	 * @param Request
+	 * @return Response
+	 */
+	public function image(Request $request)
+	{
+		// Server-side validation
+		$validator = Validator::make($request->all(), [
+			'image' => 'required|image',
+		]);
+
+		if ($validator->fails())
+		{
+			return redirect()->back()
+				->with('error', $validator->errors->first('image'));
+		}
+
+		// First check if there was an image uploaded already, if so remove
+		$paths = glob(storage_path() . '/app/wall_images/' . Auth::user()->id . '*');
+		if (count($paths) != 0)
+		{
+			unlink($paths[0]);
+		}
+
+		$destinationPath = storage_path() . '/app/wall_images/';
+		$fileName = Auth::user()->id . '.' . $request->file('image')->getClientOriginalExtension();
+		$request->file('image')->move($destinationPath, $fileName);
+
+		return redirect()->back()->with('success', 'Your profile picture was successfully uploaded.');
 	}
 }
