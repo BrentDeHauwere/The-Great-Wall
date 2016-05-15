@@ -59,7 +59,11 @@
 				@endif
 				<div class="right menu">
 					<div class="ui dropdown item" id="user">
-						{{ Auth::user()->name }} <i class="user icon icon_customized"></i>
+						@if(count(glob(storage_path() . '/app/user_images/' . Auth::user()->id . '.*')) != 0)
+							{{ Auth::user()->name }} <img class="ui avatar image icon_customized grey" src="{{ route('user_images', ['filename' => $speaker->id]) }}">
+						@else
+							{{ Auth::user()->name }} <i class="user icon icon_customized"></i>
+						@endif
 						<div class="menu">
 							@if (empty(Auth::user()->twitter_handle))
 								<a class="item" id="setTwitterHandle">
