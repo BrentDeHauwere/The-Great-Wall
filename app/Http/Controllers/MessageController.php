@@ -53,7 +53,7 @@ class MessageController extends Controller
 		{
 			/*$client = new \Capi\Clients\GuzzleClient();
 			$response = $client->post('broadcast', 'msg1.msg',['message' => $message]);*/
-
+			Event::fire(new NewMessageEvent($message));
 			return redirect()->back()->with('success', 'Message saved successfully.');
 		}
 		else
@@ -105,6 +105,7 @@ class MessageController extends Controller
 			{
 				/*$client = new \Capi\Clients\GuzzleClient();
 				$response = $client->post('broadcast', 'msg1.msg.moda',['message' => $message]);*/
+				Event::fire(new NewMessageModeratorAcceptedEvent($message));
 
 				return redirect()->back()->with("success", "Message was accepted.");
 			}
@@ -139,6 +140,7 @@ class MessageController extends Controller
 			{
 				/*$client = new \Capi\Clients\GuzzleClient();
 				$response = $client->post('broadcast', 'msg1.msg.modd',['message' => $message]);*/
+				Event::fire(new NewMessageModeratorDeclinedEvent($message));
 
 				return redirect()->back()->with("success", "Message was blocked.");
 			}

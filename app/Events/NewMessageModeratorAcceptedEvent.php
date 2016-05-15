@@ -2,11 +2,13 @@
 
 namespace App\Events;
 
+use App\Message;
+
 use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class NewMessageModeratorAcceptedEvent extends Event
+class NewMessageModeratorAcceptedEvent extends Event implements ShouldBroadcast
 {
     use SerializesModels;
     public $message;
@@ -28,6 +30,6 @@ class NewMessageModeratorAcceptedEvent extends Event
      */
     public function broadcastOn()
     {
-        return ['messagewall1.wall.'.$this->poll->wall_id.'.message.moderator.accepted'];
+        return ['msg1.modd.msg.'.$this->message->wall_id];
     }
 }

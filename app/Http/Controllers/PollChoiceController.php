@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Log;
+use Event;
 use App\PollChoice;
 use App\Wall;
 use Illuminate\Http\Request;
@@ -12,6 +14,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
+use App\Events\NewPollChoiceEvent;
 
 use Validator;
 use Hash;
@@ -42,8 +45,11 @@ class PollChoiceController extends Controller
 
 		if ( $succes == true )
 		{
+
 			/*$client = new \Capi\Clients\GuzzleClient();
 			$response = $client->post('broadcast', 'msg1.polls.choices',['pollchoice' => $pollChoice]);*/
+			Log::info('Events gonna get fired');
+			Event::fire(new NewPollChoiceEvent($pollChoice));
 
 			return redirect()->back()->with('success', 'Pollchoice success');
 		}
