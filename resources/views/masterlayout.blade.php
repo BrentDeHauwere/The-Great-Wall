@@ -78,15 +78,15 @@
 									{{ Auth::user()->twitter_handle }}
 								</a>
 							@endif
+							<form id="setUserImage" method="post" action="{{ action('UserController@image') }}" enctype="multipart/form-data">{{ csrf_field() }}</form>
 							<a class="item">
-								<label for="file" class="ui icon" style="cursor: pointer"><i class="file image outline icon"></i>Set Picture</label>
-								<input type="file" id="file" style="display:none">
+								<label for="imageUser" class="ui icon" style="cursor: pointer"><i class="file image outline icon"></i>Set Picture</label>
+								<input type="file" id="imageUser" name="image" form="setUserImage" style="display:none">
 							</a>
 							<a class="ui red item" href="{{ action('UserController@logout') }}">
 								<i class="sign out icon"></i>
 								Logout
 							</a>
-
 						</div>
 					</div>
 				</div>
@@ -175,6 +175,15 @@
 				$('.ui.modal')
 					.modal('show')
 				;
+			});
+		</script>
+
+		<!-- SUBMIT USER IMAGE WHEN SELECTED -->
+		<script type="text/javascript">
+			$(function() {
+				$('#imageUser').change(function (){
+					$('#setUserImage').submit();
+				});
 			});
 		</script>
 

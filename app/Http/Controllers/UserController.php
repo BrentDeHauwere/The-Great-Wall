@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
+use Validator;
 
 class UserController extends Controller
 {
@@ -91,7 +92,7 @@ class UserController extends Controller
 		if ($validator->fails())
 		{
 			return redirect()->back()
-				->with('error', $validator->errors->first('image'));
+				->with('error', $validator->errors()->first('image'));
 		}
 
 		// First check if there was an image uploaded already, if so remove
