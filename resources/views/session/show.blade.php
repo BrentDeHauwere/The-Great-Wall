@@ -63,7 +63,7 @@
 				<div class="ui three buttons">
 						<button type="submit" class="ui basic green button {{ $post[1]->moderation_level == 0 ? "disabled" : "" }}" form="{{ "M_{$post[1]->id}_A" }}">Approve</button>
 						<button type="submit" class="ui basic red button {{ $post[1]->moderation_level == 1 ? "disabled" : "" }}" form="{{ "M_{$post[1]->id}_D" }}">Decline</button>
-						<button class="ui basic grey button {{ in_array($post[1]->user_id, array_column($blacklistedUserIDs, 'user_id')) == 1 ? "disabled" : "" }}" form="{{ "M_{$post[1]->id}_B" }}">Block</button>
+						<button class="ui basic grey button {{ in_array($post[1]->user_id, $blacklistedUserIDs) == 1 ? "disabled" : "" }}" form="{{ "M_{$post[1]->id}_B" }}">Block</button>
 				</div>
 
 				<form method="post" action="{{ action('MessageController@accept') }}" id="{{ "M_{$post[1]->id}_A" }}">
@@ -98,7 +98,7 @@
 				<div class="ui three buttons">
 						<button type="submit" class="ui basic green button {{ $post[1]->moderation_level == 0 ? "disabled" : "" }}" form="{{ "P_{$post[1]->id}_A" }}">Approve</button>
 						<button type="submit" class="ui basic red button {{ $post[1]->moderation_level == 1 ? "disabled" : "" }}" form="{{ "P_{$post[1]->id}_D" }}">Decline</button>
-						<button class="ui basic grey button {{ in_array($post[1]->user_id, array_column($blacklistedUserIDs, 'user_id')) == 1 ? "disabled" : "" }}" form="{{ "P_{$post[1]->id}_B" }}">Block</button>
+						<button class="ui basic grey button {{ in_array($post[1]->user_id, $blacklistedUserIDs) == 1 ? "disabled" : "" }}" form="{{ "P_{$post[1]->id}_B" }}">Block</button>
 				</div>
 
 				<!-- KAMIEL: FIX YOUR SHIT -->

@@ -197,7 +197,7 @@ class SessionController extends Controller
 		$wall = Wall::findOrFail($id);
 		$messages = Message::with("votes", "user")->where("wall_id", "=", $id)->get();
 		$polls = Poll::with("choices.votes", "user")->where("wall_id", "=", $id)->get();
-		$blacklistedUserIDs = Blacklist::all('user_id')->toArray();
+		$blacklistedUserIDs = array_column(Blacklist::all('user_id')->toArray(), 'user_id');
 
 		$posts = $this->sortMessagesPolls($messages, $polls);
 
