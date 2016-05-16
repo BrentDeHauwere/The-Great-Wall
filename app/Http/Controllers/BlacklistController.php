@@ -40,6 +40,7 @@ class BlacklistController extends Controller
 	 */
 	public function create(Request $request)
 	{
+
 		//The request gets oftewel a message_id or a poll_id, depending on the button which was pressed
 		$message_id = $request->input('message_id');
 		$poll_id = $request->input('poll_id');
@@ -55,6 +56,11 @@ class BlacklistController extends Controller
 		else
 		{
 			abort(422);
+		}
+
+		//Check if user isn't already banned
+		if (Blacklist::find($user_id->user_id) != null){
+			return redirect()->back()->with('error', 'User was already blacklisted.');
 		}
 
 		$username = DB::table('users')->select('name')->where('id', $user_id->user_id)->first();

@@ -51,11 +51,11 @@
 							@if($row['M'] == "M")
 								<button type="submit" class="ui basic green button {{ $row['moderation_level'] == 0 ? "disabled" : "" }}" form="{{ "M_{$row['id']}_A" }}">Approve</button>
 								<button type="submit" class="ui basic red button {{ $row['moderation_level'] == 1 ? "disabled" : "" }}" form="{{ "M_{$row['id']}_D" }}">Decline</button>
-								<button class="ui basic grey button" form="{{ "M_{$row['id']}_B" }}">Block</button>
+								<button class="ui basic grey button {{ in_array($row['user_id'], array_column($blacklistedUserIDs, 'user_id')) == 1 ? "disabled" : "" }}" form="{{ "M_{$row['id']}_B" }}">Block</button>
 							@elseif($row['M'] == "P")
 								<button type="submit" class="ui basic green button {{ $row['moderation_level'] == 0 ? "disabled" : "" }}" form="{{ "P_{$row['id']}_A" }}">Approve</button>
 								<button type="submit" class="ui basic red button {{ $row['moderation_level'] == 1 ? "disabled" : "" }}" form="{{ "P_{$row['id']}_D" }}">Decline</button>
-								<button class="ui basic grey button" form="{{ "P_{$row['id']}_B" }}">Block</button>
+								<button class="ui basic grey button {{ in_array($row['user_id'], array_column($blacklistedUserIDs, 'user_id')) }}" form="{{ "P_{$row['id']}_B" }}">Block</button>
 							@endif
 						</div>
 
