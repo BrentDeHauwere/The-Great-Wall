@@ -72,7 +72,7 @@ class ProcessTweet extends Job implements ShouldQueue
 			if ($transformedTweet->save())
 			{
 				print("Tweet from @" . $tweet['user']['screen_name'] . " saved in database." . PHP_EOL);
-				print("Text: " . $tweet['text']);
+				print("Text: " . $tweet['text'] . PHP_EOL);
 				//Event::fire(new NewMessageEvent($transformedTweet));
 			}
 			else
@@ -86,5 +86,6 @@ class ProcessTweet extends Job implements ShouldQueue
 			print("User " . $tweet['user']['screen_name'] . " was not found in the database, therefore the tweet will not be saved." . PHP_EOL);
 		}
 
+		print(PHP_EOL);
 	}
 }
