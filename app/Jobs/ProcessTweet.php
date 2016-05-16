@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use Event;
+use App\Events\NewMessageEvent;
 use App\Jobs\Job;
 use App\Message;
 use App\User;
@@ -66,8 +68,18 @@ class ProcessTweet extends Job implements ShouldQueue
 				$transformedTweet->wall_id = $wall->id;
 			}
 
-			$transformedTweet->save();
-			print("Tweet from @" . $tweet['user']['screen_name'] . " saved in database." . PHP_EOL);
+
+			if ($transformedTweet->save())
+			{
+				print("Tweet from @" . $tweet['user']['screen_name'] . " saved in database." . PHP_EOL);
+				print("Text: " . $tweet['text']);
+				//Event::fire(new NewMessageEvent($transformedTweet));
+			}
+			else
+			{
+				print("Could not save tweet from @" . $tweet['user']['screen_name'] . " in the database." . PHP_EOL);
+			}
+
 		}
 		else
 		{
