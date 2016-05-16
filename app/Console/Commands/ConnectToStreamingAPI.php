@@ -49,7 +49,8 @@ class ConnectToStreamingAPI extends Command
 		$DBhashtags = DB::table('walls')->select('hashtag')->whereNotNull('hashtag')->get();
 		$hashtags = [];
 
-		foreach ($DBhashtags as $hashtag){
+		foreach ($DBhashtags as $hashtag)
+		{
 			array_push($hashtags, "#" . $hashtag->hashtag);
 		}
 
