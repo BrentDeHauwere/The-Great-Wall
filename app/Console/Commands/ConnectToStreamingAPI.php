@@ -53,8 +53,6 @@ class ConnectToStreamingAPI extends Command
 			array_push($hashtags, "#" . $hashtag->hashtag);
 		}
 
-		var_dump($hashtags);
-
 		$this->twitterStream->consumerKey = $twitter_consumer_key;
 		$this->twitterStream->consumerSecret = $twitter_consumer_secret;
 		$this->twitterStream->setTrack($hashtags);
