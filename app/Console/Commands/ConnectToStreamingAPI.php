@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\TwitterStream;
+use DB;
 
 class ConnectToStreamingAPI extends Command
 {
@@ -45,9 +46,18 @@ class ConnectToStreamingAPI extends Command
 		$twitter_consumer_key = env('TWITTER_CONSUMER_KEY', '');
 		$twitter_consumer_secret = env('TWITTER_CONSUMER_SECRET', '');
 
+		$DBhashtags = DB::table('walls')->select('hashtag')->whereNotNull('hashtag')->get();
+		$hashtags = [];
+
+		foreach ($DBhashtags as $hashtag){
+			array_push($hashtags, "#" . $hashtag->hashtag);
+		}
+
+		var_dump($hashtags);
+
 		$this->twitterStream->consumerKey = $twitter_consumer_key;
 		$this->twitterStream->consumerSecret = $twitter_consumer_secret;
-		$this->twitterStream->setTrack(['#ehackb']);
+		$this->twitterStream->setTrack($hashtags);
 		$this->twitterStream->consume();
 	}
 }
