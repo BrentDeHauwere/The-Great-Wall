@@ -24,5 +24,9 @@ class WallsTableSeeder extends Seeder
         DB::table('walls')->insert([
             ['user_id' => 7, 'name' => 'YouTube for dummies', 'description' => 'We will talk about YouTube. We will explain how to use it. It will be very nice.', 'password' => Hash::make('test'), 'open_until' => date('Y-m-d H:i:s', time() + (7 * 24 * 60 * 60))],
         ]);
+
+        DB::table('walls')->insert([
+            ['user_id' => 6, 'name' => 'Ehb Main Wall', 'description' => null, 'open_until' => null, 'hashtag' => 'ehackb'],
+        ]);
     }
 }
