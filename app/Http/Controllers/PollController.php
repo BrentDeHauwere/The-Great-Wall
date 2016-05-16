@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Event;
 use App\PollChoice;
 use App\Wall;
 use Illuminate\Http\Request;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
+use App\Events\NewPollEvent;
 
 use App\Poll;
 
@@ -77,7 +79,7 @@ class PollController extends Controller
 		{
 			/*$client = new \Capi\Clients\GuzzleClient();
 			$response = $client->post('broadcast', 'msg1.polls',['poll' => $poll]);*/
-
+			Event::fire(new NewPollEvent($poll));
 			return redirect()->back()->with('success', 'Poll success');
 		}
 		else

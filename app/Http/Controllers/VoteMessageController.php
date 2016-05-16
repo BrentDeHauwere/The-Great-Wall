@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Event;
 use App\Wall;
 use Illuminate\Http\Request;
 
@@ -11,6 +12,8 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
+
+use App\Events\NewMessageVoteEvent;
 
 use App\Message;
 use App\MessageVote;
@@ -46,8 +49,10 @@ class VoteMessageController extends Controller
 
 				if ($savedM)
 				{
-					$client = new \Capi\Clients\GuzzleClient();
-					$response = $client->post('broadcast', 'msg1.msg.vote',['messagevote' => $message_vote]);
+					/*$client = new \Capi\Clients\GuzzleClient();
+					$response = $client->post('broadcast', 'msg1.msg.vote',['messagevote' => $message_vote]);*/
+
+					Event::fire(new NewMessageVoteEvent($message_vote,$message));
 					return redirect()->back()->with('success', 'Message vote success.');
 				}
 				else

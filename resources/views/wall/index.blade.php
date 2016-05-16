@@ -5,6 +5,10 @@
 @section('page','home')
 
 @section('content')
+	@if (empty(Auth::user()->twitter_handle))
+		@info(Did you know that you can post messages via Twitter? What are you waiting for? Fill in your <a href="#" onclick="$( '#setTwitterHandle' ).trigger( 'click' );">Twitter handle</a>!)
+	@endif
+
 	<div class="body_customized" style="height: 51px">
 		<div class="ui icon input search medium">
 			<input type="text" placeholder="Search..." id="search_input">
@@ -17,10 +21,14 @@
 			@foreach ($walls as $wall)
 				<div class="item">
 					<div class="image">
-						<img src="http://semantic-ui.com/images/wireframe/image.png">
+						<img src="{{ route('wall_images', ['filename' => $wall->id]) }}">
 					</div>
 					<div class="content">
-						<a class="header">{{ $wall->name }}</a>
+						<h1 class="header">{{ $wall->name }}</h1>
+						@if(!empty($wall->hashtag))
+							<i class="icon twitter blue"></i>
+							{{ '#' . $wall->hashtag }}
+						@endif
 						<div class="meta">
 							<span class="cinema">{{ $wall->username }}</span>
 						</div>
@@ -60,10 +68,12 @@
 		$('.items').tablesort();
 
 		var $rows = $('.items .item');
-		$('#search_input').keyup(function() {
+		$('#search_input').keyup(function ()
+		{
 			var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
 
-			$rows.show().filter(function() {
+			$rows.show().filter(function ()
+			{
 				var text = $(this).find('.header').text().replace(/\s+/g, ' ').toLowerCase();
 				return !~text.indexOf(val);
 			}).hide();

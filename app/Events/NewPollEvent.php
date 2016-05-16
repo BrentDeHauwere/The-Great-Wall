@@ -2,11 +2,13 @@
 
 namespace App\Events;
 
+use App\Poll;
+
 use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class NewPollEvent extends Event
+class NewPollEvent extends Event implements ShouldBroadcast
 {
     use SerializesModels;
 
@@ -18,7 +20,7 @@ class NewPollEvent extends Event
      */
     public function __construct(Poll $poll)
     {
-        $this->poll = poll;
+        $this->poll = $poll;
     }
 
     /**
@@ -28,6 +30,8 @@ class NewPollEvent extends Event
      */
     public function broadcastOn()
     {
-        return ['messagewall1.wall.'.$this->poll->wall_id.'.polls'];
+        $string = 'msg1.polls.'.$this->poll->wall_id;
+        //dd($string);
+        return ['msg1.polls.'.$this->poll->wall_id];
     }
 }

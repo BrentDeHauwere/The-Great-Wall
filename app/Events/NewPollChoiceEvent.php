@@ -2,24 +2,27 @@
 
 namespace App\Events;
 
-use App\Message;
+use App\PollChoice;
+use App\Wall;
 
 use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class NewMessageModeratorDeclinedEvent extends Event implements ShouldBroadcast
+class NewPollChoiceEvent extends Event implements ShouldBroadcast
 {
     use SerializesModels;
-    public $message;
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Message $message)
+     public $poll_choice;
+
+    public function __construct(PollChoice $choice)
     {
-        $this->message = $message;
+        $this->poll_choice = $choice;
     }
 
     /**
@@ -29,6 +32,6 @@ class NewMessageModeratorDeclinedEvent extends Event implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return ['msg1.modd.msg.'.$this->message->wall_id];
+        return ['msg1.choice.polls.'.$this->poll_choice->poll->wall_id];
     }
 }

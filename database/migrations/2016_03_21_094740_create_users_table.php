@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->enum('role', ['Visitor', 'Speaker', 'Moderator']);
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('twitter_handle')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

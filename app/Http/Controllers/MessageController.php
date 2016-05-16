@@ -1,8 +1,8 @@
-
 <?php
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Event;
 use App\Wall;
 use Illuminate\Http\Request;
@@ -17,6 +17,8 @@ use App\Http\Requests\StoreMessageRequest;
 use App\Http\Requests\ModeratorMessageHandleRequest;
 use App\Message;
 use App\Events\NewMessageEvent;
+use App\Events\NewMessageModeratorAcceptedEvent;
+use App\Events\NewMessageModeratorDeclinedEvent;
 
 use Validator;
 use Hash;
@@ -54,7 +56,7 @@ class MessageController extends Controller
 		{
 			/*$client = new \Capi\Clients\GuzzleClient();
 			$response = $client->post('broadcast', 'msg1.msg',['message' => $message]);*/
-
+			Event::fire(new NewMessageEvent($message));
 			return redirect()->back()->with('success', 'Message saved successfully.');
 		}
 		else
@@ -90,7 +92,7 @@ class MessageController extends Controller
 	 */
 	public function accept(ModeratorMessageHandleRequest $request)
 	{
-		$userid = 1; //getfromloggedinuser
+		$userid = Auth::user()->id; //getfromloggedinuser
 		$message_id = $request->input("message_id");
 		$message = Message::where("id", "=", $message_id)->first();
 		if ($message)
@@ -106,6 +108,7 @@ class MessageController extends Controller
 			{
 				/*$client = new \Capi\Clients\GuzzleClient();
 				$response = $client->post('broadcast', 'msg1.msg.moda',['message' => $message]);*/
+				Event::fire(new NewMessageModeratorAcceptedEvent($message));
 
 				return redirect()->back()->with("success", "Message was accepted.");
 			}
@@ -128,7 +131,7 @@ class MessageController extends Controller
 	 */
 	public function decline(ModeratorMessageHandleRequest $request)
 	{
-		$userid = 1; //getfromloggedinuser
+		$userid = Auth::user()->id; //getfromloggedinuser
 		$message_id = $request->input("message_id");
 		$message = Message::where("id", "=", $message_id)->first();
 		if ($message)
@@ -140,6 +143,7 @@ class MessageController extends Controller
 			{
 				/*$client = new \Capi\Clients\GuzzleClient();
 				$response = $client->post('broadcast', 'msg1.msg.modd',['message' => $message]);*/
+				Event::fire(new NewMessageModeratorDeclinedEvent($message));
 
 				return redirect()->back()->with("success", "Message was blocked.");
 			}
