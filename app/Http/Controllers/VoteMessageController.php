@@ -23,8 +23,6 @@ use Hash;
 
 class VoteMessageController extends Controller
 {
-
-
 	/**
 	 * Store a newly created vote on a message in storage.
 	 *
