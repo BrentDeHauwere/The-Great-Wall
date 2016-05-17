@@ -32,6 +32,12 @@ class TwitterStream extends OauthPhirehose
 			array_push($hashtags, "#" . $hashtag->hashtag);
 		}
 
+		//If there are no hashtags in the database, track our Test Account. This will ensure that we have an open connection to Twitter when we have no hashtags
+		if (empty($hashtags))
+		{
+			$hashtags = ['@EhbTheGreatWall'];
+		}
+
 		$this->setTrack($hashtags);
 	}
 }
