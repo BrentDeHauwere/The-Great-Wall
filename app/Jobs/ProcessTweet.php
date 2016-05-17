@@ -43,47 +43,62 @@ class ProcessTweet extends Job implements ShouldQueue
 			array_push($tweet_hashtags, $hashtag['text']);
 		}
 
-		$user = User::where('twitter_handle', $tweet['user']['screen_name'])->first();
-
-		if ($user != null)
+		//If no hashtags were included in the tweet, do not save tweet
+		if (!empty($tweet_hashtags))
 		{
-			$transformedTweet = new Message();
-			$transformedTweet->question_id = null;
-			$transformedTweet->user_id = $user->id;
-			$transformedTweet->channel_id = 2;
-			$transformedTweet->text = $tweet['text'];
-			$transformedTweet->created_at = new \DateTime();
-			$transformedTweet->anonymous = 0;
-			$transformedTweet->moderation_level = 0;
-			$transformedTweet->count = 0;
+			$user = User::where('twitter_handle', $tweet['user']['screen_name'])->first();
 
-			$wall = Wall::whereIn('hashtag', $tweet_hashtags)->first();;
-
-			if ($wall == null)
+			//If no user is found with a corresponding twitter handle, do not save tweet
+			if ($user != null)
 			{
-				print('No walls with hashtag ' . $tweet_hashtags . 'found.');
+				$transformedTweet = new Message();
+				$transformedTweet->question_id = null;
+				$transformedTweet->user_id = $user->id;
+				$transformedTweet->channel_id = 2;
+				$transformedTweet->text = $tweet['text'];
+				$transformedTweet->created_at = new \DateTime();
+				$transformedTweet->anonymous = 0;
+				$transformedTweet->moderation_level = 0;
+				$transformedTweet->count = 0;
+
+				if (!empty($tweet_hashtags))
+				{
+					$wall = Wall::whereIn('hashtag', $tweet_hashtags)->first();
+				}
+				else
+				{
+					$wall = null;
+				}
+
+
+				if ($wall != null)
+				{
+					$transformedTweet->wall_id = $wall->id;
+
+					if ($transformedTweet->save())
+					{
+						print("Tweet from @" . $tweet['user']['screen_name'] . " saved in database." . PHP_EOL);
+						print("Text: " . $tweet['text'] . PHP_EOL);
+						//Event::fire(new NewMessageEvent($transformedTweet));
+					}
+					else
+					{
+						print("Could not save tweet from @" . $tweet['user']['screen_name'] . " in the database." . PHP_EOL);
+					}
+				}
+				else
+				{
+					print('No corresponding walls found.');
+				}
 			}
 			else
 			{
-				$transformedTweet->wall_id = $wall->id;
+				print("User " . $tweet['user']['screen_name'] . " was not found in the database, therefore the tweet will not be saved." . PHP_EOL);
 			}
-
-
-			if ($transformedTweet->save())
-			{
-				print("Tweet from @" . $tweet['user']['screen_name'] . " saved in database." . PHP_EOL);
-				print("Text: " . $tweet['text'] . PHP_EOL);
-				//Event::fire(new NewMessageEvent($transformedTweet));
-			}
-			else
-			{
-				print("Could not save tweet from @" . $tweet['user']['screen_name'] . " in the database." . PHP_EOL);
-			}
-
 		}
 		else
 		{
-			print("User " . $tweet['user']['screen_name'] . " was not found in the database, therefore the tweet will not be saved." . PHP_EOL);
+			print("No hashtags were found in the tweet. Maybe there are no walls with hashtags defined?");
 		}
 
 		print(PHP_EOL);
