@@ -100,7 +100,7 @@ class WallController extends Controller
 
 			//END CODE FOR Pagination
 
-			return view('wall.show')->with('posts', $posts)->with('wall', $wall)->with('user', Auth::user());
+			return view('wall.show')->with('posts', $posts)->with('wall', $wall);
 		}
 		else
 		{
