@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewPollModeratorAcceptEvent;
+use App\Events\NewPollModeratorDeclineEvent;
+use Auth;
 use Event;
 use App\PollChoice;
 use App\Wall;
@@ -9,6 +12,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Requests\StorePollRequest;
+use App\Http\Requests\ModeratorPollHandleRequest;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
@@ -85,6 +89,76 @@ class PollController extends Controller
 		else
 		{
 			return redirect()->back()->with('danger', 'New poll could not be saved');
+		}
+	}
+
+	/**
+	 * Accept the specified poll.
+	 *
+	 * @param ModeratorPollHandleRequest
+	 * @return Response
+	 */
+	public function accept(ModeratorPollHandleRequest $request)
+	{
+		$userid = Auth::user()->id; //getfromloggedinuser
+		$poll_id = $request->input("poll_id");
+		$poll = Poll::where("id", $poll_id)->first();
+		if ($poll)
+		{
+			if($poll->moderation_level != 0){
+				$poll->moderation_level = 0;
+			}
+
+			$poll->moderator_id = $userid;
+			$saved = $poll->save();
+			if ($saved)
+			{
+				Event::fire(new NewPollModeratorAcceptEvent($poll));
+
+				return redirect()->back()->with("success", "poll was accepted.");
+			}
+			else
+			{
+				return redirect()->back()->with("error", "poll could not be saved.");
+			}
+		}
+		else
+		{
+			return redirect()->back()->with("error", "No poll found with this id to be moderated by you.");
+		}
+	}
+
+	/**
+	 * Decline the specified poll.
+	 *
+	 * @param NewpollModeratorAcceptedEvent
+	 * @return Response
+	 */
+	public function decline(ModeratorPollHandleRequest $request)
+	{
+		$userid = Auth::user()->id; //getfromloggedinuser
+		$poll_id = $request->input("poll_id");
+		$poll = Poll::where("id", $poll_id)->first();
+		if ($poll)
+		{
+			$poll->moderation_level = 1;
+			$poll->moderator_id = $userid;
+
+			$saved = $poll->save();
+			if ($saved)
+			{
+				Event::fire(new NewPollModeratorDeclineEvent($poll));
+
+				return redirect()->back()->with("success", "poll was blocked.");
+			}
+			else
+			{
+				return redirect()->back()->with("error", "poll could not be saved.");
+			}
+		}
+		else
+		{
+			return redirect()->back()->with("error", "No poll found with this id to be moderated by you.");
 		}
 	}
 

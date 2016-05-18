@@ -62,6 +62,8 @@ Route::group(['middleware' => 'web'], function () {
 			// Actions (performed on a session view)
 			Route::post('message/accept', 'MessageController@accept');
 			Route::post('message/decline', 'MessageController@decline');
+			Route::post('poll/accept', 'PollController@accept');
+			Route::post('poll/decline', 'PollController@decline');
 
 			// ---------- BLACKLIST ----------
 			// Blacklist - Moderator

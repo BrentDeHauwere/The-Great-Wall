@@ -102,13 +102,13 @@
 				</div>
 
 				<!-- KAMIEL: FIX YOUR SHIT -->
-				<form method="post" action="{{ action('MessageController@accept') }}" id="{{ "P_{$post[1]->id}_A" }}">
+				<form method="post" action="{{ action('PollController@accept') }}" id="{{ "P_{$post[1]->id}_A" }}">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
-					<input type="hidden" name="message_id" value="{{ $post[1]->id }}">
+					<input type="hidden" name="poll_id" value="{{ $post[1]->id }}">
 				</form>
-				<form method="post" action="{{ action('MessageController@decline') }}" id="{{ "P_{$post[1]->id}_D" }}">
+				<form method="post" action="{{ action('PollController@decline') }}" id="{{ "P_{$post[1]->id}_D" }}">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
-					<input type="hidden" name="message_id" value="{{ $post[1]->id }}">
+					<input type="hidden" name="poll_id" value="{{ $post[1]->id }}">
 				</form>
 				<form method="get" action="{{action('BlacklistController@create')}}" id="{{ "P_{$post[1]->id}_B" }}">
 					<input type="hidden" name="poll_id" value="{{ $post[1]->id }}">
