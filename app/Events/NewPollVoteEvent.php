@@ -21,7 +21,7 @@ class NewPollVoteEvent extends Event implements ShouldBroadcast
      public $poll_vote;
     public function __construct(PollVote $vote)
     {
-      $this->poll_vote = $vote;
+        $this->poll_vote = $vote;
     }
 
     /**

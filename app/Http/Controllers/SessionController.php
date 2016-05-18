@@ -275,7 +275,8 @@ class SessionController extends Controller
 
 		if ($messages != null)
 		{
-			foreach ($messages->where('question_id', NULL) as $message)
+			/* get every message not only the Original messages (->where('question_id', NULL) got removed)*/
+			foreach ($messages as $message)
 			{
 				$counter = 0;
 

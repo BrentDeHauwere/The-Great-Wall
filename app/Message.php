@@ -44,7 +44,15 @@ class Message extends Model
     {
         return $this->hasMany('App\Message', 'question_id', 'id');
     }
-    
+
+    /**
+     * Get the original post
+     */
+    public function question()
+    {
+        return $this->belongsTo('App\Message', 'id', 'question_id');
+    }
+
     /**
      * Get the user that owns the message.
      */
