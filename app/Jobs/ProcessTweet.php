@@ -103,4 +103,14 @@ class ProcessTweet extends Job implements ShouldQueue
 
 		print(PHP_EOL);
 	}
+
+	/**
+	 * Handle a job failure.
+	 *
+	 * @return void
+	 */
+	public function failed()
+	{
+		print("Failed to insert tweet from " . $this->tweet['user']['screen_name'] ."in database...");
+	}
 }
