@@ -133,7 +133,7 @@ Route::group(['middleware' => 'web'], function () {
 			$response->header("Content-Type", $type);
 
 			return $response;
-		})->name('user_images');;
+		})->name('user_images');
 	});
 
 	Route::group(['prefix' => 'api', 'middleware' => ['web']], function () {
