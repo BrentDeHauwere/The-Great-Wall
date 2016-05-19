@@ -46,7 +46,16 @@ class PollChoiceController extends Controller
 		}
 		*/
 
-		$succes = $pollChoice->save();
+		$succes = false;
+		$banned = $pollChoice->user()->first()->banned();
+		if($pollChoice->poll()->first()->addable && !$banned)
+		{
+			$succes = $pollChoice->save();
+		}
+
+		if($banned){
+			return redirect()->back()->with('danger', 'You were banned. You cannot add options to this poll.');
+		}
 
 		if ( $succes == true )
 		{

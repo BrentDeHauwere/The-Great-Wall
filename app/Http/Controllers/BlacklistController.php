@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\View;
 use App\Http\Requests;
 use App\Blacklist;
 use App\User;
+use App\Message;
 use App\Poll;
 use App\PollChoice;
 use DB;
