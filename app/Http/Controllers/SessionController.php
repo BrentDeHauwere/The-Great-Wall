@@ -199,7 +199,7 @@ class SessionController extends Controller
 		$polls = Poll::with("choices.votes", "user")->where("wall_id", "=", $id)->get();
 		$blacklistedUserIDs = array_column(Blacklist::all('user_id')->toArray(), 'user_id');
 
-		$posts = $this->sortMessagesPolls($messages, $polls);
+		$posts = $this->sortMessagesPollsChronologically($messages, $polls);
 
 
 		if (count($posts) == 0)
@@ -235,7 +235,7 @@ class SessionController extends Controller
 		$polls = Poll::with("choices.votes", "user")->whereIn("wall_id", $request->input('beheer'))->get();
 		$blacklistedUserIDs = Blacklist::all('user_id')->toArray();
 
-		$posts = $this->sortMessagesPolls($messages, $polls);
+		$posts = $this->sortMessagesPollsChronologically($messages, $polls);
 		if (count($posts) == 0)
 		{
 			return View::make('session.show')
@@ -251,7 +251,7 @@ class SessionController extends Controller
 			->with("blacklistedUserIDs", $blacklistedUserIDs);
 	}
 
-	private function sortMessagesPolls($messages, $polls)
+	private function sortMessagesPollsChronologically($messages, $polls)
 	{
 		/* Sort messages / poll into a chronologically ordered 2D array */
 		$posts = [];

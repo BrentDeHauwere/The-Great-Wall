@@ -86,7 +86,7 @@ class WallController extends Controller
 			$messages = Message::with('votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 			$polls = Poll::with('choices.votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 
-			$posts = $this->sortMessagesPolls($messages, $polls);
+			$posts = $this->sortMessagesPollsChronologically($messages, $polls);
 
 			//BEGIN CODE FOR PAGINATION
 			//Source: https://laracasts.com/discuss/channels/laravel/laravel-pagination-not-working-with-array-instead-of-collection
@@ -125,7 +125,7 @@ class WallController extends Controller
 		{
 			$messages = Message::with('votes')->where('wall_id', $wall_id)->where('question_id', NULL)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 			$polls = Poll::with('choices.votes')->where('wall_id', $wall_id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
-			$posts = $this->sortMessagesPolls($messages, $polls);
+			$posts = $this->sortMessagesPollsChronologically($messages, $polls);
 
 			return view('wall.show')->with('posts', $posts)->with('wall', $wall);//->with('result',$result);
 		}
@@ -135,7 +135,7 @@ class WallController extends Controller
 		}
 	}
 
-	private function sortMessagesPolls($messages, $polls)
+	private function sortMessagesPollsChronologically($messages, $polls)
 	{
 		/* Sort messages / poll into a chronologically ordered 2D array */
 		$posts = [];
@@ -182,6 +182,8 @@ class WallController extends Controller
 		return $posts;
 	}
 
+
+
 	public function create()
 	{
 		return view('wall_create');
@@ -190,6 +192,7 @@ class WallController extends Controller
 
 	/**
 	 * src: https://gist.github.com/T3hArco/72b29dfdc2bf48bf8d11ec8c770b24d8
+	 * Arnaud Coel
 	 * Provides a humanized time string
 	 * Based on http://stackoverflow.com/questions/1416697/converting-timestamp-to-time-ago-in-php-e-g-1-day-ago-2-days-ago
 	 * @param DateTime $time raw date
@@ -251,7 +254,7 @@ class WallController extends Controller
 				$messages = Message::with('votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 			}
 
-			$posts = $this->sortMessagesPolls($messages, $polls);
+			$posts = $this->sortMessagesPollsChronologically($messages, $polls);
 			session(['wall' . $wall->id => date("Y-m-d H:i:s")]);
 
 			return view('ajax.messages')->with('posts', $posts)->with('wall', $wall);//->with('result',$result);
@@ -271,7 +274,7 @@ class WallController extends Controller
 			$messages = Message::with('votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 			$polls = Poll::with('choices.votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 
-			$posts = $this->sortMessagesPolls($messages, $polls);
+			$posts = $this->sortMessagesPollsChronologically($messages, $polls);
 
 			//BEGIN CODE FOR PAGINATION
 			//Source: https://laracasts.com/discuss/channels/laravel/laravel-pagination-not-working-with-array-instead-of-collection

@@ -51,7 +51,7 @@
 					<li class="list-group-item">
 						<!-- upvote -->
 						<div class="buttons pull-right">
-							@unless($post[1]->user()->id==Auth::user()->id)
+							@unless($post[1]->user()->first()->id==Auth::user()->id)
 								<form>
 									<input type="hidden" name="message_id" value={{$post[1]->id}}>
 									<!-- ID of the OP -->
