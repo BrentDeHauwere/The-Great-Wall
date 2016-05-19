@@ -87,11 +87,11 @@ class PollChoiceController extends Controller
 	/**
 	 * Accept the specified poll choice.
 	 *
-	 * @param ModeratePollChoiceHandleRequest
+	 * @param ModeratorPollChoiceHandleRequest
 	 * @return Response
 	 */
 	public
-	function accept(ModeratePollChoiceHandleRequest $request)
+	function accept(ModeratorPollChoiceHandleRequest $request)
 	{
 		$userid = Auth::user()->id; //getfromloggedinuser
 		$poll_choice_id = $request->input("poll_choice_id");
@@ -133,8 +133,8 @@ class PollChoiceController extends Controller
 			$poll_choice->moderation_level = 1;
 			$poll_choice->moderator_id = $userid;
 
-			$saved = false;
-			// $saved = $poll_choice->save();
+
+			$saved = $poll_choice->save();
 			
 			if ($saved) {
 				Event::fire(new NewPollChoiceModeratorDeclineEvent($poll_choice));

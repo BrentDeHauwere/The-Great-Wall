@@ -34,7 +34,7 @@ class ApiTest extends TestCase
                 ]);
         }
     }
-
+    
     public function testMessages()
     {
         $response = $this->call('GET', '/api/messages');
