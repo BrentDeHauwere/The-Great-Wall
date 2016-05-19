@@ -169,35 +169,36 @@
                                 <div class="extra content">
 
                                     <div class="ui three buttons">
-                                        <h1>Work in progress</h1>
-                                        <!--
+
+                                        <!-- WIP -->
+
                                         <button type="submit"
-                                                class="ui basic green button {{ $post[1]->moderation_level == 0 ? "disabled" : "" }}"
-                                                form="{{ "P_{$post[1]->id}_A" }}">Approve
+                                                class="ui basic green button {{ $choice->moderation_level == 0 ? "disabled" : "" }}"
+                                                form="{{ "P_{$choice->id}_A" }}">Approve
                                         </button>
                                         <button type="submit"
-                                                class="ui basic red button {{ $post[1]->moderation_level == 1 ? "disabled" : "" }}"
-                                                form="{{ "P_{$post[1]->id}_D" }}">Decline
+                                                class="ui basic red button {{ $choice->moderation_level == 1 ? "disabled" : "" }}"
+                                                form="{{ "P_{$choice->id}_D" }}">Decline
                                         </button>
-                                        <button class="ui basic grey button {{ in_array($post[1]->user_id, $blacklistedUserIDs) == 1 ? "disabled" : "" }}"
-                                                form="{{ "P_{$post[1]->id}_B" }}">Block
+
+                                        <button class="ui basic grey button {{ in_array($choice->user_id, $blacklistedUserIDs) == 1 ? "disabled" : "" }}"
+                                                form="{{ "P_{$choice->id}_B" }}">Block
                                         </button>
-                                        -->
                                     </div>
 
-                                    <form method="post" action="{{ action('PollController@accept') }}"
-                                          id="{{ "P_{$post[1]->id}_A" }}">
+                                    <form method="post" action="{{ action('PollChoiceController@accept') }}"
+                                          id="{{ "P_{$choice->id}_A" }}">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="hidden" name="poll_id" value="{{ $post[1]->id }}">
+                                        <input type="hidden" name="poll_choice_id" value="{{ $choice->id }}">
                                     </form>
-                                    <form method="post" action="{{ action('PollController@decline') }}"
-                                          id="{{ "P_{$post[1]->id}_D" }}">
+                                    <form method="post" action="{{ action('PollChoiceController@decline') }}"
+                                          id="{{ "P_{$choice->id}_D" }}">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="hidden" name="poll_id" value="{{ $post[1]->id }}">
+                                        <input type="hidden" name="poll_choice_id" value="{{ $choice->id }}">
                                     </form>
                                     <form method="get" action="{{action('BlacklistController@create')}}"
-                                          id="{{ "P_{$post[1]->id}_B" }}">
-                                        <input type="hidden" name="poll_id" value="{{ $post[1]->id }}">
+                                          id="{{ "P_{$choice->id}_B" }}">
+                                        <input type="hidden" name="poll_choice_id" value="{{ $choice->id }}">
                                     </form>
                                 </div>
                             </div>
