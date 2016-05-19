@@ -9,7 +9,35 @@
 @stop
 
 @section('content')
-
+<script>
+<script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
+<script>
+	var socket = io('http://localhost:3000');
+	socket.on('msg1.msg.{{$wall->id}}:App\\Events\\NewMessageEvent', function (data)
+	{
+		if (data.message.question_id == null)
+		{
+			var e = '<div>'+ +'</div>';
+			$("#holder").append(e);
+		}
+		else if (data.message.question_id != null)
+		{
+			var e = '<div>'+ +'</div>';
+			$("#holder").append(e);
+		}
+	});
+	socket.on('msg1.polls.{{$wall->id}}:App\\Events\\NewPollEvent', function (data)
+	{
+		var e = '<div>'+ +'</div>';
+		$("#holder").append(e);
+	});
+	socket.on('msg1.choice.polls.{{$wall->id}}:App\\Events\\NewPollChoiceEvent', function (data)
+	{
+		var e = '<div>'+ +'</div>';
+		$("#holder").append(e);
+	});
+</script>
+</script>
 	<script>
 		$(document).ready(function(){
 			$(window).resize(function() {
@@ -41,7 +69,7 @@
 	@endif
 
 
-	<div class="ui cards four stackable">
+	<div class="ui cards four stackable" id="holder">
 	@foreach($posts as $post)
 
 	@if($post[0]=='m')
