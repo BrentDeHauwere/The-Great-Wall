@@ -82,7 +82,8 @@
 			</ul>
 			@endunless
 
-				<!-- antwoord toevoegen -->
+			@unless(Auth::user()->banned())
+			<!-- antwoord toevoegen -->
 			<form method="POST" action="/message">
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
 				<input type="hidden" name="question_id" value="{{$post[1]->id}}">
@@ -96,12 +97,12 @@
 						<input type="checkbox" name="anonymous" value=1>
 					</div>
 					<input name="text" type="text" class="form-control input-wall" placeholder="Uw antwoord">
-									<span class="input-group-btn">
-										 <input type="submit" class="btn btn-default input-wall" value="Antw.">
-									 </span>
+						<span class="input-group-btn">
+							 <input type="submit" class="btn btn-default input-wall" value="Antw.">
+						 </span>
 				</div>
 			</form>
-
+			@endunless
 	</div>
 </div>
 @endif
@@ -184,7 +185,7 @@
 			@endforelse
 		</div>
 
-		@if($post[1]->addable)
+		@if($post[1]->addable && !Auth::user()->banned())
 			<!-- antwoord toevoegen -->
 		<form method="POST" action="{{ action("PollChoiceController@store") }}">
 			<div class="input-group">

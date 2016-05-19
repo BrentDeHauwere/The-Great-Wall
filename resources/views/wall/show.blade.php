@@ -82,6 +82,7 @@
 	<div class=" container messagesContainer center-block">
 		<h3>{{$wall->name}}</h3>
 
+		@unless(Auth::user()->banned())
 		<!-- Voorbeeld Form om nieuwe message aan te maken -->
 		<div id="messageForm" class="message">
 			<form method="POST" action="/message">
@@ -163,6 +164,7 @@
 			</div>
 		</div>
 	</div>
+	@endunless
 
 	@include("/wall/posts", array("posts" => $posts))
 
