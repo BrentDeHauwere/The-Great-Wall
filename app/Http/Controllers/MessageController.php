@@ -51,7 +51,17 @@ class MessageController extends Controller
 			$message->moderator_id = $request->input('moderator_id');
 		}
 
-		$saved = $message->save();
+		$banned = $message->user()->first()->banned();
+
+		if(!$banned)
+		{
+			$saved = $message->save();
+		}
+		else
+		{
+			return redirect()->back()->with('danger', 'You were banned. You cannot post messages.');
+		}
+
 		if ($saved)
 		{
 			/*$client = new \Capi\Clients\GuzzleClient();
@@ -101,8 +111,7 @@ class MessageController extends Controller
 			if($message->moderation_level != 0){
 				$message->moderation_level = 0;
 			}
-
-
+			
 			$message->moderator_id = $userid;
 			$saved = $message->save();
 			if ($saved)

@@ -199,7 +199,7 @@ class SessionController extends Controller
 		$polls = Poll::with("choices.votes", "user")->where("wall_id", "=", $id)->get();
 		$blacklistedUserIDs = array_column(Blacklist::all('user_id')->toArray(), 'user_id');
 
-		$posts = $this->sortMessagesPolls($messages, $polls);
+		$posts = $this->sortMessagesPollsChronologically($messages, $polls);
 
 
 		if (count($posts) == 0)
@@ -235,7 +235,7 @@ class SessionController extends Controller
 		$polls = Poll::with("choices.votes", "user")->whereIn("wall_id", $request->input('beheer'))->get();
 		$blacklistedUserIDs = Blacklist::all('user_id')->toArray();
 
-		$posts = $this->sortMessagesPolls($messages, $polls);
+		$posts = $this->sortMessagesPollsChronologically($messages, $polls);
 		if (count($posts) == 0)
 		{
 			return View::make('session.show')
@@ -251,60 +251,50 @@ class SessionController extends Controller
 			->with("blacklistedUserIDs", $blacklistedUserIDs);
 	}
 
-	private function sortMessagesPolls($messages, $polls)
+	private function sortMessagesPollsChronologically($messages, $polls)
 	{
 		/* Sort messages / poll into a chronologically ordered 2D array */
 		$posts = [];
 
-		if (!$polls->isEmpty())
+		if (!$messages->isEmpty())
 		{
-			foreach ($polls as $poll)
+			foreach ($messages as $message)
 			{
-				array_push($posts, array('p', $poll, $poll->user()->first()));
+				array_push($posts, array('m', $message));
 			}
 		}
 		else
 		{
-			foreach ($messages as $message)
+			foreach ($polls as $poll)
 			{
-				array_push($posts, array('m', $message, $message->user()->first()));
+				array_push($posts, array('p', $poll));
 			}
 		}
 
-		$msgCounter = 0;
-
-		if ($messages != null)
+		$pollCounter = 0;
+		foreach ($polls as $poll)
 		{
-			foreach ($messages->where('question_id', NULL) as $message)
+			$append = true;
+			$counter = 0;
+			foreach ($posts as $post)
 			{
-				$counter = 0;
-
-				if ($polls->isEmpty())
+				if ($poll->created_at > $post[1]->created_at)
 				{
+					$arr = array('p', $poll);
+					array_splice($posts, $counter, 0, array($arr));
+					$append = false;
 					break;
 				}
-
-				foreach ($posts as $post)
-				{
-					if ($message->created_at > $post[1]->created_at)
-					{
-						$arr = array('m', $message, $message->user()->first());
-						array_splice($posts, $counter, 0, array($arr));
-						unset($messages[ $msgCounter ]);
-						break;
-					}
-					elseif ($message->create_at < $post[1]->created_at)
-					{
-						array_push($posts, array('m', $message, $message->user()->first()));
-						unset($messages[ $msgCounter ]);
-						break;
-					}
-					$counter += 1;
-				}
-				$msgCounter += 1;
+				$counter += 1;
 			}
-		}
 
+			if($append)
+			{
+				array_push($posts,'p',$poll);
+			}
+
+			$pollCounter += 1;
+		}
 		return $posts;
 	}
 

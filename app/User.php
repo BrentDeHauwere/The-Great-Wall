@@ -46,4 +46,12 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\MessageVote');
     }
+
+    /**
+     * Get the whether this user is on the blacklist or not.
+     */
+    public function banned()
+    {
+        return Blacklist::where('user_id', $this->id) ->exists();
+    }
 }

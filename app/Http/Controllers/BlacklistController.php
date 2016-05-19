@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\View;
 use App\Http\Requests;
 use App\Blacklist;
 use App\User;
+use App\Message;
+use App\Poll;
+use App\PollChoice;
 use DB;
 use DateTime;
 
@@ -40,18 +43,22 @@ class BlacklistController extends Controller
 	 */
 	public function create(Request $request)
 	{
-
 		//The request gets oftewel a message_id or a poll_id, depending on the button which was pressed
 		$message_id = $request->input('message_id');
 		$poll_id = $request->input('poll_id');
+		$poll_choice_id = $request->input('poll_choice_id');
 
 		if (!empty($message_id))
 		{
-			$user_id = DB::table('messages')->select('user_id')->where('id', $request->input('message_id'))->first();
+			$user_id = Message::select('user_id')->where('id', $request->input('message_id'))->first();
 		}
 		elseif (!empty($poll_id))
 		{
-			$user_id = DB::table('polls')->select('user_id')->where('id', $request->input('poll_id'))->first();
+			$user_id = Poll::select('user_id')->where('id', $request->input('poll_id'))->first();
+		}
+		elseif (!empty($poll_choice_id))
+		{
+			$user_id = PollChoice::select('user_id')->where('id', $request->input('poll_choice_id'))->first();
 		}
 		else
 		{
@@ -63,7 +70,7 @@ class BlacklistController extends Controller
 			return redirect()->back()->with('error', 'User was already blacklisted.');
 		}
 
-		$username = DB::table('users')->select('name')->where('id', $user_id->user_id)->first();
+		$username = User::select('name')->where('id', $user_id->user_id)->first();
 		$username = $username->name;
 
 		//$user_id is a stdClass class for some reason...

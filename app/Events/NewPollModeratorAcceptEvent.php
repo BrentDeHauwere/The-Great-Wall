@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Message
+use App\Message;
 
 use App\Events\Event;
 use Illuminate\Queue\SerializesModels;

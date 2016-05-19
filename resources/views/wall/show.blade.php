@@ -82,6 +82,7 @@
 	<div class=" container messagesContainer center-block">
 		<h3>{{$wall->name}}</h3>
 
+		@unless(Auth::user()->banned())
 		<!-- Voorbeeld Form om nieuwe message aan te maken -->
 		<div id="messageForm" class="message">
 			<form method="POST" action="/message">
@@ -110,7 +111,7 @@
 					</div>
 				</div>
 
-				<input type="hidden" name="user_id" value="{{1}}">
+				<input type="hidden" name="user_id" value="{{Auth::user()->id}}">
 				<input type="hidden" name="wall_id" value="{{$wall->id}}">
 				<input type="hidden" name="channel_id" value="{{1}}">
 			</form>
@@ -133,7 +134,7 @@
 					<form id="formPoll" method="POST" action="/poll">
 
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
-						<input type="hidden" name="user_id" value="{{1}}">
+						<input type="hidden" name="user_id" value="{{Auth::user()->id}}">
 						<input type="hidden" name="wall_id" value="{{$wall->id}}">
 						<input type="hidden" name="channel_id" value={{1}}>
 
@@ -163,6 +164,7 @@
 			</div>
 		</div>
 	</div>
+	@endunless
 
 	@include("/wall/posts", array("posts" => $posts))
 
