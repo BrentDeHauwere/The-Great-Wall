@@ -8,7 +8,7 @@
 		<div class="panel-heading">
 			<!-- upvote -->
 			<div class="buttons pull-right">
-				@unless($post[2]->id==Auth::user()->id)
+				@unless($post[1]->user()->first()->id==Auth::user()->id)
 					<form method="POST" action="/votemessage">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 						<input type="hidden" name="message_id" value="{{$post[1]->id}}">
@@ -29,7 +29,7 @@
 			</div>
 			<h4 class="panel-title">
 				@unless($post[1]->anonymous)
-					{{$post[2]->name}}
+					{{$post[1]->user()->first()->name}}
 					@else
 						Anoniem
 						@endunless
@@ -51,13 +51,13 @@
 					<li class="list-group-item">
 						<!-- upvote -->
 						<div class="buttons pull-right">
-							@unless($post[2]->id==Auth::user()->id)
+							@unless($post[1]->user()->id==Auth::user()->id)
 								<form>
 									<input type="hidden" name="message_id" value={{$post[1]->id}}>
 									<!-- ID of the OP -->
-									<input type="hidden" name="user_id" value={{$post[2]->id}}>
+									<input type="hidden" name="user_id" value={{$post[1]->user()->id}}>
 
-									@unless(Auth::user()->id==$post[2]->id)
+									@unless(Auth::user()->id==$post[1]->user()->id)
 										<button type="submit" class="form-control upvote active">
 											<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
 										</button>
@@ -111,7 +111,7 @@
 <div class="row message poll">
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<h4 class="panel-title">{{$post[2]->name}}
+			<h4 class="panel-title">{{$post[1]->user()->first()->name}}
 				<small>{{
 						\App\Http\Controllers\WallController::humanTimeDifference($post[1]->created_at)
 						}}</small>
