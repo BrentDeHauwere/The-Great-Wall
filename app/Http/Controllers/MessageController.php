@@ -66,6 +66,7 @@ class MessageController extends Controller
 		{
 			/*$client = new \Capi\Clients\GuzzleClient();
 			$response = $client->post('broadcast', 'msg1.msg',['message' => $message]);*/
+			//dd($message);
 			Event::fire(new NewMessageEvent($message));
 			return redirect()->back()->with('success', 'Message saved successfully.');
 		}

@@ -75,7 +75,7 @@ class WallController extends Controller
 				abort(404);
 			}
 		}
-		
+
 		if ($wall != null && empty($wall->password))
 		{
 			//Check for tweets
@@ -264,9 +264,20 @@ class WallController extends Controller
 	public function updateShow(Request $request, $id)
 	{
 		$wall = Wall::findOrFail($id);
-		if ($wall->deleted_at != null || $wall->open_until == 0 || $wall->open_until < date('Y-m-d H:i:s'))
+
+		//404 als wall verwijderd is
+		if ($wall->deleted_at != null)
 		{
 			abort(404);
+		}
+
+		//als er een einddatum is ingesteld en verstreken --> 404
+		if ($wall->open_until != null)
+		{
+			if ($wall->open_until < date('Y-m-d H:i:s'))
+			{
+				abort(404);
+			}
 		}
 
 		if ($wall != null && empty($wall->password))
@@ -287,7 +298,7 @@ class WallController extends Controller
 			$posts = new LengthAwarePaginator(array_slice($posts, $offset, $perPage, true), count($posts), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
 
 			//END CODE FOR Pagination
-			return view('wall.updateshow')->with('posts', $posts)->with('wall', $wall);//->with('result',$result);
+			return view('wall.posts')->with('posts', $posts)->with('wall', $wall);//->with('result',$result);
 		}
 	}
 }
