@@ -79,7 +79,7 @@ class ProcessTweet extends Job implements ShouldQueue
 					{
 						print("Tweet from @" . $tweet['user']['screen_name'] . " saved in database." . PHP_EOL);
 						print("Text: " . $tweet['text'] . PHP_EOL);
-						//Event::fire(new NewMessageEvent($transformedTweet));
+						Event::fire(new NewMessageEvent($transformedTweet));
 					}
 					else
 					{
