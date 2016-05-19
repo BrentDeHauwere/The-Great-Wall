@@ -162,11 +162,6 @@ return [
 
 		App\Providers\HelperServiceProvider::class,
 
-		/*
-		 * Twitter API
-		 */
-		//Thujohn\Twitter\TwitterServiceProvider::class,
-
 	],
 
 	/*
@@ -217,11 +212,6 @@ return [
 		 * Custom helper class
 		 */
 		'TwitterHelper' => App\Helpers\TwitterHelper::class,
-
-		/*
-		 * Twitter API
-		 */
-		//'Twitter'       => Thujohn\Twitter\Facades\Twitter::class,
 	],
 
 ];
