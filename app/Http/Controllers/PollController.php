@@ -47,8 +47,17 @@ class PollController extends Controller
         if ($request->has('moderator_id')) {
             $poll->moderator_id = $request->input('moderator_id');
         }
+        
+        $banned = $poll->user()->first()->banned();
 
-        $savedPoll = $poll->save();
+        if(!$banned)
+        {
+            $savedPoll = $poll->save();
+        }
+        else
+        {
+            return redirect()->back()->with('danger', 'You were banned. You cannot post polls.');
+        }
 
         $succes = false;
         if ($savedPoll) {
@@ -72,7 +81,7 @@ class PollController extends Controller
                     $succes = false;
                 }
             }
-            
+
             if($succes)
             {
                 $poll->addable = $request->input('addable');
