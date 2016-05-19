@@ -83,8 +83,8 @@ class WallController extends Controller
 			//	TwitterHelper::checkForTweets($wall->hashtag, $id);
 			//}
 
-			// $posts = $this->getMessagesPollsChronologically($id);
-			$posts = $this->getMessagesPollsSortedOnVotes($id);
+			$posts = $this->getMessagesPollsChronologically($id);
+			//$posts = $this->getMessagesPollsSortedOnVotes($id);
 			
 			//BEGIN CODE FOR PAGINATION
 			//Source: https://laracasts.com/discuss/channels/laravel/laravel-pagination-not-working-with-array-instead-of-collection
@@ -124,8 +124,7 @@ class WallController extends Controller
 			$messages = Message::with('votes')->where('wall_id', $wall_id)->where('question_id', NULL)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 			$polls = Poll::with('choices.votes')->where('wall_id', $wall_id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 			$posts = $this->getMessagesPollsChronologically($messages, $polls);
-
-			return view('wall.show')->with('posts', $posts)->with('wall', $wall);//->with('result',$result);
+			return view('wall.show')->with('posts', $posts)->with('wall', $wall);
 		}
 		else
 		{
@@ -211,7 +210,27 @@ class WallController extends Controller
 			$counter = 0;
 			foreach ($posts as $post)
 			{
-				if ($poll->numberOfVotes() > $post[1]->numberOfVotes())
+				$pollVotes = 0;
+
+				$pollchoices = PollChoice::where('poll_id',$poll->id);
+				foreach($pollchoices as $pollchoice){
+					$pollVotes+=$pollchoice->count;
+				}
+
+				$postVotes = 0;
+				if($post[0]=='m')
+				{
+					$postVotes = $post[1]->count;
+				}
+				else
+				{
+					$pollchoices = PollChoice::where('poll_id',$poll->id);
+					foreach($pollchoices as $pollchoice){
+						$postVotes+=$pollchoice->count;
+					}
+				}
+
+				if ($pollVotes > $postVotes)
 				{
 					$arr = array('p', $poll);
 					array_splice($posts, $counter, 0, array($arr));
@@ -225,11 +244,9 @@ class WallController extends Controller
 			{
 				array_push($posts,'p',$poll);
 			}
-
 			$pollCounter += 1;
 		}
 		return $posts;
-
 	}
 
 	public function create()

@@ -36,17 +36,4 @@ class Poll extends Model
     {
         return $this->hasOne('App\User', 'id', 'user_id');
     }
-
-    /**
-     * Get the amount of votes on this poll
-     */
-    public function numberOfVotes()
-    {
-        $nmbr = 0;
-        foreach($this->choices as $choice)
-        {
-            $nmbr+=$choice->count;
-        }
-        return $nmbr;
-    }
 }
