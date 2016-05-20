@@ -279,7 +279,7 @@ class WallController extends Controller
 
 		$elapsed = time() - $time;
 		if ($elapsed < 10)
-			return "just now";
+			return "Just now";
 
 		$singular = array(365 * 24 * 60 * 60 => 'year',
 						  30 * 24 * 60 * 60  => 'month',
