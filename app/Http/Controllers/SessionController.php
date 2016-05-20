@@ -391,7 +391,12 @@ class SessionController extends Controller
 		{
 			$wall->password = null;
 		}
-		$wall->open_until = $request->input('open_until');
+
+		if ($request->input('open_until') == "")
+			$wall->open_until = null;
+		else
+			$wall->open_until = $request->input('open_until');
+		
 		$wall->save();
 
 		Session::flash('success', 'Successfully updated session.');
