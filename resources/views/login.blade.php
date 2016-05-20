@@ -52,27 +52,14 @@
 			<div class="column">
 				@if(Session::has('success'))
 					@success({{ session('success') }})
-				@elseif(!empty($success))
-					@success({{ $success }})
-				@endif
-
-				@if(Session::has('warning'))
+				@elseif(Session::has('warning'))
 					@warning({{ session('warning') }})
-				@elseif(!empty($warning))
-					@warning({{ $warning }})
-				@endif
-
-				@if(Session::has('error'))
-					@error({{ session('error') }})
-				@elseif(!empty($error))
-					@error({{ $error }})
-				@endif
-
-				@if(Session::has('info'))
+				@elseif(Session::has('error'))
+					@error({{session('error')}})
+				@elseif(Session::has('info'))
 					@info({{ session('info') }})
-				@elseif(!empty($info))
-					@info({{ $info }})
 				@endif
+
 				<h2 class="ui blue image header">
 					<img src="/img/icon_blue.png" class="image">
 					<div class="content">

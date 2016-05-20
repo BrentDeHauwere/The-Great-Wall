@@ -38,7 +38,7 @@ class UserController extends Controller
 		}
 		else
 		{
-			return view('login')->with('error', 'Wrong mail and/or password. Please try again.');
+			return redirect('login')->with('error', 'Wrong mail and/or password. Please try again.');
 		}
 	}
 
@@ -106,6 +106,6 @@ class UserController extends Controller
 		$fileName = Auth::user()->id . '.' . $request->file('image')->getClientOriginalExtension();
 		$request->file('image')->move($destinationPath, $fileName);
 
-		return redirect()->back()->with('success', 'Your profile picture was successfully uploaded.');
+		return redirect()->back()->with('info', 'Your profile picture was successfully uploaded.');
 	}
 }
