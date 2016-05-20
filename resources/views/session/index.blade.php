@@ -30,7 +30,7 @@
 					<th>Hashtag</th>
 					<th>Password Protected</th>
 					<th>Open until</th>
-					<th class="no-sort" style="width: 332px">Actions</th>
+					<th class="no-sort" style="width: 423px">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -54,7 +54,12 @@
 								<i class="icon edit"></i>
 								Edit
 							</a>
-							@if ($value->open_until == 'Manually closed')
+							<a class="ui basic button" target="_blank" href="http://api.qrserver.com/v1/create-qr-code/?data={{url('wall/'.$value->id)}}&size=500x500&format=svg&qzone=4">
+								<i class="icon qrcode"></i>
+								QR
+							</a>
+
+						@if ($value->open_until == 'Manually closed')
 								<form action="{{action('SessionController@revertDestroy', $value->id)}}" method="post" class="form_inline_customize">
 									<input type="hidden" name="_token" value="{{ csrf_token() }}"/>
 									<button class="ui basic green button" type="submit" style="margin-right: 0px">
