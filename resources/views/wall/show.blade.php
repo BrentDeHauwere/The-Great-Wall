@@ -1,7 +1,9 @@
 @extends("masterlayout")
 
 @section('header')
-	<script src="http://10.3.50.20:1338/socket.io/socket.io.js"></script>
+	<link rel="stylesheet" type="text/css" href="/css/messagewall.css">
+
+	<script src="https://10.3.50.20:1338/socket.io/socket.io.js"></script>
 	<script>
 		var socket = io('http://10.3.50.20:1338');
 		socket.on('msg1.msg.{{$wall->id}}:App\\Events\\NewMessageEvent', function (data)
@@ -97,10 +99,10 @@
 		<h1>{{$wall->name}}</h1>
 
 		<div class="ui top attached tabular menu">
-			<a class="item" data-tab="message">Post Message</a>
+			<a class="item active" data-tab="message">Post Message</a>
 			<a class="item" data-tab="poll">Post Poll</a>
 		</div>
-		<div class="ui bottom attached tab segment" data-tab="message">
+		<div class="ui bottom attached tab segment active" data-tab="message">
 			<div class="ui form">
 				<div class="field">
 					<label>Message</label>

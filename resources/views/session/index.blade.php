@@ -25,11 +25,10 @@
 					</th>
 				</tr>
 				<tr>
-					<th>ID</th>
-					<th>Speaker</th>
 					<th>Name</th>
-					<th>Twitter</th>
-					<th>Protected</th>
+					<th>Speaker</th>
+					<th>Hashtag</th>
+					<th>Password Protected</th>
 					<th>Open until</th>
 					<th class="no-sort" style="width: 332px">Actions</th>
 				</tr>
@@ -37,9 +36,8 @@
 			<tbody>
 				@foreach($walls as $key => $value)
 					<tr>
-						<td>{{ $value->id }}</td>
-						<td>{{ $value->user->name }}</td>
 						<td>{{ $value->name }}</td>
+						<td>{{ $value->user->name }}</td>
 						<td>{{ $value->hashtag }}</td>
 						<td>{{ $value->password }}</td>
 						@if ($value->open_until == 'Infinity (not set)')
@@ -77,17 +75,13 @@
 						</td>
 					</tr>
 				@endforeach
-				<tr>
-					<td colspan="6"></td>
-					<td>
-						<a class="ui basic button" href="{{ action('SessionController@multiple') }}">
-							<i class="icon dashboard"></i>
-							Beheer meerdere walls
-						</a>
-					</td>
-				</tr>
 			</tbody>
 		</table>
+
+		<a class="ui basic button" href="{{ action('SessionController@multiple') }}">
+			<i class="icon dashboard"></i>
+			Manage multiple walls
+		</a>
 
 	</div>
 

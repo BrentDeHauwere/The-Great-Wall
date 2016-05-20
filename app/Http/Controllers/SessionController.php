@@ -290,7 +290,7 @@ class SessionController extends Controller
 
 			if($append)
 			{
-				array_push($posts,'p',$poll);
+				array_push($posts,array('p',$poll));
 			}
 
 			$pollCounter += 1;

@@ -61,14 +61,15 @@
 				<div class="right menu">
 					<div class="ui dropdown item" id="user">
 						{{ Auth::user()->name }}
-						@if(count(glob(storage_path() . '/app/user_images/' . Auth::user()->id)) != 0)
+
+						@if(count(glob(storage_path() . '/app/user_images/' . Auth::user()->id.'*')) != 0)
 							<img class="ui avatar image icon_customized" src="{{ route('user_images', ['filename' => Auth::user()->id]) }}">
 						@else
 							<img class="ui avatar image icon_customized filter_customized" src="{{ route('user_images', ['filename' => Auth::user()->id]) }}">
 						@endif
 						<div class="menu">
 							<a class="ui red item" href="{{ action('UserController@showPosts') }}">
-								<i class="user icon"></i>
+								<i class="comment outline icon"></i>
 								My Posts
 							</a>
 							@if (empty(Auth::user()->twitter_handle))
