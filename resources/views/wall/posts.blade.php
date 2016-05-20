@@ -8,13 +8,13 @@
 		<div class="panel-heading">
 			<!-- upvote -->
 			<div class="buttons pull-right">
-				@unless($post[1]->user()->first()->id==Auth::user()->id)
+				@unless($post[1]->user->first()->id==Auth::user()->id)
 					<form method="POST" action="/votemessage">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 						<input type="hidden" name="message_id" value="{{$post[1]->id}}">
 						<input type="hidden" name="user_id" value="{{Auth::user()->id}}">
 
-						@if(Auth::user()->messageVotes()->where('message_id',$post[1]->id)->first())
+						@if(Auth::user()->messageVotes->where('message_id',$post[1]->id)->first())
 							<button class="active" type="submit">
 								<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
 							</button>
@@ -32,7 +32,7 @@
 
 			<h4 class="panel-title">
 				@unless($post[1]->anonymous)
-					{{$post[1]->user()->first()->name}}
+					{{$post[1]->user->first()->name}}
 					@else
 						Anoniem
 						@endunless
@@ -54,13 +54,13 @@
 					<li class="list-group-item">
 						<!-- upvote -->
 						<div class="buttons pull-right">
-							@unless($post[1]->user()->first()->id==Auth::user()->id)
+							@unless($post[1]->user->first()->id==Auth::user()->id)
 								<form>
 									<input type="hidden" name="message_id" value={{$post[1]->id}}>
 									<!-- ID of the OP -->
-									<input type="hidden" name="user_id" value={{$post[1]->user()->id}}>
+									<input type="hidden" name="user_id" value={{$post[1]->user->id}}>
 
-									@unless(Auth::user()->id==$post[1]->user()->id)
+									@unless(Auth::user()->id==$post[1]->user->id)
 										<button type="submit" class="form-control upvote active">
 											<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
 										</button>
@@ -114,7 +114,7 @@
 <div class="row message poll">
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<h4 class="panel-title">{{$post[1]->user()->first()->name}}
+			<h4 class="panel-title">{{$post[1]->user->first()->name}}
 				<small>{{
 						\App\Http\Controllers\WallController::humanTimeDifference($post[1]->created_at)
 						}}</small>
@@ -144,7 +144,7 @@
 							<input type="hidden" name="poll_choice_id" value={{$choice->id}}>
 							<input type="hidden" name="user_id" value={{Auth::user()->id}}>
 
-							@if(Auth::user()->pollVotes()->where('poll_choice_id',$choice->id)->first())
+							@if(Auth::user()->pollVotes->where('poll_choice_id',$choice->id)->first())
 								<button type="submit" class="btn btn-default vote active">
 									<span class="glyphicon glyphicon-ok" area-hidden="true"></span>
 								</button>
