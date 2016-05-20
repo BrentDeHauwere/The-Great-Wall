@@ -36,12 +36,6 @@
 							{{ $message->text }}
 						</div>
 					</div>
-					<div class="extra content">
-						<div class="ui two buttons">
-							<div class="ui basic green button">Go to wall</div>
-							<div class="ui basic red button">Delete</div>
-						</div>
-					</div>
 				</div>
 			@endforeach
 			@foreach($polls as $poll)
@@ -55,12 +49,6 @@
 						</div>
 						<div class="description">
 							{{ $poll->question }}
-						</div>
-					</div>
-					<div class="extra content">
-						<div class="ui two buttons">
-							<div class="ui basic green button">Go to wall</div>
-							<div class="ui basic red button">Delete</div>
 						</div>
 					</div>
 				</div>
