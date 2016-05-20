@@ -77,17 +77,13 @@
 						</td>
 					</tr>
 				@endforeach
-				<tr>
-					<td colspan="6"></td>
-					<td>
-						<a class="ui basic button" href="{{ action('SessionController@multiple') }}">
-							<i class="icon dashboard"></i>
-							Beheer meerdere walls
-						</a>
-					</td>
-				</tr>
 			</tbody>
 		</table>
+
+		<a class="ui basic button" href="{{ action('SessionController@multiple') }}">
+			<i class="icon dashboard"></i>
+			Manage multiple walls
+		</a>
 
 	</div>
 
