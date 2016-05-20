@@ -47,7 +47,8 @@ class WallController extends Controller
 			$data['info'] = 'No walls available.';
 		}
 
-		foreach($walls as $wall){
+		foreach ($walls as $wall)
+		{
 			$wall->tags = explode(";", $wall->tags);
 		}
 
@@ -128,6 +129,7 @@ class WallController extends Controller
 			$messages = Message::with('votes')->where('wall_id', $wall_id)->where('question_id', NULL)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 			$polls = Poll::with('choices.votes')->where('wall_id', $wall_id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 			$posts = $this->getMessagesPollsChronologically($messages, $polls);
+
 			return view('wall.show')->with('posts', $posts)->with('wall', $wall);
 		}
 		else
@@ -176,13 +178,14 @@ class WallController extends Controller
 				$counter += 1;
 			}
 
-			if($append)
+			if ($append)
 			{
-				array_push($posts, array('p',$poll));
+				array_push($posts, array('p', $poll));
 			}
 
 			$pollCounter += 1;
 		}
+
 		return $posts;
 	}
 
@@ -216,21 +219,23 @@ class WallController extends Controller
 			{
 				$pollVotes = 0;
 
-				$pollchoices = PollChoice::where('poll_id',$poll->id);
-				foreach($pollchoices as $pollchoice){
-					$pollVotes+=$pollchoice->count;
+				$pollchoices = PollChoice::where('poll_id', $poll->id);
+				foreach ($pollchoices as $pollchoice)
+				{
+					$pollVotes += $pollchoice->count;
 				}
 
 				$postVotes = 0;
-				if($post[0]=='m')
+				if ($post[0] == 'm')
 				{
 					$postVotes = $post[1]->count;
 				}
 				else
 				{
-					$pollchoices = PollChoice::where('poll_id',$poll->id);
-					foreach($pollchoices as $pollchoice){
-						$postVotes+=$pollchoice->count;
+					$pollchoices = PollChoice::where('poll_id', $poll->id);
+					foreach ($pollchoices as $pollchoice)
+					{
+						$postVotes += $pollchoice->count;
 					}
 				}
 
@@ -244,12 +249,13 @@ class WallController extends Controller
 				$counter += 1;
 			}
 
-			if($append)
+			if ($append)
 			{
-				array_push($posts, array('p',$poll));
+				array_push($posts, array('p', $poll));
 			}
 			$pollCounter += 1;
 		}
+
 		return $posts;
 	}
 
