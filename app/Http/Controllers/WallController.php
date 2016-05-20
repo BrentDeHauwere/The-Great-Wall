@@ -85,7 +85,7 @@ class WallController extends Controller
 
 			$posts = $this->getMessagesPollsChronologically($id);
 			//$posts = $this->getMessagesPollsSortedOnVotes($id);
-			
+
 			//BEGIN CODE FOR PAGINATION
 			//Source: https://laracasts.com/discuss/channels/laravel/laravel-pagination-not-working-with-array-instead-of-collection
 
@@ -174,7 +174,7 @@ class WallController extends Controller
 
 			if($append)
 			{
-				array_push($posts,'p',$poll);
+				array_push($posts,array('p',$poll));
 			}
 
 			$pollCounter += 1;
