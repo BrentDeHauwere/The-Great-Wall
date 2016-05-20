@@ -7,7 +7,7 @@ var Redis = require('ioredis');
 var redis = new Redis(6380,'10.3.50.20');
 
 server.listen(1338, function(){
-    console.log('Listening on Port 1337');
+    console.log('Listening on Port 1338');
 });
 
 redis.psubscribe('msg1.msg.*', function(err, count) {
