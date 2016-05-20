@@ -41,6 +41,11 @@
 							{{ $message->text }}
 						</div>
 					</div>
+					@if($message->moderation_level == 1)
+					<div class="extra content">
+						<div class="meta">This message was blocked.</div>
+					</div>
+					@endif
 				</div>
 			@endforeach
 			@foreach($polls as $poll)
@@ -57,6 +62,11 @@
 							{{ $poll->question }}
 						</div>
 					</div>
+					@if($poll->moderation_level == 1)
+						<div class="extra content">
+							<div class="meta">This poll was blocked.</div>
+						</div>
+					@endif
 				</div>
 			@endforeach
 		</div>
