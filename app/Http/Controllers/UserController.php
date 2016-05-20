@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use App\Message;
+use App\Poll;
 
 class UserController extends Controller
 {
@@ -112,7 +114,9 @@ class UserController extends Controller
 
 	public function showPosts()
 	{
-		$user = User::find(Auth::user->id)->with()
-		return redirect()->back()->with('success', 'yay');
+		$posts = Message::where('user_id', Auth::user()->id)->get();
+		$polls = Poll::where('user_id', Auth::user()->id)->get();
+		
+		return view('user.posts')->with('posts', $posts);
 	}
 }
