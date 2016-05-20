@@ -16,7 +16,7 @@
 				<tr>
 					<th>Username</th>
 					<th>Reason</th>
-					<th>Banned at</th>
+					<th>Banned</th>
 					<th class="no-sort" style="width: 231px">Actions</th>
 				</tr>
 			</thead>
@@ -25,7 +25,7 @@
 					<tr>
 						<td>{{ $user->user->name }}</td>
 						<td>{{ $user->reason }}</td>
-						<td>{{ $user->created_at }}</td>
+						<td>{{ App\Http\Controllers\WallController::humanTimeDifference($user->created_at) }}</td>
 						<td>
 							<a class="ui basic button" href="{{ URL::to('blacklist/' . $user->user_id . '/edit') }}">
 								<i class="icon edit"></i>
