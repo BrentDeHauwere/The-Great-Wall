@@ -56,6 +56,15 @@
 									</button>
 								</div>
 							@endif
+							<div class="ui tag labels">
+								@foreach ($wall->tags as $tag)
+									@if ($tag != null)
+										<a class="ui label">
+											{{ $tag }}
+										</a>
+									@endif
+								@endforeach
+							</div>
 						</div>
 					</div>
 				</div>
