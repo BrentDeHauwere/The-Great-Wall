@@ -81,10 +81,25 @@
 			$('.ui.checkbox')
 				.checkbox()
 			;
+
+
 			$('.tab').on('click', '.poll_option_add', function ()
 			{
+				$(this).children().removeClass("plus icon");
+				$(this).children().addClass("minus icon");
+				$(this).removeClass("blue");
+				$(this).addClass("red");
+
+				$(this).removeClass("poll_option_add");
+				$(this).addClass("poll_option_remove");
+
 				$('<div class="field"><div class="ui action input poll_option"><input name="choices[]" type="text" placeholder="Answer"><button type="button" class="ui blue right icon button poll_option_add"> <i class="plus icon"></i> </button> </div> </div>')
 					.insertBefore('#poll_submit');
+			})
+
+			$('.tab').on('click', '.poll_option_remove', function ()
+			{
+				$(this).closest('.field').remove();
 			})
 		});
 	</script>
