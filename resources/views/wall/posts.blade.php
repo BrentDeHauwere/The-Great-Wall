@@ -27,6 +27,9 @@
 				@endunless
 				{{"upvotes: ".$post[1]->count}}
 			</div>
+
+
+
 			<h4 class="panel-title">
 				@unless($post[1]->anonymous)
 					{{$post[1]->user()->first()->name}}
