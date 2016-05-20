@@ -48,26 +48,27 @@
 	<body>
 
 		<div class="ui middle aligned center aligned grid">
+			
 			<div class="column">
-				@if(session()->has('success'))
+				@if(Session::has('success'))
 					@success({{ session('success') }})
 				@elseif(!empty($success))
 					@success({{ $success }})
 				@endif
 
-				@if(session()->has('warning'))
+				@if(Session::has('warning'))
 					@warning({{ session('warning') }})
 				@elseif(!empty($warning))
 					@warning({{ $warning }})
 				@endif
 
-				@if(session()->has('error'))
+				@if(Session::has('error'))
 					@error({{ session('error') }})
 				@elseif(!empty($error))
 					@error({{ $error }})
 				@endif
 
-				@if(session()->has('info'))
+				@if(Session::has('info'))
 					@info({{ session('info') }})
 				@elseif(!empty($info))
 					@info({{ $info }})
@@ -96,7 +97,6 @@
 					</div>
 					{{ csrf_field() }}
 					<div class="ui error message"></div>
-
 				</form>
 
 				<div class="ui message">
@@ -112,5 +112,4 @@
 			});
 		</script>
 	</body>
-
 </html>

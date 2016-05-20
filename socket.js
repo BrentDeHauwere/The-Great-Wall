@@ -1,5 +1,8 @@
 var app = require('express');
 var http = require('http').Server(app);
+http.listen(1337, function(){
+    console.log('Listening on Port 1337');
+});
 var io = require('socket.io')(http);
 var Redis = require('ioredis');
 var redis = new Redis(6380,'10.3.50.20');
@@ -43,7 +46,4 @@ redis.on('pmessage', function(pattern,channel, message) {
     console.log('Message Received: ' + message + '\n Channel: ' + channel + '\n Pattern: ' + pattern);
     message = JSON.parse(message);
     io.emit(channel + ':' + message.event, message.data);
-});
-http.listen(1337, function(){
-    console.log('Listening on Port 1337');
 });
