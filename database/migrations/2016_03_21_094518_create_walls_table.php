@@ -18,6 +18,7 @@ class CreateWallsTable extends Migration
             $table->string('name');
             $table->longText('description')->nullable();
             $table->string('hashtag')->nullable();
+            $table->string('tags')->nullable();
             $table->string('password')->nullable();
             $table->softDeletes();
             $table->dateTime('open_until')->nullable();

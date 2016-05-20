@@ -113,7 +113,6 @@
 			var text = $(this).parent().text() + ";";
 			$(this).parent().remove();
 			$("#tagForm").val($("#tagForm").val().replace(text, ''));
-			console.log(text);
 		});
 	</script>
 @endsection
