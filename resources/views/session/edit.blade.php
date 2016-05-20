@@ -52,6 +52,29 @@
 			</div>
 
 			<div class="field">
+				<label for="tags">Tags</label>
+				<div class="ui tag labels" id="tagrow">
+					@foreach($wall->tags as $tag)
+						@if ($tag != null)
+							<a class="ui label">
+								{{$tag}}
+								<i class="delete icon"></i>
+							</a>
+						@endif
+					@endforeach
+				</div>
+				<div class="ui right labeled left icon input">
+					<i class="tags icon"></i>
+					<input type="text" placeholder="Your tag" id="tagInputField">
+					<a class="ui tag label" id="addTagButton">
+						Add Tag
+					</a>
+				</div>
+				<input type="hidden" value="{{ implode(";", $wall->tags) }}" name="tags" id="tagForm">
+				</input>
+			</div>
+
+			<div class="field">
 				<label for="image">Image</label>
 				<input id="image" type="file" name="image">
 				@helper('image')
@@ -82,4 +105,25 @@
 			<button class="ui button primary right floated" type="submit">Submit</button>
 		</form>
 	</div>
+@endsection
+
+@section('footer')
+	<script>
+		$("#addTagButton").on("click", function() {
+			var input = $("#tagInputField").val();
+			var output = '<a class="ui label">' +  input + '<i class="delete icon"></i></a>';
+			if (input != ""){
+				$( "#tagrow" ).prepend(output);
+				$( "#tagForm" ).val($("#tagForm").val() + input + ";");
+				$( "#tagInputField" ).val("");
+			}
+		});
+
+		$("#tagrow").on('click', '.delete', function(){
+			var text = $(this).parent().text() + ";";
+			console.log(text);
+			$(this).parent().remove();
+			$("#tagForm").val($("#tagForm").val().replace(text, ""));
+		});
+	</script>
 @endsection

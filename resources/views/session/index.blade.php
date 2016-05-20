@@ -27,8 +27,9 @@
 				<tr>
 					<th>Name</th>
 					<th>Speaker</th>
+					<th>Tags</th>
 					<th>Hashtag</th>
-					<th>Password Protected</th>
+					<th>Password</th>
 					<th>Open until</th>
 					<th class="no-sort" style="width: 332px">Actions</th>
 				</tr>
@@ -38,6 +39,7 @@
 					<tr>
 						<td>{{ $value->name }}</td>
 						<td>{{ $value->user->name }}</td>
+						<td>{{ $value->tags }}</td>
 						<td>{{ $value->hashtag }}</td>
 						<td>{{ $value->password }}</td>
 						@if ($value->open_until == 'Infinity (not set)')
