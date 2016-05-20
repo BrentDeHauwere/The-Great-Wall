@@ -131,13 +131,17 @@
                                 {{ \App\User::find($post[1]->user_id)->name }}
                             </div>
                             <div class="meta">
-                                {{ $post[1]->wall->name }}
+															@if($post[1]->question)
+																<i class="comments icon"></i> 
+															@else
+																<i class="comment icon"></i>
+															@endif
+                              {{ $post[1]->wall->name }}
                             </div>
                             <div class="description">
                                 {{ $post[1]->text }}
                                 @if($post[1]->question)
                                     <div class="ui divider"></div>
-                                    <div class="meta">Answer on message</div>
                                     {{$post[1]->question->text}}
                                 @endif
                             </div>
@@ -185,7 +189,7 @@
                                 {{ \App\User::find($post[1]->user_id)->name }}
                             </div>
                             <div class="meta">
-                                {{ $post[1]->wall->name }}
+                                <i class="tasks icon"></i> {{ $post[1]->wall->name }}
                             </div>
                             <div class="description">
                                 {{ $post[1]->question }}
@@ -235,14 +239,11 @@
                                         {{ \App\User::find($post[1]->user_id)->name }}
                                     </div>
                                     <div class="meta">
-                                        {{ $post[1]->wall->name }}
+                                      <i class="tasks icon"></i> {{ $post[1]->wall->name }}
                                     </div>
                                     <div class="description">
                                         {{ $choice->text }}
                                         <div class="ui divider"></div>
-                                        <div class="meta">
-                                           Answer on poll
-                                        </div>
                                         {{$post[1]->question}}
                                     </div>
                                 </div>

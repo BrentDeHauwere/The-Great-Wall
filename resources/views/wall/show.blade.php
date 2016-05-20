@@ -2,7 +2,6 @@
 
 @section('header')
 	<link rel="stylesheet" type="text/css" href="/css/messagewall.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
 	<script src="https://10.3.50.20:1338/socket.io/socket.io.js"></script>
 	<script>
@@ -100,10 +99,10 @@
 		<h1>{{$wall->name}}</h1>
 
 		<div class="ui top attached tabular menu">
-			<a class="item" data-tab="message">Post Message</a>
+			<a class="item active" data-tab="message">Post Message</a>
 			<a class="item" data-tab="poll">Post Poll</a>
 		</div>
-		<div class="ui bottom attached tab segment" data-tab="message">
+		<div class="ui bottom attached tab segment active" data-tab="message">
 			<div class="ui form">
 				<div class="field">
 					<label>Message</label>
