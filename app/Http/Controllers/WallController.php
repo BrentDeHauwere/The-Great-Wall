@@ -39,7 +39,7 @@ class WallController extends Controller
 				$query->where('open_until', null)
 					->orWhere('open_until', '>', date('Y-m-d H:i:s'));
 			})
-			->get();
+			->orderBy('walls.password')->get();
 		$data['walls'] = $walls;
 
 		if (empty($walls))
