@@ -5,7 +5,7 @@
 @section('page','moderate')
 
 @section('header')
-<script src="http://10.3.50.20:1337/socket.io/socket.io.js"></script>
+<script src="http://10.3.50.20:1338/socket.io/socket.io.js"></script>
 <script>
 	var socket = io('http://10.3.50.20:1338');
 	socket.on('msg1.msg.{{$wall->id}}:App\\Events\\NewMessageEvent', function (data)
@@ -124,8 +124,9 @@
                 @if($post[0]=='m')
                     <div class="card">
                         <div class="content">
-                            <img class="right floated mini ui image"
-                                 src="http://semantic-ui.com/images/avatar/large/elliot.jpg">
+
+														<img class="right floated mini ui image" src="{{ route('user_images', ['filename' => $post[1]->user->id]) }}">
+
                             <div class="header">
                                 {{ \App\User::find($post[1]->user_id)->name }}
                             </div>
@@ -177,8 +178,9 @@
                 @elseif($post[0]=='p')
                     <div class="card">
                         <div class="content">
-                            <img class="right floated mini ui image"
-                                 src="http://semantic-ui.com/images/avatar/large/steve.jpg">
+
+														<img class="right floated mini ui image" src="{{ route('user_images', ['filename' => $post[1]->user->id]) }}">
+
                             <div class="header">
                                 {{ \App\User::find($post[1]->user_id)->name }}
                             </div>
@@ -226,8 +228,9 @@
                         @foreach($post[1]->choices as $choice)
                             <div class="card">
                                 <div class="content">
-                                    <img class="right floated mini ui image"
-                                         src="http://semantic-ui.com/images/avatar/large/stevie.jpg">
+
+																		<img class="right floated mini ui image" src="{{ route('user_images', ['filename' => $post[1]->user->id]) }}">
+
                                     <div class="header">
                                         {{ \App\User::find($post[1]->user_id)->name }}
                                     </div>
