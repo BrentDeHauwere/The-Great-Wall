@@ -68,7 +68,7 @@
 						@endif
 						<div class="menu">
 							<a class="ui red item" href="{{ action('UserController@showPosts') }}">
-								<i class="user icon"></i>
+								<i class="comment outline icon"></i>
 								My Posts
 							</a>
 							@if (empty(Auth::user()->twitter_handle))
