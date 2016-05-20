@@ -67,6 +67,10 @@
 							<img class="ui avatar image icon_customized filter_customized" src="{{ route('user_images', ['filename' => Auth::user()->id]) }}">
 						@endif
 						<div class="menu">
+							<a class="ui red item" href="#">
+								<i class="user icon"></i>
+								My Posts
+							</a>
 							@if (empty(Auth::user()->twitter_handle))
 								<a class="item" id="setTwitterHandle">
 									<i class="twitter icon"></i>
