@@ -6,7 +6,7 @@ var io = require('socket.io').listen(server);
 var Redis = require('ioredis');
 var redis = new Redis(6380,'10.3.50.20');
 
-server.listen(1337, function(){
+server.listen(1338, function(){
     console.log('Listening on Port 1337');
 });
 
