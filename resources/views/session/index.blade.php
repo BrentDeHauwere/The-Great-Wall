@@ -28,7 +28,7 @@
 					<th>Name</th>
 					<th>Speaker</th>
 					<th>Hashtag</th>
-					<th>Password Protected</th>
+					<th>Password</th>
 					<th>Open until</th>
 					<th class="no-sort" style="width: 423px">Actions</th>
 				</tr>
