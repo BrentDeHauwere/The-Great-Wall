@@ -47,6 +47,10 @@ class WallController extends Controller
 			$data['info'] = 'No walls available.';
 		}
 
+		foreach($walls as $wall){
+			$wall->tags = explode(";", $wall->tags);
+		}
+
 		return view('wall.index')->with($data);
 	}
 
