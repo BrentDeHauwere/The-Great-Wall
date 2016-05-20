@@ -23,6 +23,10 @@
 	clear: both;
 }
 
+.ui.comments {
+	max-width: none !important;
+}
+
 /*
  ========== NAVIGATION ==========
  */
