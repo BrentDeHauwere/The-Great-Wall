@@ -67,7 +67,7 @@
 							<img class="ui avatar image icon_customized filter_customized" src="{{ route('user_images', ['filename' => Auth::user()->id]) }}">
 						@endif
 						<div class="menu">
-							<a class="ui red item" href="#">
+							<a class="ui red item" href="{{ action('UserController@showPosts') }}">
 								<i class="user icon"></i>
 								My Posts
 							</a>

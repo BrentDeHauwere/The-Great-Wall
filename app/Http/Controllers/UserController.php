@@ -108,4 +108,11 @@ class UserController extends Controller
 
 		return redirect()->back()->with('success', 'Your profile picture was successfully uploaded.');
 	}
+
+
+	public function showPosts()
+	{
+		$user = User::find(Auth::user->id)->with()
+		return redirect()->back()->with('success', 'yay');
+	}
 }
