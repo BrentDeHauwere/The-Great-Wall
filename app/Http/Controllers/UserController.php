@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use App\Message;
+use App\Poll;
 
 class UserController extends Controller
 {
@@ -107,5 +109,14 @@ class UserController extends Controller
 		$request->file('image')->move($destinationPath, $fileName);
 
 		return redirect()->back()->with('info', 'Your profile picture was successfully uploaded.');
+	}
+
+
+	public function showPosts()
+	{
+		$posts = Message::where('user_id', Auth::user()->id)->get();
+		$polls = Poll::where('user_id', Auth::user()->id)->get();
+		
+		return view('user.posts')->with('posts', $posts);
 	}
 }

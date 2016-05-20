@@ -113,6 +113,7 @@ Route::group(['middleware' => 'web'], function () {
 		// ----------- USER ----------
 		Route::post('user/twitterHandle', 'UserController@twitterHandle');
 		Route::post('user/image', 'UserController@image');
+		Route::get('user/posts', 'UserController@showPosts');
 
 		// ---------- USER IMAGES ----------
 		Route::get('user_images/{filename}', function ($filename)
