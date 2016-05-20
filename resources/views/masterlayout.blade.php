@@ -61,7 +61,8 @@
 				<div class="right menu">
 					<div class="ui dropdown item" id="user">
 						{{ Auth::user()->name }}
-						@if(count(glob(storage_path() . '/app/user_images/' . Auth::user()->id)) != 0)
+
+						@if(count(glob(storage_path() . '/app/user_images/' . Auth::user()->id.'*')) != 0)
 							<img class="ui avatar image icon_customized" src="{{ route('user_images', ['filename' => Auth::user()->id]) }}">
 						@else
 							<img class="ui avatar image icon_customized filter_customized" src="{{ route('user_images', ['filename' => Auth::user()->id]) }}">
