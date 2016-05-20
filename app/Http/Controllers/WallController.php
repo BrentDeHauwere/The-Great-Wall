@@ -83,10 +83,8 @@ class WallController extends Controller
 			//	TwitterHelper::checkForTweets($wall->hashtag, $id);
 			//}
 
-			$messages = Message::with('votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
-			$polls = Poll::with('choices.votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
-
-			$posts = $this->sortMessagesPollsChronologically($messages, $polls);
+			$posts = $this->getMessagesPollsChronologically($id);
+			//$posts = $this->getMessagesPollsSortedOnVotes($id);
 
 			//BEGIN CODE FOR PAGINATION
 			//Source: https://laracasts.com/discuss/channels/laravel/laravel-pagination-not-working-with-array-instead-of-collection
@@ -125,9 +123,8 @@ class WallController extends Controller
 		{
 			$messages = Message::with('votes')->where('wall_id', $wall_id)->where('question_id', NULL)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 			$polls = Poll::with('choices.votes')->where('wall_id', $wall_id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
-			$posts = $this->sortMessagesPollsChronologically($messages, $polls);
-
-			return view('wall.show')->with('posts', $posts)->with('wall', $wall);//->with('result',$result);
+			$posts = $this->getMessagesPollsChronologically($messages, $polls);
+			return view('wall.show')->with('posts', $posts)->with('wall', $wall);
 		}
 		else
 		{
@@ -135,8 +132,11 @@ class WallController extends Controller
 		}
 	}
 
-	private function sortMessagesPollsChronologically($messages, $polls)
+	private function getMessagesPollsChronologically($wall_id)
 	{
+		$messages = Message::with('votes')->where('wall_id', $wall_id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
+		$polls = Poll::with('choices.votes')->where('wall_id', $wall_id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
+
 		/* Sort messages / poll into a chronologically ordered 2D array */
 		$posts = [];
 
@@ -182,7 +182,72 @@ class WallController extends Controller
 		return $posts;
 	}
 
+	private function getMessagesPollsSortedOnVotes($wall_id)
+	{
+		$messages = Message::with('votes')->where('wall_id', $wall_id)->where('moderation_level', 0)->orderBy('count', 'desc')->get();
+		$polls = Poll::with('choices.votes')->where('wall_id', $wall_id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 
+		$posts = [];
+		if (!$messages->isEmpty())
+		{
+			foreach ($messages as $message)
+			{
+				array_push($posts, array('m', $message));
+			}
+		}
+		else
+		{
+			foreach ($polls as $poll)
+			{
+				array_push($posts, array('p', $poll));
+			}
+		}
+
+		$pollCounter = 0;
+		foreach ($polls as $poll)
+		{
+			$append = true;
+			$counter = 0;
+			foreach ($posts as $post)
+			{
+				$pollVotes = 0;
+
+				$pollchoices = PollChoice::where('poll_id',$poll->id);
+				foreach($pollchoices as $pollchoice){
+					$pollVotes+=$pollchoice->count;
+				}
+
+				$postVotes = 0;
+				if($post[0]=='m')
+				{
+					$postVotes = $post[1]->count;
+				}
+				else
+				{
+					$pollchoices = PollChoice::where('poll_id',$poll->id);
+					foreach($pollchoices as $pollchoice){
+						$postVotes+=$pollchoice->count;
+					}
+				}
+
+				if ($pollVotes > $postVotes)
+				{
+					$arr = array('p', $poll);
+					array_splice($posts, $counter, 0, array($arr));
+					$append = false;
+					break;
+				}
+				$counter += 1;
+			}
+
+			if($append)
+			{
+				array_push($posts, array('p',$poll));
+			}
+			$pollCounter += 1;
+		}
+		return $posts;
+	}
 
 	public function create()
 	{
@@ -254,7 +319,7 @@ class WallController extends Controller
 				$messages = Message::with('votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 			}
 
-			$posts = $this->sortMessagesPollsChronologically($messages, $polls);
+			$posts = $this->getMessagesPollsChronologically($messages, $polls);
 			session(['wall' . $wall->id => date("Y-m-d H:i:s")]);
 
 			return view('ajax.messages')->with('posts', $posts)->with('wall', $wall);//->with('result',$result);
@@ -285,7 +350,7 @@ class WallController extends Controller
 			$messages = Message::with('votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 			$polls = Poll::with('choices.votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
 
-			$posts = $this->sortMessagesPollsChronologically($messages, $polls);
+			$posts = $this->getMessagesPollsChronologically($messages, $polls);
 
 			//BEGIN CODE FOR PAGINATION
 			//Source: https://laracasts.com/discuss/channels/laravel/laravel-pagination-not-working-with-array-instead-of-collection

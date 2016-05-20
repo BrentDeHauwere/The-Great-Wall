@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use App\Message;
+use App\Poll;
+use App\Wall;
 
 class UserController extends Controller
 {
@@ -38,7 +41,7 @@ class UserController extends Controller
 		}
 		else
 		{
-			return view('login')->with('error', 'Wrong mail and/or password. Please try again.');
+			return redirect('login')->with('error', 'Wrong mail and/or password. Please try again.');
 		}
 	}
 
@@ -106,6 +109,15 @@ class UserController extends Controller
 		$fileName = Auth::user()->id . '.' . $request->file('image')->getClientOriginalExtension();
 		$request->file('image')->move($destinationPath, $fileName);
 
-		return redirect()->back()->with('success', 'Your profile picture was successfully uploaded.');
+		return redirect()->back()->with('info', 'Your profile picture was successfully uploaded.');
+	}
+
+
+	public function showPosts()
+	{
+		$messages = Message::where('user_id', Auth::user()->id)->where('anonymous', 0)->with('wall')->get();
+		$polls = Poll::where('user_id', Auth::user()->id)->with('wall')->get();
+		
+		return view('user.posts')->with('messages', $messages)->with('polls', $polls);
 	}
 }

@@ -1,9 +1,9 @@
 @extends("masterlayout")
 
 @section('header')
-	<script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
+	<script src="http://10.3.50.20:1338/socket.io/socket.io.js"></script>
 	<script>
-		var socket = io('http://10.3.50.20:1337');
+		var socket = io('http://10.3.50.20:1338');
 		socket.on('msg1.msg.{{$wall->id}}:App\\Events\\NewMessageEvent', function (data)
 		{
 			console.log(data);
