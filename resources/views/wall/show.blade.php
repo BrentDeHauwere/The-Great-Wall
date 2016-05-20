@@ -82,6 +82,14 @@
 	<div class=" container messagesContainer center-block">
 		<h3>{{$wall->name}}</h3>
 
+		<div class="ui top attached tabular menu">
+			<div class="active item">Tab</div>
+		</div>
+		<div class="ui bottom attached active tab segment">
+			<p></p>
+			<p></p>
+		</div>
+
 		@unless(Auth::user()->banned())
 		<!-- Voorbeeld Form om nieuwe message aan te maken -->
 		<div id="messageForm" class="message">
