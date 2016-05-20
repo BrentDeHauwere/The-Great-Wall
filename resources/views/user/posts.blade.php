@@ -20,6 +20,11 @@
 		});
 	</script>
 	<div class="body_customized">
+		@if($messages->isEmpty() && $polls->isEmpty())
+			<div class="ui center aligned segment meta">
+				You have no posts yet... What are you waiting for?
+			</div>
+		@endif
 		<div class="ui cards four stackable" id="holder">
 			@foreach($messages as $message)
 				<div class="card">
