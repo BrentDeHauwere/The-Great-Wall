@@ -1,9 +1,9 @@
 var app = require('express');
 var http = require('http').Server(app);
-var io = require('socket.io')(http);
 http.listen(1337, function(){
     console.log('Listening on Port 1337');
 });
+var io = require('socket.io')(http);
 var Redis = require('ioredis');
 var redis = new Redis(6380,'10.3.50.20');
 
