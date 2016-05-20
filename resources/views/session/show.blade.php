@@ -5,24 +5,72 @@
 @section('page','moderate')
 
 @section('header')
-
-@stop
-
-@section('content')
-<script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
+<script src="http://10.3.50.20:1337/socket.io/socket.io.js"></script>
 <script>
-	var socket = io('http://localhost:3000');
+	var socket = io('http://10.3.50.20:1337');
 	socket.on('msg1.msg.{{$wall->id}}:App\\Events\\NewMessageEvent', function (data)
 	{
 		if (data.message.question_id == null)
 		{
-			var e = '<div>'+ +'</div>';
-			$("#holder").append(e);
+			var token = $('#token').val();
+			var e = '<div class="card">';
+			e += '<div class="content">';
+			e += '<img class="right floated mini ui image" src="http://semantic-ui.com/images/avatar/large/elliot.jpg">';
+			e += '<div class="header">'+ data.message.user.name +'</div>';
+			e += '<div class="meta">'+ data.message.wall.name+'</div>';
+			e += '<div class="description">'+data.message.text+'</div>';
+			e += '</div>';
+			e += '<div class="extra content">';
+			e += '<div class="ui three buttons">';
+			e += '<button type="submit" class="ui basic green button form="M_'+ data.message.id +'_A">Approve</button>';
+			e += '<button type="submit" class="ui basic red button" form="M_'+data.message.id+'_D">Decline</button>';
+			e += '<button class="ui basic grey button form="{{ "M_'data.message.id'_B" }}">Block</button>';
+			e += '</div>';
+			e += '<form method="post" action="" id="M_'+data.message.id+'_A">';
+			e += '<input type="hidden" name="_token" value="' + token + '">';
+			e += '<input type="hidden" name="message_id" value="'+data.message.id+'">';
+			e += '</form><form method="post" action="" id="{{ "M_'+data.message.id+'_D" }}">';
+			e += '<input type="hidden" name="_token" value="">';
+			e += '<input type="hidden" name="message_id" value="'+data.message.id+'">';
+			e += '</form><form method="get" action="" id="{{ "M_'+data.message.id+'_B" }}">';
+			e += '<input type="hidden" name="message_id" value="'+data.message.id+'">';
+			e += '</form>';
+			e += '</div>';
+			e += '</div>';
+			$(e).prependTo("#holder").hide().fadeIn(1500);
 		}
 		else if (data.message.question_id != null)
 		{
-			var e = '<div>'+ +'</div>';
-			$("#holder").append(e);
+			var token = $('#token').val();
+			var e = '<div class="card">';
+			e += '<div class="content">';
+			e += '<img class="right floated mini ui image" src="http://semantic-ui.com/images/avatar/large/elliot.jpg">';
+			e += '<div class="header">'+ data.message.user.name +'</div>';
+			e += '<div class="meta">'+ data.message.wall.name+'</div>';
+			e += '<div class="description">'+data.message.text;
+			e += '<div class="ui divider"></div>';
+			e += '<div class="meta">Answer on message</div>';
+			e += data.message.question.text;
+			e += '</div>';
+			e += '</div>';
+			e += '<div class="extra content">';
+			e += '<div class="ui three buttons">';
+			e += '<button type="submit" class="ui basic green button form="M_'+ data.message.id +'_A">Approve</button>';
+			e += '<button type="submit" class="ui basic red button" form="M_'+data.message.id+'_D">Decline</button>';
+			e += '<button class="ui basic grey button form="{{ "M_'data.message.id'_B" }}">Block</button>';
+			e += '</div>';
+			e += '<form method="post" action="" id="M_'+data.message.id+'_A">';
+			e += '<input type="hidden" name="_token" value="'+token+'">';
+			e += '<input type="hidden" name="message_id" value="'+data.message.id+'">';
+			e += '</form><form method="post" action="" id="{{ "M_'+data.message.id+'_D" }}">';
+			e += '<input type="hidden" name="_token" value="">';
+			e += '<input type="hidden" name="message_id" value="'+data.message.id+'">';
+			e += '</form><form method="get" action="" id="{{ "M_'+data.message.id+'_B" }}">';
+			e += '<input type="hidden" name="message_id" value="'+data.message.id+'">';
+			e += '</form>';
+			e += '</div>';
+			e += '</div>';
+			$(e).prependTo("#holder").hide().fadeIn(1500);
 		}
 	});
 	socket.on('msg1.polls.{{$wall->id}}:App\\Events\\NewPollEvent', function (data)
@@ -36,7 +84,9 @@
 		$("#holder").append(e);
 	});
 </script>
+@stop
 
+@section('content')
     <script>
         $(document).ready(function () {
             $(window).resize(function () {
@@ -53,7 +103,7 @@
             });
         });
     </script>
-
+		<input type=hidden id="token" value="{{ csrf_token() }}"/>
     <div class="body_customized">
         @if(isset($wall))
             <h1>Session: {{ $wall->name }}</h1>
@@ -68,7 +118,7 @@
         @endif
 
 
-        <div class="ui cards four stackable">
+        <div class="ui cards four stackable" id="holder">
             @foreach($posts as $post)
 
                 @if($post[0]=='m')
@@ -235,5 +285,4 @@
             @endforeach
         </div>
     </div>
-
 @stop
