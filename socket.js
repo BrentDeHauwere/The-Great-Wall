@@ -1,11 +1,14 @@
-var app = require('express');
-var http = require('http').Server(app);
-http.listen(1337, function(){
-    console.log('Listening on Port 1337');
-});
-var io = require('socket.io')(http);
+var express = require('express')
+var http = require('http');
+var app = express();
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);
 var Redis = require('ioredis');
 var redis = new Redis(6380,'10.3.50.20');
+
+server.listen(1338, function(){
+    console.log('Listening on Port 1337');
+});
 
 redis.psubscribe('msg1.msg.*', function(err, count) {
     console.log('Redis: msg1.msg.* subscribed');
