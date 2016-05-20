@@ -102,7 +102,7 @@
 			<a class="item active" data-tab="message">Post Message</a>
 			<a class="item" data-tab="poll">Post Poll</a>
 		</div>
-		<div class="ui bottom attached tab segment active" data-tab="message">
+		<div class="ui bottom attached tab segment" data-tab="message">
 			<div class="ui form">
 				<div class="field">
 					<label>Message</label>
