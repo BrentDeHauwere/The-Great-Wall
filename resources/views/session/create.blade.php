@@ -53,15 +53,7 @@
 
 			<div class="field">
 				<label for="tags">Tags</label>
-				<div class="ui labels" id="tagrow">
-					<a class="ui label">
-						Talk
-						<i class="delete icon"></i>
-					</a>
-					<a class="ui label">
-						EHackB
-						<i class="delete icon"></i>
-					</a>
+				<div class="ui tag labels" id="tagrow">
 				</div>
 				<div class="ui right labeled left icon input">
 					<i class="tags icon"></i>
@@ -70,7 +62,7 @@
 						Add Tag
 					</a>
 				</div>
-				<input type="hidden" value="Talk;EHackB;" name="tags" id="tagForm">
+				<input type="hidden" value="" name="tags" id="tagForm">
 				</input>
 			</div>
 
@@ -107,7 +99,7 @@
 
 @section('footer')
 	<script>
-		$("#addTagButton").click(function() {
+		$("#addTagButton").on("click", function() {
 			var input = $("#tagInputField").val();
 			var output = '<a class="ui label">' +  input + '<i class="delete icon"></i></a>';
 			if (input != ""){
@@ -117,11 +109,11 @@
 			}
 		});
 
-		$(".delete").click(function(){
+		$("#tagrow").on('click', '.delete', function(){
+			var text = $(this).parent().text() + ";";
 			$(this).parent().remove();
-			var value = $("#tagForm").val();
-			value.replace($(this).val(), '');
-			console.log($(this));
+			$("#tagForm").val($("#tagForm").val().replace(text, ''));
+			console.log(text);
 		});
 	</script>
 @endsection
