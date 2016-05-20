@@ -17,6 +17,12 @@
 	margin-top: 0 !important;
 }
 
+.group:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
 /*
  ========== NAVIGATION ==========
  */
