@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Message;
 use App\Poll;
+use App\Wall;
 
 class UserController extends Controller
 {
@@ -114,9 +115,9 @@ class UserController extends Controller
 
 	public function showPosts()
 	{
-		$posts = Message::where('user_id', Auth::user()->id)->get();
-		$polls = Poll::where('user_id', Auth::user()->id)->get();
+		$messages = Message::where('user_id', Auth::user()->id)->where('anonymous', 0)->with('wall')->get();
+		$polls = Poll::where('user_id', Auth::user()->id)->with('wall')->get();
 		
-		return view('user.posts')->with('posts', $posts);
+		return view('user.posts')->with('messages', $messages)->with('polls', $polls);
 	}
 }
