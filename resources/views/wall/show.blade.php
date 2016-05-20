@@ -4,7 +4,7 @@
 	<link rel="stylesheet" type="text/css" href="/css/messagewall.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
-	<script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
+<script src="http://10.3.50.20/socket.io/socket.io.js"></script>
 	<script>
 		var socket = io('http://10.3.50.20:1337');
 		socket.on('msg1.msg.{{$wall->id}}:App\\Events\\NewMessageEvent', function (data)

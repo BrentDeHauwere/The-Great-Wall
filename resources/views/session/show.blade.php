@@ -5,7 +5,7 @@
 @section('page','moderate')
 
 @section('header')
-<script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
+<script src="http://10.3.50.20/socket.io/socket.io.js"></script>
 <script>
 	var socket = io('http://10.3.50.20:1337');
 	socket.on('msg1.msg.{{$wall->id}}:App\\Events\\NewMessageEvent', function (data)
