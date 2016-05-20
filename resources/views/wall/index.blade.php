@@ -41,8 +41,8 @@
 									<div class="ui action input right floated">
 										{{ csrf_field() }}
 										<input type="hidden" name="wall_id" value="{{$wall->id}}">
-										<input type="password" placeholder="Password" name="password" required>
-										<button type="submit" class="ui blue right labeled icon button">
+										<input type="password" placeholder="Password" name="password" class="passwordField" required>
+										<button type="submit" class="ui blue right labeled icon button passwordButton">
 											<i class="lock icon"></i>
 											Enter
 										</button>
@@ -86,6 +86,14 @@
 				var text = $(this).find('.header').text().replace(/\s+/g, ' ').toLowerCase();
 				return !~text.indexOf(val);
 			}).hide();
+		});
+	</script>
+
+	<script>
+		$(".passwordField").hide();
+
+		$(".passwordButton").mouseover(function() {
+			$(this).prev().fadeIn(500);
 		});
 	</script>
 @stop
