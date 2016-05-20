@@ -1,3 +1,122 @@
+<!-- Messages -->
+<div class="ui comments">
+	<div class="ui raised segment">
+		<div class="comment">
+			<a class="avatar">
+				<img src="{{ route('user_images', ['filename' => $wall->id]) }}" class="ui mini circular image">
+			</a>
+			<div class="content">
+				<a class="author">Elliot Fu</a>
+				<div class="metadata">
+					<span class="date">Yesterday at 12:30AM</span>
+					<div class="rating">
+						<i class="star icon"></i>
+						5 Faves
+					</div>
+				</div>
+				<div class="text">
+					<p>This has been very useful for my research. Thanks as well!</p>
+				</div>
+			</div>
+			<div class="comments">
+				<div class="comment">
+					<a class="avatar">
+						<img src="{{ route('user_images', ['filename' => $wall->id]) }}" class="ui mini circular image">
+					</a>
+					<div class="content">
+						<a class="author">Jenny Hess</a>
+						<div class="metadata">
+							<span class="date">Just now</span>
+							<div class="rating blue">
+								<!-- KAMIEL TO DO: blauw als het bijvoorbeeld is gefavorite, anders gewoon normaal grijs, zet cursor dan nog op zo clickable -->
+								<i class="star icon blue"></i>
+								5 Faves
+							</div>
+						</div>
+						<div class="text">
+							Elliot you are always so right :)
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<form class="ui reply form">
+			<div class="field">
+				<div class="ui action input">
+					<div class="inline field" style="margin-bottom: 7px;margin-top: 7px;margin-right: 14px;">
+						<div class="ui input checkbox">
+							<input type="checkbox" name="anonymous" value="1" tabindex="0">
+							<label>Anonymous</label>
+						</div>
+					</div>
+					<input type="text">
+					<button class="ui blue right labeled icon button">
+						<i class="edit icon"></i>
+						Add Reply
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<!-- Polls -->
+<div class="ui comments">
+	<div class="ui raised segment">
+		<div class="comment">
+			<a class="avatar">
+				<img src="{{ route('user_images', ['filename' => $wall->id]) }}" class="ui mini circular image">
+			</a>
+			<div class="content">
+				<a class="author">Elliot Fu</a>
+				<div class="metadata">
+					<span class="date">Yesterday at 12:30AM</span>
+					<div class="rating">
+						<i class="star icon"></i>
+						5 Faves
+					</div>
+				</div>
+				<div class="text">
+					<p>Here comes a question. Is it true?</p>
+				</div>
+				<div class="actions group">
+					<div class="ui indicating progress success progess_jquery" data-percent="26">
+						<div class="bar">
+							<div class="progress"></div>
+						</div>
+						<div class="label">Yes. It is true.</div>
+					</div>
+					<div class="ui indicating progress success progess_jquery" data-percent="74">
+						<div class="bar">
+							<div class="progress"></div>
+						</div>
+						<div class="label">No. It is not true.</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<form class="ui reply form" style="margin-top: 14px;">
+			<div class="field">
+				<div class="ui action input">
+					<input type="text">
+					<button class="ui blue right labeled icon button">
+						<i class="edit icon"></i>
+						Add Option
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script>
+
+	$(document).ready(function ()
+	{
+		$('.progess_jquery').progress();
+	})
+</script>
+
 @foreach($posts as $post)
 
 @if($post[0]=='m')
@@ -27,7 +146,6 @@
 				@endunless
 				{{"upvotes: ".$post[1]->count}}
 			</div>
-
 
 
 			<h4 class="panel-title">
@@ -86,7 +204,7 @@
 			@endunless
 
 			@unless(Auth::user()->banned())
-			<!-- antwoord toevoegen -->
+				<!-- antwoord toevoegen -->
 			<form method="POST" action="/message">
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
 				<input type="hidden" name="question_id" value="{{$post[1]->id}}">
@@ -105,7 +223,7 @@
 						 </span>
 				</div>
 			</form>
-			@endunless
+		@endunless
 	</div>
 </div>
 @endif
@@ -161,7 +279,7 @@
 					<div class="col-md-6 col-sm-6">
 						<div class="progress">
 							<?php
-							if ( $total != 0 )
+							if ($total != 0)
 							{
 								$percentage = round($choice->count / $total * 100);
 							}
