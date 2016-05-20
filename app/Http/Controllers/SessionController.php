@@ -150,6 +150,7 @@ class SessionController extends Controller
 		$wall->name = $request->input('name');
 		$wall->description = $request->input('description');
 		$wall->hashtag = $request->input('hashtag');
+		$wall->tags = $request->input('tags');
 
 		if ($request->hasFile('image'))
 		{
