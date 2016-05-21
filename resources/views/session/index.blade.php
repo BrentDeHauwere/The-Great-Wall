@@ -92,7 +92,7 @@
 		<form id="beheer" method="GET" action="{{ action('SessionController@showMultiple')}}">
 			<button class="ui basic button">
 				<i class="icon dashboard"></i>
-				Manage multiple walls
+				Show multiple walls
 			</button>
 		</form>
 
