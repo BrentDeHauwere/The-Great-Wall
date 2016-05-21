@@ -111,6 +111,7 @@ class SessionController extends Controller
 		$wall->name = $request->input('name');
 		$wall->description = $request->input('description');
 		$wall->hashtag = $request->input('hashtag');
+		$wall->tags = $request->input('tags');
 
 		if ($request->hasFile('image'))
 		{
@@ -278,6 +279,8 @@ class SessionController extends Controller
 
 		$speakers = User::where('role', 'Speaker')->get();
 
+		$wall->tags = explode(";", $wall->tags);
+
 		return View::make('session.edit')
 			->with('wall', $wall)
 			->withSpeakers($speakers);;
@@ -320,6 +323,7 @@ class SessionController extends Controller
 		$wall->name = $request->input('name');
 		$wall->description = $request->input('description');
 		$wall->hashtag = $request->input('hashtag');
+		$wall->tags = $request->input('tags');
 
 		if ($request->hasFile('image'))
 		{
@@ -346,7 +350,12 @@ class SessionController extends Controller
 		{
 			$wall->password = null;
 		}
-		$wall->open_until = $request->input('open_until');
+
+		if ($request->input('open_until') == "")
+			$wall->open_until = null;
+		else
+			$wall->open_until = $request->input('open_until');
+		
 		$wall->save();
 
 		Session::flash('success', 'Successfully updated session.');

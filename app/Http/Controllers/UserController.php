@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Capi\Clients\GuzzleClient;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -37,6 +38,15 @@ class UserController extends Controller
 
 		if (Auth::attempt(['email' => $email, 'password' => $password]))
 		{
+			// Authenticatie komt hier
+			/*
+			$client = new GuzzleClient();
+			$response = $client->request('crm', 'person-get', [
+
+				'auth' => ['user', 'pass']
+			]);
+			*/
+
 			return redirect()->intended('/');
 		}
 		else

@@ -20,6 +20,11 @@
 		});
 	</script>
 	<div class="body_customized">
+		@if($messages->isEmpty() && $polls->isEmpty())
+			<div class="ui center aligned segment meta">
+				You have no posts yet... What are you waiting for?
+			</div>
+		@endif
 		<div class="ui cards four stackable" id="holder">
 			@foreach($messages as $message)
 				<div class="card">
@@ -56,7 +61,7 @@
 							{{ $poll->wall->name }}
 						</div>
 						<div class="meta">
-							{{ App\Http\Controllers\WallController::humanTimeDifference($message->created_at) }}
+							{{ App\Http\Controllers\WallController::humanTimeDifference($poll->created_at) }}
 						</div>
 						<div class="description">
 							{{ $poll->question }}
