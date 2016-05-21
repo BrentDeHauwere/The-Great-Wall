@@ -6,7 +6,7 @@
 
 @section('content')
 	<div class="body_customized">
-		<table class="ui celled sortable table" id="table">
+		<table class="ui compact celled definition sortable table" id="table">
 
 			<div class="ui icon input search medium">
 				<input type="text" placeholder="Search..." id="search_input">
@@ -25,6 +25,7 @@
 					</th>
 				</tr>
 				<tr>
+					<th>Beheer</th>
 					<th>Name</th>
 					<th>Speaker</th>
 					<th>Hashtag</th>
@@ -36,6 +37,12 @@
 			<tbody>
 				@foreach($walls as $key => $value)
 					<tr>
+						<td>
+							<div class="ui fitted slider checkbox">
+							  <input form="beheer" type="checkbox" name="beheer[]" value="{{ $value->id }}">
+							  <label></label>
+							</div>
+						</td>
 						<td>{{ $value->name }}</td>
 						<td>{{ $value->user->name }}</td>
 						<td>{{ $value->hashtag }}</td>
@@ -82,11 +89,12 @@
 				@endforeach
 			</tbody>
 		</table>
-
-		<a class="ui basic button" href="{{ action('SessionController@multiple') }}">
-			<i class="icon dashboard"></i>
-			Manage multiple walls
-		</a>
+		<form id="beheer" method="GET" action="{{ action('SessionController@showMultiple')}}">
+			<button class="ui basic button">
+				<i class="icon dashboard"></i>
+				Manage multiple walls
+			</button>
+		</form>
 
 	</div>
 

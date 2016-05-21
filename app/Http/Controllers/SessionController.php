@@ -65,45 +65,6 @@ class SessionController extends Controller
 			return View::make('session.index')->with('walls', $walls);
 		}
 	}
-
-	public function multiple(){
-		$walls = Wall::withTrashed()->with('user')->orderBy('name')->get();
-
-		foreach ($walls as $wall)
-		{
-			if (!empty($wall->password))
-			{
-				$wall->password = "Yes";
-			}
-			else
-			{
-				$wall->password = "No";
-			}
-
-			if ($wall->deleted_at != null)
-			{
-				$wall->open_until = 'Manually closed';
-			}
-			else if ($wall->open_until == null)
-			{
-				$wall->open_until = 'Infinity (not set)';
-			}
-			else if ($wall->open_until < date('Y-m-d H:i:s'))
-			{
-				$wall->open_until = "Automatically closed ({$wall->open_until})";
-			}
-		}
-
-		if (empty($walls))
-		{
-			return View::make('session.multiple')->with('walls', $walls)->with('info', 'No sessions available.');
-		}
-		else
-		{
-			return View::make('session.multiple')->with('walls', $walls);
-		}
-	}
-
 	/**
 	 * Show the form for creating a new wall.
 	 *
@@ -202,7 +163,6 @@ class SessionController extends Controller
 
 		$posts = $this->sortMessagesPollsChronologically($messages, $polls);
 
-
 		if (count($posts) == 0)
 		{
 			return View::make('session.show')
@@ -226,7 +186,6 @@ class SessionController extends Controller
 	 */
 	public function showMultiple(Request $request)
 	{
-
 		if(!$request->has('beheer') || empty($request->input('beheer'))){
 			return redirect()->back()->with('info','Please select atleast one wall.');
 		}

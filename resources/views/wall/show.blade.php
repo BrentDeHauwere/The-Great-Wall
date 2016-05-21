@@ -6,6 +6,7 @@
 	<script src="https://10.3.50.20:1338/socket.io/socket.io.js"></script>
 	<script>
 		var socket = io('http://10.3.50.20:1338');
+
 		socket.on('msg1.msg.{{$wall->id}}:App\\Events\\NewMessageEvent', function (data)
 		{
 			console.log(data);
@@ -70,7 +71,8 @@
 			console.log(data);
 			console.log("Moderator Poll Declined: " + data);
 		});
-	</script>
+		</script>
+		
 	<script>
 		$(document).ready(function ()
 		{
