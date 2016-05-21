@@ -30,7 +30,7 @@
 				<div class="card">
 					<div class="content">
 						@if ($message->channel_id == 1)
-							<i class="desktop icon blue right floated ui image"></i>
+							<i class="home icon blue right floated ui image"></i>
 						@elseif ($message->channel_id == 2)
 							<i class="icon twitter blue right floated ui image"></i>
 						@endif
@@ -56,7 +56,7 @@
 			@foreach($polls as $poll)
 				<div class="card">
 					<div class="content">
-						<i class="desktop icon blue right floated ui image"></i>
+						<i class="home icon blue right floated ui image"></i>
 						<div class="header">
 							{{ $poll->wall->name }}
 						</div>
