@@ -61,7 +61,7 @@
 							{{ $poll->wall->name }}
 						</div>
 						<div class="meta">
-							{{ App\Http\Controllers\WallController::humanTimeDifference($message->created_at) }}
+							{{ App\Http\Controllers\WallController::humanTimeDifference($poll->created_at) }}
 						</div>
 						<div class="description">
 							{{ $poll->question }}
