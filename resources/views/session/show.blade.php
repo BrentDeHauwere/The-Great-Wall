@@ -5,12 +5,11 @@
 @section('page','moderate')
 
 @section('header')
-<script src="https://10.3.50.20:1338/socket.io/socket.io.js"></script>
-
+<!--<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>-->
+<script src="https://localhost:1338/socket.io/socket.io.js"></script>
 @if(!empty($wall))
-	<script src="https://10.3.50.20:1338/socket.io/socket.io.js"></script>
 	<script>
-		var socket = io('http://10.3.50.20:1338');
+		var socket = io('http://10.3.50.20:1338/');
 		socket.on('msg1.msg.{{$wall->id}}:App\\Events\\NewMessageEvent', function (data)
 		{
 			if (data.message.question_id == null)
