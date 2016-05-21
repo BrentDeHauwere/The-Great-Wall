@@ -201,7 +201,6 @@ class SessionController extends Controller
 
 		$posts = $this->sortMessagesPollsChronologically($messages, $polls);
 
-
 		if (count($posts) == 0)
 		{
 			return View::make('session.show')
@@ -225,7 +224,6 @@ class SessionController extends Controller
 	 */
 	public function showMultiple(Request $request)
 	{
-
 		if(!$request->has('beheer') || empty($request->input('beheer'))){
 			return redirect()->back()->with('info','Please select atleast one wall.');
 		}
