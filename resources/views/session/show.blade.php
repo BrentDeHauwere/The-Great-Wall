@@ -6,7 +6,7 @@
 
 @section('header')
 <!--<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>-->
-<script src="https://localhost:1338/socket.io/socket.io.js"></script>
+<script src="http://localhost:1338/socket.io/socket.io.js"></script>
 @if(!empty($wall))
 	<script>
 		var socket = io('http://10.3.50.20:1338/');
