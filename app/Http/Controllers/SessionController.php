@@ -6,6 +6,7 @@ use App\User;
 use App\Wall;
 use Illuminate\Http\Request;
 
+use Capi\Clients\GuzzleClient;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
@@ -267,6 +268,7 @@ class SessionController extends Controller
 	public
 	function edit($id)
 	{
+
 		$wall = Wall::find($id);
 
 		// Required for datetime-local inputfield
@@ -395,5 +397,28 @@ class SessionController extends Controller
 		Session::flash('success', 'Successfully opened the session.');
 
 		return Redirect::to('session');
+	}
+
+	public static function updateSpeakers()
+	{
+		$client = new GuzzleClient();
+
+//		$lal = $client->get('crm', 'rolegroup-get');
+//
+//		dd($lal);
+
+
+		$res = $client->get('crm', 'person-get');
+
+		$speakers = array();
+		foreach($res['data'] as $user)
+		{
+			if(in_array('speaker',$user['roles']))
+			{
+				array_push($speakers, $user);
+			}
+		}
+
+		dd($speakers);
 	}
 }
