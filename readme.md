@@ -17,8 +17,8 @@ You can get this repo by either
 - Downloading this repository as a .zip file.
 - Cloning this repistory.
 
-Then run 'composer install' in the directory and set the correct values in the .env file.
-Finally, run 'php artisan serve'.
+Then run `composer install` in the directory and set the correct values in the .env file.
+Finally, run `php artisan serve`.
 
 # Dependencies
 - Redis Server
@@ -33,15 +33,16 @@ Finally, run 'php artisan serve'.
 
 We have included the option to tweet to walls with a defined hashtag. In order to run this service you'll have to add the following to your .env-file:
 
->TWITTER_CONSUMER_KEY=
->TWITTER_CONSUMER_SECRET=
->TWITTER_ACCESS_TOKEN=
->TWITTER_ACCESS_TOKEN_SECRET=
+-TWITTER_CONSUMER_KEY=
+-TWITTER_CONSUMER_SECRET=
+-TWITTER_ACCESS_TOKEN=
+-TWITTER_ACCESS_TOKEN_SECRET=
+
 You can obtain these keys by creating a Twitter app. See [Twitter Application Management](https://apps.twitter.com/)
 By nature of the Twitter Streaming API, you can only have ONE open connection to Twitter.
 
-After adding the keys, run 'php artisan queue:listen'. This process will listen to the jobs queue and process each job in the queue.
-Run 'php artisan connect_to_streaming_api' to connect to the streaming api (no kiddin'). When a tweet has been sent to us, we'll put it in the queue.
+After adding the keys, run `php artisan queue:listen`. This process will listen to the jobs queue and process each job in the queue.
+Run `php artisan connect_to_streaming_api` to connect to the streaming api (no kiddin'). When a tweet has been sent to us, we'll put it in the queue.
 
 By default, the streaming service listens to the user '@EhbTheGreatWall'. When a wall with a hastag is added, the search filter will automatically change to the hashtags!
 Just wait a couple of seconds before freaking out and mailing us that it doesn't work, mmkay? Mmkay.
