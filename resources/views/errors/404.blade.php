@@ -50,7 +50,7 @@
 				<div class="title">404 - Not Found</div>
 				<img id="arco" src="{{ asset('img/arco.png') }}" style="width: 25%; height: 25%;" />
 
-				<marquee class="title" scrolldelay="100" behaviour="alternate" direction="down">
+				<marquee class="title" scrolldelay="25" behaviour="alternate" scrollamount="20" direction="left">
 					Geen paniek, ik ben studentenvertegenwoordiger!
 				</marquee>
 			</div>
