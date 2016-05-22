@@ -3,7 +3,8 @@
 @section('header')
 	<link rel="stylesheet" type="text/css" href="/css/messagewall.css">
 
-	<script src="https://10.3.50.20:1338/socket.io/socket.io.js"></script>
+	<script src="http://10.3.50.20:1338/socket.io/socket.io.js"></script>
+	<script src="http://10.3.50.20/socket.io/socket.io.js"></script>
 	<script>
 		var socket = io('http://10.3.50.20:1338');
 
@@ -72,7 +73,7 @@
 			console.log("Moderator Poll Declined: " + data);
 		});
 		</script>
-		
+
 	<script>
 		$(document).ready(function ()
 		{

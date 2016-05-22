@@ -37,11 +37,11 @@
 						</div>
 						<div class="extra">
 							@if (!empty($wall->password))
-								<form action="{{ action('WallController@enterWallWithPassword') }}" method="post">
+								<form action="{{ action('WallController@enterWallWithPassword') }}" method="post" class="passwordForm">
 									<div class="ui action input right floated">
 										{{ csrf_field() }}
 										<input type="hidden" name="wall_id" value="{{$wall->id}}">
-										<input type="password" placeholder="Password" name="password" class="passwordField" required>
+										<input type="password" placeholder="Password" name="password" class="passwordField">
 										<button type="submit" class="ui blue right labeled icon button passwordButton">
 											<i class="lock icon"></i>
 											Enter
@@ -92,7 +92,15 @@
 	<script>
 		$(".passwordField").hide();
 
-		$(".passwordButton").mouseover(function() {
+		$(".passwordForm").submit(function(e){
+			var passwordField = $(this).find(".passwordField");
+			if (passwordField.val() === "" || passwordField.is(":hidden")){
+				e.preventDefault();
+				passwordField.focus();
+			}
+		});
+
+		$(".passwordButton").on('click', function(){
 			$(this).prev().fadeIn(500);
 		});
 	</script>

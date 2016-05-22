@@ -12,10 +12,13 @@ If you read and implement the provides steps and information in this file. Your 
 
 ## Installing
 
-You can get this repo by ether
+You can get this repo by either
 
 - Downloading this repository as a .zip file.
-- Unzip it locally and implement the gitlab-boilerplate to the root of your repository.
+- Cloning this repistory.
+
+Then run `composer install` in the directory and set the correct values in the .env file.
+Finally, run `php artisan serve`.
 
 # Dependencies
 - Redis Server
@@ -26,32 +29,24 @@ You can get this repo by ether
 - Node.js
 - Server needs to run command `node& socket.js` to run the node server, the socket.js file is found in the root directory of this project.
 
-# Getting Started
+## Running Twitter Service
 
-- [boilerplate](http://whatis.techtarget.com/definition/boilerplate) (template) files with resumed guidelines for root `README`.
+We have included the option to tweet to walls with a defined hashtag. In order to run this service you'll have to add the following to your .env-file:
 
-It also includes a basic. All templates are filled under `/template/` folder. This `README` itself is a fork of the `README` [template](template/README.md).
+- TWITTER_CONSUMER_KEY=
+- TWITTER_CONSUMER_SECRET=
+- TWITTER_ACCESS_TOKEN=
+- TWITTER_ACCESS_TOKEN_SECRET=
 
-## Usage
+You can obtain these keys by creating a Twitter app. See [Twitter Application Management](https://apps.twitter.com/)
+By nature of the Twitter Streaming API, you can only have ONE open connection to Twitter, otherwise you'll get a 420 error. /* Insert weed joke here */
 
-### Boilerplate
+After adding the keys, run `php artisan queue:listen`. This process will listen to the jobs queue and process each job in the queue.
 
-1. After unpacking the gitlab-boilerplate folder.
-2. Move all of the contents of the template folder to the root of your project.
-3. If there is already a 'README' in existance. Format it like the template this project provide.
-4. If all went well The `README` template as well as the other templates should now be in the the main directory of your project.
-5. Now edit the provided guidelines in the respective files. The parts of the 'README' where lines start with `> **[?]**''`
-6. Replace the ./project-logo.png file with the log of your project.
+Run `php artisan connect_to_streaming_api` to connect to the streaming api (no kidding?).
 
-  - This logo should be a .png file.
-  - With with of "192px" and height of "192px".
-  - With 72 x 72 PDI
-
-## Useful Resources
-
-### Boilerplate
-
-> This reposotory is a correct implementation of the template
+By default, the streaming service listens to the user '@EhbTheGreatWall' when no walls with hastags are present. When a wall with a hastag is added, the search filter will automatically change to the hashtags!
+Just wait a couple of seconds before freaking out and mailing us that it doesn't work, mmkay? Mmkay.
 
 #### Start
 
@@ -81,7 +76,7 @@ If you still want to keep it handwritten, to keep you (and your project) sane, I
 
 > `ISSUE_TEMPLATE` and `PULL_REQUEST_TEMPLATE` References There is no one provided since. Our source control does not need this feature.
 
-## Author
+## Authors
 
 - Brent De Hauwere
 - Eli Boey
