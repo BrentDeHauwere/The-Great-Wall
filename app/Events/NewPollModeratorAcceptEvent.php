@@ -6,10 +6,10 @@ use App\Message;
 
 use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use App\Poll;
 
-class NewPollModeratorAcceptEvent extends Event implements ShouldBroadcast
+class NewPollModeratorAcceptEvent extends Event implements ShouldBroadcastNow
 {
     use SerializesModels;
 

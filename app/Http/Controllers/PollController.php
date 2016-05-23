@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 use App\Events\NewPollEvent;
+use App\Events\NewPollChoiceEvent;
 
 use App\Poll;
 
@@ -47,7 +48,7 @@ class PollController extends Controller
         if ($request->has('moderator_id')) {
             $poll->moderator_id = $request->input('moderator_id');
         }
-        
+
         $banned = $poll->user()->first()->banned();
 
         if(!$banned)
@@ -76,6 +77,7 @@ class PollController extends Controller
                 $savedChoice = $pollChoice->save();
 
                 if ($savedChoice) {
+                    Event::fire(new NewPollChoiceEvent($pollChoice));
                     $succes = true;
                 } else {
                     $succes = false;
