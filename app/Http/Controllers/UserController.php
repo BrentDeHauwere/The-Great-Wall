@@ -38,48 +38,12 @@ class UserController extends Controller
         $email = $request->input('email');
         $password = $request->input('password');
 
-        SessionController::updateSpeakers();
+        //SessionController::updateSpeakers();
 
-        $client = new GuzzleClient();
-
-        if (Auth::attempt(['email' => $email, 'password' => $password])) {
+        if ($this->ldapAuth($email,$password)) {
             return redirect()->intended('/');
         } else {
-            try {
-                $res = $client->post('auth', 'login', [
-                    'username' => $email,
-                    'password' => $password,
-                ]);
-
-                $u = new User();
-                $u->name = $res['fname'] . ' ' . $res['lname'];
-                $u->password = bcrypt($password);
-
-                if (in_array('Speaker', $res['roles'])) {
-                    $u->role = 'Speaker';
-                } elseif (in_array('Messagewall', $res['roles'])) {
-                    $u->role = 'Moderator';
-                } else {
-                    $u->role = 'Visitor';
-                }
-                $u->email = $res['email'];
-
-                if(!$u->email || !$u->name || !$u->password || !$u->role)
-                {
-                    return redirect('login')->with('error', 'Wrong mail and/or password. Please try again.');
-                }
-
-                $u->save();
-
-                if (Auth::attempt(['email' => $email, 'password' => $password])) {
-                    return redirect()->intended('/');
-                } else {
-                    $u->delete();
-                    return redirect('login')->with('error', 'Wrong mail and/or password. Please try again.');
-                }
-            } catch (BadResponseException $e) {
-                return redirect('login')->with('error', 'Wrong mail and/or password. Please try again.');
-            }
+            return redirect('login')->with('error', 'Wrong mail and/or password. Please try again.');
         }
     }
 
@@ -155,5 +119,57 @@ class UserController extends Controller
         $polls = Poll::where('user_id', Auth::user()->id)->with('wall')->get();
 
         return view('user.posts')->with('messages', $messages)->with('polls', $polls);
+    }
+
+    /**
+     * Authenticates a user with ldap
+     * If the user is unknown to the messagewall it is saved in
+     * the great wall's database. A known user's information
+     * will be updated instead.
+     *
+     * @param $email
+     * @param $password
+     * @return boolean
+     */
+    private function ldapAuth($email, $password)
+    {
+        $client = new GuzzleClient();
+        try {
+            $res = $client->post('auth', 'login', [
+                'username' => $email,
+                'password' => $password,
+            ]);
+
+            if(Auth::attempt(['email' => $email, 'password' => $password]))
+            {
+                $u = Auth::user();
+            }
+            else
+            {
+                $u = new User();
+            }
+
+            $u->name = $res['fname'] . ' ' . $res['lname'];
+            $u->password = bcrypt($password);
+
+            if (in_array('Messagewall-Admin', $res['roles'])) {
+                $u->role = 'Moderator';
+            }
+            elseif (in_array('Speaker', $res['roles'])) {
+                $u->role = 'Speaker';
+            } else {
+                $u->role = 'Visitor';
+            }
+            $u->email = $res['email'];
+
+            if (!$u->email || !$u->name || !$u->password || !$u->role) {
+                return false;
+            }
+            $u->save();
+
+            return true;
+        } catch (BadResponseException $e) {
+            return false;
+        }
     }
 }
