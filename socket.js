@@ -1,14 +1,8 @@
-var express = require('express')
-var http = require('http');
-var app = express();
-var server = http.createServer(app);
-var io = require('socket.io').listen(server);
+var app = require('express')();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 var Redis = require('ioredis');
-var redis = new Redis(6380,'10.3.50.20');
-
-server.listen(1338,'0.0.0.0', function(){
-    console.log('Listening on Port 1338');
-});
+var redis = new Redis();
 
 redis.psubscribe('msg1.msg.*', function(err, count) {
     console.log('Redis: msg1.msg.* subscribed');
@@ -49,4 +43,8 @@ redis.on('pmessage', function(pattern,channel, message) {
     console.log('Message Received: ' + message + '\n Channel: ' + channel + '\n Pattern: ' + pattern);
     message = JSON.parse(message);
     io.emit(channel + ':' + message.event, message.data);
+});
+
+http.listen(1338, function(){
+    console.log('Listening on Port 1338');
 });

@@ -6,13 +6,15 @@ use App\Poll;
 
 use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
-class NewPollEvent extends Event implements ShouldBroadcast
+class NewPollEvent extends Event implements ShouldBroadcastNow
 {
     use SerializesModels;
 
     public $poll;
+    public $user;
+    public $wall;
     /**
      * Create a new event instance.
      *
@@ -21,6 +23,8 @@ class NewPollEvent extends Event implements ShouldBroadcast
     public function __construct(Poll $poll)
     {
         $this->poll = $poll;
+        $this->user = $poll->user;
+        $this->wall = $poll->wall;
     }
 
     /**
