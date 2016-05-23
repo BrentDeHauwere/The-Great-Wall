@@ -84,6 +84,8 @@ class SessionController extends Controller
 	 */
 	public function store(Request $request)
 	{
+		self::updateSpeakers();
+
 		// Server-side validation
 		$validator = Validator::make($request->all(), [
 			'name'       => 'required',
@@ -297,6 +299,8 @@ class SessionController extends Controller
 	public
 	function update(Request $request, $id)
 	{
+		self::updateSpeakers();
+		
 		// Server-side validation
 		$validator = Validator::make($request->all(), [
 			'name'       => 'required',
@@ -402,23 +406,24 @@ class SessionController extends Controller
 	public static function updateSpeakers()
 	{
 		$client = new GuzzleClient();
-
-//		$lal = $client->get('crm', 'rolegroup-get');
-//
-//		dd($lal);
-
-
 		$res = $client->get('crm', 'person-get');
 
-		$speakers = array();
 		foreach($res['data'] as $user)
 		{
 			if(in_array('speaker',$user['roles']))
 			{
-				array_push($speakers, $user);
+				$u = new User();
+				if(User::where('email', $user['email'])->first()) {
+					$u = User::where('email', $user['email'])->first();
+				}
+				$u->name = $user['fname'].' '.$user['lname'];
+				$u->role = 'Speaker';
+				$u->email = $user['email'];
+
+				if(!User::where('email', $user['email'])->first()) {
+					$u->save();
+				}
 			}
 		}
-
-		dd($speakers);
 	}
 }

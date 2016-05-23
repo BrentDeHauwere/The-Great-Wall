@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Capi\Clients\GuzzleClient;
+use GuzzleHttp\Exception\BadResponseException;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -39,23 +40,46 @@ class UserController extends Controller
 
         SessionController::updateSpeakers();
 
-        /*$client = new GuzzleClient();
-
-        $res = $client->post('auth', 'login', [
-            'username' => 'kamiel.klumpers',
-            'password' => 'SomeRandomPassword1',
-        ]);
-
-        dd($res);*/
-
+        $client = new GuzzleClient();
 
         if (Auth::attempt(['email' => $email, 'password' => $password])) {
-            // Authenticatie komt hier
-
-
             return redirect()->intended('/');
         } else {
-            return redirect('login')->with('error', 'Wrong mail and/or password. Please try again.');
+            try {
+                $res = $client->post('auth', 'login', [
+                    'username' => $email,
+                    'password' => $password,
+                ]);
+
+                $u = new User();
+                $u->name = $res['fname'] . ' ' . $res['lname'];
+                $u->password = bcrypt($password);
+
+                if (in_array('Speaker', $res['roles'])) {
+                    $u->role = 'Speaker';
+                } elseif (in_array('Messagewall', $res['roles'])) {
+                    $u->role = 'Moderator';
+                } else {
+                    $u->role = 'Visitor';
+                }
+                $u->email = $res['email'];
+
+                if(!$u->email || !$u->name || !$u->password || !$u->role)
+                {
+                    return redirect('login')->with('error', 'Wrong mail and/or password. Please try again.');
+                }
+
+                $u->save();
+
+                if (Auth::attempt(['email' => $email, 'password' => $password])) {
+                    return redirect()->intended('/');
+                } else {
+                    $u->delete();
+                    return redirect('login')->with('error', 'Wrong mail and/or password. Please try again.');
+                }
+            } catch (BadResponseException $e) {
+                return redirect('login')->with('error', 'Wrong mail and/or password. Please try again.');
+            }
         }
     }
 
