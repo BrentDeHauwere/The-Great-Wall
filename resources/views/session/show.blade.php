@@ -5,120 +5,146 @@
 @section('page','moderate')
 
 @section('header')
-<!--<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>-->
-<script src="http://localhost:1338/socket.io/socket.io.js"></script>
-<script src="http://localhost/socket.io/socket.io.js"></script>
+
+<script src="http://127.0.0.1:1338/socket.io/socket.io.js"></script>
 @if(!empty($wall))
 	<script>
-		var socket = io('http://10.3.50.20:1338/');
+		var socket = io('http://127.0.0.1:1338/');
 		socket.on('msg1.msg.{{$wall->id}}:App\\Events\\NewMessageEvent', function (data)
 		{
-			if (data.message.question_id == null)
+			if (data.question == null)
 			{
+				console.log(data.message);
 				var token = $('#token').val();
 				var e = '<div class="card">';
 				e += '<div class="content">';
-				e += '<img class="right floated mini ui image" src="http://semantic-ui.com/images/avatar/large/elliot.jpg">';
-				e += '<div class="header">' + data.message.user.name + '</div>';
-				e += '<div class="meta">' + data.message.wall.name + '</div>';
+				e += '<img class="right floated mini ui image" src="/user_images/'+data.user.id+'">';
+				e += '<div class="header">' + data.user.name + '</div>';
+				e += '<div class="meta"><i class="comment icon"></i>' + data.wall.name + '</div>';
 				e += '<div class="description">' + data.message.text + '</div>';
 				e += '</div>';
 				e += '<div class="extra content">';
 				e += '<div class="ui three buttons">';
-				e += '<button type="submit" class="ui basic green button form="M_' + data.message.id + '_A">Approve</button>';
-				e += '<button type="submit" class="ui basic red button" form="M_' + data.message.id + '_D">Decline</button>';
-				e += '<button class="ui basic grey button form="{{ "M_'data.message.id'_B" }}">Block</button>';
+				e += '<button type="submit" class="ui basic green button" form="M_'+data.message.id+'_A">Approve</button>';
+				e += '<button type="submit" class="ui basic red button" form="M_'+data.message.id+'_D">Decline</button>';
+				e += '<button type="submit" class="ui basic grey button" form="M_'+data.message.id+'_B">Block</button>';
 				e += '</div>';
-				e += '<form method="post" action="" id="M_' + data.message.id + '_A">';
+				e += '<form method="post" action="/message/accept" id="M_'+data.message.id+'_A">';
 				e += '<input type="hidden" name="_token" value="' + token + '">';
-				e += '<input type="hidden" name="message_id" value="' + data.message.id + '">';
-				e += '</form><form method="post" action="" id="{{ "M_'+data.message.id+'_D" }}">';
-				e += '<input type="hidden" name="_token" value="">';
-				e += '<input type="hidden" name="message_id" value="' + data.message.id + '">';
-				e += '</form><form method="get" action="" id="{{ "M_'+data.message.id+'_B" }}">';
-				e += '<input type="hidden" name="message_id" value="' + data.message.id + '">';
+				e += '<input type="hidden" name="message_id" value="'+data.message.id+'">';
+				e += '</form><form method="post" action="/message/decline" id="M_'+data.message.id+'_D">';
+				e += '<input type="hidden" name="_token" value="' + token + '">';
+				e += '<input type="hidden" name="message_id" value="'+data.message.id+'">';
+				e += '</form><form method="get" action="/blacklist/create" id="M_'+data.user.id+'_B">';
+				e += '<input type="hidden" name="_token" value="' + token + '">';
+				e += '<input type="hidden" name="message_id" value="'+data.message.id+'">';
 				e += '</form>';
 				e += '</div>';
 				e += '</div>';
-				$(e).prependTo("#holder").hide().fadeIn(1500);
+				$(e).prependTo("#holder").hide().fadeIn(2000);
 			}
-			else if (data.message.question_id != null)
+			else if (data.question != null)
 			{
+				console.log(data);
 				var token = $('#token').val();
 				var e = '<div class="card">';
 				e += '<div class="content">';
-				e += '<img class="right floated mini ui image" src="http://semantic-ui.com/images/avatar/large/elliot.jpg">';
-				e += '<div class="header">' + data.message.user.name + '</div>';
-				e += '<div class="meta">' + data.message.wall.name + '</div>';
+				e += '<img class="right floated mini ui image" src="/user_images/'+data.user.id+'">';
+				e += '<div class="header">' + data.user.name + '</div>';
+				e += '<div class="meta"><i class="comments icon"></i>' + data.wall.name + '</div>';
 				e += '<div class="description">' + data.message.text;
 				e += '<div class="ui divider"></div>';
 				e += '<div class="meta">Answer on message</div>';
-				e += data.message.question.text;
+				e += data.question.text;
 				e += '</div>';
 				e += '</div>';
 				e += '<div class="extra content">';
 				e += '<div class="ui three buttons">';
-				e += '<button type="submit" class="ui basic green button form="M_' + data.message.id + '_A">Approve</button>';
-				e += '<button type="submit" class="ui basic red button" form="M_' + data.message.id + '_D">Decline</button>';
-				e += '<button class="ui basic grey button form="{{ "M_'data.message.id'_B" }}">Block</button>';
+				e += '<button type="submit" class="ui basic green button" form="M_'+data.message.id+'_A">Approve</button>';
+				e += '<button type="submit" class="ui basic red button" form="M_'+data.message.id+'_D">Decline</button>';
+				e += '<button class="ui basic grey button" form="M_'+data.message.id+'_B">Block</button>';
 				e += '</div>';
-				e += '<form method="post" action="" id="M_' + data.message.id + '_A">';
+				e += '<form method="post" action="/message/accept" id="M_'+data.message.id+'_A">';
+				e += '<input type="hidden" name="_token" value="' + token + '">';
+				e += '<input type="hidden" name="message_id" value="'+data.message.id+'">';
+				e += '</form><form method="post" action="/message/decline" id="M_'+data.message.id+'_D">';
 				e += '<input type="hidden" name="_token" value="' + token + '">';
 				e += '<input type="hidden" name="message_id" value="' + data.message.id + '">';
-				e += '</form><form method="post" action="" id="{{ "M_'+data.message.id+'_D" }}">';
-				e += '<input type="hidden" name="_token" value="">';
-				e += '<input type="hidden" name="message_id" value="' + data.message.id + '">';
-				e += '</form><form method="get" action="" id="{{ "M_'+data.message.id+'_B" }}">';
-				e += '<input type="hidden" name="message_id" value="' + data.message.id + '">';
+				e += '</form><form method="get" action="/blacklist/create" id="M_'+data.message.id+'_B">';
+				e += '<input type="hidden" name="_token" value="' + token + '">';
+				e += '<input type="hidden" name="message_id" value="'+data.message.id+'">';
 				e += '</form>';
 				e += '</div>';
 				e += '</div>';
-				$(e).prependTo("#holder").hide().fadeIn(1500);
+				$(e).prependTo("#holder").hide().fadeIn(2000);
 			}
 		});
 		socket.on('msg1.polls.{{$wall->id}}:App\\Events\\NewPollEvent', function (data)
 		{
+			console.log(data);
 			var token = $('#token').val();
 			var e = '<div class="card">';
 			e += '<div class="content">';
-			e += '<img class="right floated mini ui image" src="http://semantic-ui.com/images/avatar/large/elliot.jpg">';
-			e += '<div class="header">'+ data.message.user.name +'</div>';
-			e += '<div class="meta">'+ data.message.wall.name+'</div>';
-			e += '<div class="description">'+data.message.text;
+			e += '<img class="right floated mini ui image" src="/user_images/'+data.user.id+'">';
+			e += '<div class="header">'+ data.user.name +'</div>';
+			e += '<div class="meta"><i class="tasks icon"></i>'+ data.wall.name+'</div>';
+			e += '<div class="description">'+data.poll.question;
+			e += '</div></div>';
+			e += '<div class="extra content">';
+			e += '<div class="ui three buttons">';
+			e += '<button type="submit" class="ui basic green button" form="P_'+ data.poll.id +'_A">Approve</button>';
+			e += '<button type="submit" class="ui basic red button" form="P_'+data.poll.id+'_D">Decline</button>';
+			e += '<button class="ui basic grey button" form="P_'+data.poll.id+'_B">Block</button>';
+			e += '</div>';
+			e += '<form method="post" action="/poll/accept" id="P_'+data.poll.id+'_A">';
+			e += '<input type="hidden" name="_token" value="'+token+'">';
+			e += '<input type="hidden" name="message_id" value="'+data.poll.id+'">';
+			e += '</form><form method="post" action="/poll/decline" id="P_'+data.poll.id+'_D">';
+			e += '<input type="hidden" name="_token" value="'+token+'">';
+			e += '<input type="hidden" name="message_id" value="'+data.poll.id+'">';
+			e += '</form><form method="get" action="/blacklist/create" id="P_'+data.poll.id+'_B">';
+			e += '<input type="hidden" name="_token" value="'+token+'">';
+			e += '<input type="hidden" name="message_id" value="'+data.poll.id+'">';
+			e += '</form>';
+			e += '</div>';
+			e += '</div>';
+			$(e).prependTo("#holder").hide().fadeIn(2000);
+		});
+		socket.on('msg1.choice.polls.{{$wall->id}}:App\\Events\\NewPollChoiceEvent', function (data)
+		{
+			console.log(data);
+			var token = $('#token').val();
+			var e = '<div class="card">';
+			e += '<div class="content">';
+			e += '<img class="right floated mini ui image" src="/user_images/'+data.user.id+'">';
+			e += '<div class="header">' + data.user.name + '</div>';
+			e += '<div class="meta"><i class="tasks icon"></i>'+data.wall.name+'</div>';
+			e += '<div class="description">'+data.poll_choice.text;
 			e += '<div class="ui divider"></div>';
-			e += '<div class="meta">Answer on message</div>';
-			e += data.message.question.text;
+			e += '<div class="meta">Answer on poll</div>';
+			e += data.poll.question;
 			e += '</div>';
 			e += '</div>';
 			e += '<div class="extra content">';
 			e += '<div class="ui three buttons">';
-			e += '<button type="submit" class="ui basic green button form="M_'+ data.message.id +'_A">Approve</button>';
-			e += '<button type="submit" class="ui basic red button" form="M_'+data.message.id+'_D">Decline</button>';
-			e += '<button class="ui basic grey button form="{{ "M_'data.message.id'_B" }}">Block</button>';
+			e += '<button type="submit" class="ui basic green button" form="PC_'+data.poll_choice.id+'_A">Approve</button>';
+			e += '<button type="submit" class="ui basic red button" form="PC_'+data.poll_choice.id+'_D">Decline</button>';
+			e += '<button class="ui basic grey button" form="PC_'+data.poll_choice.id+'_B">Block</button>';
 			e += '</div>';
-			e += '<form method="post" action="" id="M_'+data.message.id+'_A">';
-			e += '<input type="hidden" name="_token" value="'+token+'">';
-			e += '<input type="hidden" name="message_id" value="'+data.message.id+'">';
-			e += '</form><form method="post" action="" id="{{ "M_'+data.message.id+'_D" }}">';
-			e += '<input type="hidden" name="_token" value="">';
-			e += '<input type="hidden" name="message_id" value="'+data.message.id+'">';
-			e += '</form><form method="get" action="" id="{{ "M_'+data.message.id+'_B" }}">';
-			e += '<input type="hidden" name="message_id" value="'+data.message.id+'">';
+			e += '<form method="post" action="/message/accept" id="PC_'+data.poll_choice.id+'_A">';
+			e += '<input type="hidden" name="_token" value="' + token + '">';
+			e += '<input type="hidden" name="message_id" value="'+data.poll_choice.id+'">';
+			e += '</form><form method="post" action="/message/decline" id="PC_'+data.poll_choice.id+'_D">';
+			e += '<input type="hidden" name="_token" value="' + token + '">';
+			e += '<input type="hidden" name="message_id" value="' + data.poll_choice.id + '">';
+			e += '</form><form method="get" action="/blacklist/create" id="PC_'+data.poll_choice.id+'_B">';
+			e += '<input type="hidden" name="_token" value="' + token + '">';
+			e += '<input type="hidden" name="message_id" value="'+data.poll_choice.id+'">';
 			e += '</form>';
 			e += '</div>';
 			e += '</div>';
-			$(e).prependTo("#holder").hide().fadeIn(1500);
+			$(e).prependTo("#holder").hide().fadeIn(2000);
 		});
-	socket.on('msg1.polls.{{$wall->id}}:App\\Events\\NewPollEvent', function (data)
-	{
-		var e = '<div>'+ +'</div>';
-		$("#holder").append(e);
-	});
-	socket.on('msg1.choice.polls.{{$wall->id}}:App\\Events\\NewPollChoiceEvent', function (data)
-	{
-		var e = '<div>'+ +'</div>';
-		$("#holder").append(e);
-	});
 </script>
 @else
 	@foreach($walls as $wall)
@@ -126,18 +152,138 @@
 		var socket = io('http://10.3.50.20:1338');
 		socket.on('msg1.msg.{{$wall->id}}:App\\Events\\NewMessageEvent', function (data)
 		{
-			var e = '<div>'+ +'</div>';
-			$(e).prependTo("#holder").hide().fadeIn(1500);
+			if (data.question == null)
+			{
+				console.log(data.message);
+				var token = $('#token').val();
+				var e = '<div class="card">';
+				e += '<div class="content">';
+				e += '<img class="right floated mini ui image" src="/user_images/'+data.user.id+'">';
+				e += '<div class="header">' + data.user.name + '</div>';
+				e += '<div class="meta"><i class="comment icon"></i>' + data.wall.name + '</div>';
+				e += '<div class="description">' + data.message.text + '</div>';
+				e += '</div>';
+				e += '<div class="extra content">';
+				e += '<div class="ui three buttons">';
+				e += '<button type="submit" class="ui basic green button" form="M_'+data.message.id+'_A">Approve</button>';
+				e += '<button type="submit" class="ui basic red button" form="M_'+data.message.id+'_D">Decline</button>';
+				e += '<button type="submit" class="ui basic grey button" form="M_'+data.message.id+'_B">Block</button>';
+				e += '</div>';
+				e += '<form method="post" action="/message/accept" id="M_'+data.message.id+'_A">';
+				e += '<input type="hidden" name="_token" value="' + token + '">';
+				e += '<input type="hidden" name="message_id" value="'+data.message.id+'">';
+				e += '</form><form method="post" action="/message/decline" id="M_'+data.message.id+'_D">';
+				e += '<input type="hidden" name="_token" value="' + token + '">';
+				e += '<input type="hidden" name="message_id" value="'+data.message.id+'">';
+				e += '</form><form method="get" action="/blacklist/create" id="M_'+data.user.id+'_B">';
+				e += '<input type="hidden" name="_token" value="' + token + '">';
+				e += '<input type="hidden" name="message_id" value="'+data.message.id+'">';
+				e += '</form>';
+				e += '</div>';
+				e += '</div>';
+				$(e).prependTo("#holder").hide().fadeIn(2000);
+			}
+			else if (data.question != null)
+			{
+				console.log(data);
+				var token = $('#token').val();
+				var e = '<div class="card">';
+				e += '<div class="content">';
+				e += '<img class="right floated mini ui image" src="/user_images/'+data.user.id+'">';
+				e += '<div class="header">' + data.user.name + '</div>';
+				e += '<div class="meta"><i class="comments icon"></i>' + data.wall.name + '</div>';
+				e += '<div class="description">' + data.message.text;
+				e += '<div class="ui divider"></div>';
+				e += '<div class="meta">Answer on message</div>';
+				e += data.question.text;
+				e += '</div>';
+				e += '</div>';
+				e += '<div class="extra content">';
+				e += '<div class="ui three buttons">';
+				e += '<button type="submit" class="ui basic green button" form="M_'+data.message.id+'_A">Approve</button>';
+				e += '<button type="submit" class="ui basic red button" form="M_'+data.message.id+'_D">Decline</button>';
+				e += '<button class="ui basic grey button" form="M_'+data.message.id+'_B">Block</button>';
+				e += '</div>';
+				e += '<form method="post" action="/message/accept" id="M_'+data.message.id+'_A">';
+				e += '<input type="hidden" name="_token" value="' + token + '">';
+				e += '<input type="hidden" name="message_id" value="'+data.message.id+'">';
+				e += '</form><form method="post" action="/message/decline" id="M_'+data.message.id+'_D">';
+				e += '<input type="hidden" name="_token" value="' + token + '">';
+				e += '<input type="hidden" name="message_id" value="' + data.message.id + '">';
+				e += '</form><form method="get" action="/blacklist/create" id="M_'+data.message.id+'_B">';
+				e += '<input type="hidden" name="_token" value="' + token + '">';
+				e += '<input type="hidden" name="message_id" value="'+data.message.id+'">';
+				e += '</form>';
+				e += '</div>';
+				e += '</div>';
+				$(e).prependTo("#holder").hide().fadeIn(2000);
+			}
 		});
 		socket.on('msg1.polls.{{$wall->id}}:App\\Events\\NewPollEvent', function (data)
 		{
-			var e = '<div>'+ +'</div>';
-			$(e).prependTo("#holder").hide().fadeIn(1500);
+			console.log(data);
+			var token = $('#token').val();
+			var e = '<div class="card">';
+			e += '<div class="content">';
+			e += '<img class="right floated mini ui image" src="/user_images/'+data.user.id+'">';
+			e += '<div class="header">'+ data.user.name +'</div>';
+			e += '<div class="meta"><i class="tasks icon"></i>'+ data.wall.name+'</div>';
+			e += '<div class="description">'+data.poll.question;
+			e += '</div></div>';
+			e += '<div class="extra content">';
+			e += '<div class="ui three buttons">';
+			e += '<button type="submit" class="ui basic green button" form="P_'+ data.poll.id +'_A">Approve</button>';
+			e += '<button type="submit" class="ui basic red button" form="P_'+data.poll.id+'_D">Decline</button>';
+			e += '<button class="ui basic grey button" form="P_'+data.poll.id+'_B">Block</button>';
+			e += '</div>';
+			e += '<form method="post" action="/poll/accept" id="P_'+data.poll.id+'_A">';
+			e += '<input type="hidden" name="_token" value="'+token+'">';
+			e += '<input type="hidden" name="message_id" value="'+data.poll.id+'">';
+			e += '</form><form method="post" action="/poll/decline" id="P_'+data.poll.id+'_D">';
+			e += '<input type="hidden" name="_token" value="'+token+'">';
+			e += '<input type="hidden" name="message_id" value="'+data.poll.id+'">';
+			e += '</form><form method="get" action="/blacklist/create" id="P_'+data.poll.id+'_B">';
+			e += '<input type="hidden" name="_token" value="'+token+'">';
+			e += '<input type="hidden" name="message_id" value="'+data.poll.id+'">';
+			e += '</form>';
+			e += '</div>';
+			e += '</div>';
+			$(e).prependTo("#holder").hide().fadeIn(2000);
 		});
 		socket.on('msg1.choice.polls.{{$wall->id}}:App\\Events\\NewPollChoiceEvent', function (data)
 		{
-			var e = '<div>' + +'</div>';
-			$(e).prependTo("#holder").hide().fadeIn(1500);
+			console.log(data);
+			var token = $('#token').val();
+			var e = '<div class="card">';
+			e += '<div class="content">';
+			e += '<img class="right floated mini ui image" src="/user_images/'+data.user.id+'">';
+			e += '<div class="header">' + data.user.name + '</div>';
+			e += '<div class="meta"><i class="tasks icon"></i>'+data.wall.name+'</div>';
+			e += '<div class="description">'+data.poll_choice.text;
+			e += '<div class="ui divider"></div>';
+			e += '<div class="meta">Answer on poll</div>';
+			e += data.poll.question;
+			e += '</div>';
+			e += '</div>';
+			e += '<div class="extra content">';
+			e += '<div class="ui three buttons">';
+			e += '<button type="submit" class="ui basic green button" form="PC_'+data.poll_choice.id+'_A">Approve</button>';
+			e += '<button type="submit" class="ui basic red button" form="PC_'+data.poll_choice.id+'_D">Decline</button>';
+			e += '<button class="ui basic grey button" form="PC_'+data.poll_choice.id+'_B">Block</button>';
+			e += '</div>';
+			e += '<form method="post" action="/message/accept" id="PC_'+data.poll_choice.id+'_A">';
+			e += '<input type="hidden" name="_token" value="' + token + '">';
+			e += '<input type="hidden" name="message_id" value="'+data.poll_choice.id+'">';
+			e += '</form><form method="post" action="/message/decline" id="PC_'+data.poll_choice.id+'_D">';
+			e += '<input type="hidden" name="_token" value="' + token + '">';
+			e += '<input type="hidden" name="message_id" value="' + data.poll_choice.id + '">';
+			e += '</form><form method="get" action="/blacklist/create" id="PC_'+data.poll_choice.id+'_B">';
+			e += '<input type="hidden" name="_token" value="' + token + '">';
+			e += '<input type="hidden" name="message_id" value="'+data.poll_choice.id+'">';
+			e += '</form>';
+			e += '</div>';
+			e += '</div>';
+			$(e).prependTo("#holder").hide().fadeIn(2000);
 		});
 	</script>
 	@endforeach
@@ -146,6 +292,7 @@
 @stop
 
 @section('content')
+	<input type="hidden" id="token" value="{{ csrf_token() }}" />
 	<script>
 		$(document).ready(function ()
 		{
@@ -167,7 +314,6 @@
 			});
 		});
 	</script>
-	<input type=hidden id="token" value="{{ csrf_token() }}" />
 	<div class="body_customized">
 		@if(isset($wall))
 			<h1>Session: {{ $wall->name }}</h1>

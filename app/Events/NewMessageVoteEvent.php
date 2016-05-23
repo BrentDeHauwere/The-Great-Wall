@@ -7,9 +7,9 @@ use App\Message;
 
 use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
-class NewMessageVoteEvent extends Event implements ShouldBroadcast
+class NewMessageVoteEvent extends Event implements ShouldBroadcastNow
 {
     use SerializesModels;
 

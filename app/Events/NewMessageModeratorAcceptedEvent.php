@@ -6,9 +6,9 @@ use App\Message;
 
 use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
-class NewMessageModeratorAcceptedEvent extends Event implements ShouldBroadcast
+class NewMessageModeratorAcceptedEvent extends Event implements ShouldBroadcastNow
 {
     use SerializesModels;
     public $message;

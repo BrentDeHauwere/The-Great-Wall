@@ -4,10 +4,10 @@ namespace App\Events;
 
 use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use App\Poll;
 
-class NewPollModeratorDeclineEvent extends Event implements ShouldBroadcast
+class NewPollModeratorDeclineEvent extends Event implements ShouldBroadcastNow
 {
     use SerializesModels;
 

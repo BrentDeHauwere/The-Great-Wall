@@ -5,9 +5,9 @@ namespace App\Events;
 use App\Events\Event;
 use App\PollChoice;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
-class NewPollChoiceModeratorAcceptEvent extends Event implements ShouldBroadcast
+class NewPollChoiceModeratorAcceptEvent extends Event implements ShouldBroadcastNow
 {
     use SerializesModels;
     public $pollchoice;

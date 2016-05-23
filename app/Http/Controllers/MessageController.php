@@ -67,7 +67,8 @@ class MessageController extends Controller
 			/*$client = new \Capi\Clients\GuzzleClient();
 			$response = $client->post('broadcast', 'msg1.msg',['message' => $message]);*/
 			//dd($message);
-			Event::fire(new NewMessageEvent($message));
+			$eventMsg = Message::with('user','wall','question')->find($message->id);
+		 	Event::fire(new NewMessageEvent($eventMsg));
 			return redirect()->back()->with('success', 'Message saved successfully.');
 		}
 		else
@@ -111,7 +112,7 @@ class MessageController extends Controller
 			if($message->moderation_level != 0){
 				$message->moderation_level = 0;
 			}
-			
+
 			$message->moderator_id = $userid;
 			$saved = $message->save();
 			if ($saved)
