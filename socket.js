@@ -45,6 +45,6 @@ redis.on('pmessage', function(pattern,channel, message) {
     io.emit(channel + ':' + message.event, message.data);
 });
 
-http.listen(1338, function(){
+http.listen(1338,'0.0.0.0', function(){
     console.log('Listening on Port 1338');
 });
