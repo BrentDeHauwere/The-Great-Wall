@@ -2,7 +2,7 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var Redis = require('ioredis');
-var redis = new Redis();
+var redis = new Redis(6380,'10.3.50.20');
 
 redis.psubscribe('msg1.msg.*', function(err, count) {
     console.log('Redis: msg1.msg.* subscribed');
