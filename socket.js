@@ -4,6 +4,10 @@ var io = require('socket.io')(http);
 var Redis = require('ioredis');
 var redis = new Redis(6380,'10.3.50.20');
 
+http.listen(1338,"0.0.0.0", function(){
+    console.log('Listening on Port 0.0.0.0:1338');
+});
+
 redis.psubscribe('msg1.msg.*', function(err, count) {
     console.log('Redis: msg1.msg.* subscribed');
     console.log('Error:' + err);
@@ -43,8 +47,4 @@ redis.on('pmessage', function(pattern,channel, message) {
     console.log('Message Received: ' + message + '\n Channel: ' + channel + '\n Pattern: ' + pattern);
     message = JSON.parse(message);
     io.emit(channel + ':' + message.event, message.data);
-});
-
-http.listen(1338,'0.0.0.0', function(){
-    console.log('Listening on Port 1338');
 });
