@@ -379,7 +379,7 @@ class SessionController extends Controller
             }
 
             foreach ($res['data'] as $user) {
-                if (in_array('speaker', $user['roles'])) {
+                if (in_array('spreker', $user['roles'])) {
                     $u = new User();
                     if (User::where('email', $user['email'])->first()) {
                         $u = User::where('email', $user['email'])->first();
