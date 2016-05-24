@@ -6,7 +6,7 @@
 
 @section('header')
 
-<script src="http://127.0.0.1:1338/socket.io/socket.io.js"></script>
+<script src="http://messagewall1.ehackb.be:1338/socket.io/socket.io.js"></script>
 @if(!empty($wall))
 	<script>
 		var socket = io('messagewall1.ehackb.be:1338');
