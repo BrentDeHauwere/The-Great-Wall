@@ -243,6 +243,7 @@
 				</form>
 			</div>
 		</div>
+		<br/>
 		<div id="wallholder">
 			@include("/wall/posts", array("posts" => $posts))
 		</div>
