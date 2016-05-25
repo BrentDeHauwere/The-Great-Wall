@@ -4,7 +4,8 @@
             <div class="ui raised segment">
                 <div class="comment">
                     <a class="avatar">
-                        <img src="{{ route('user_images', ['filename' => Auth::user()->id]) }}" class="ui mini circular image">
+                        <img src="{{ route('user_images', ['filename' => Auth::user()->id]) }}"
+                             class="ui mini circular image">
                     </a>
                     <div class="content">
                         <a class="author">
@@ -78,9 +79,11 @@
                                                         <i class="star icon blue"></i>
                                                     </button>
                                                     @if($answer->count!=1)
-                                                          <span id="favholder{{$answer->id}}">{{$answer->count}} Faves</span>
+                                                        <span id="favholder{{$answer->id}}">{{$answer->count}}
+                                                            Faves</span>
                                                     @else
-                                                          <span id="favholder{{$answer->id}}">{{$answer->count}} Fave</span>
+                                                        <span id="favholder{{$answer->id}}">{{$answer->count}}
+                                                            Fave</span>
                                                     @endif
                                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                     <input type="hidden" name="message_id" value="{{$answer->id}}">
@@ -92,9 +95,11 @@
                                                         <i class="star icon grey"></i>
                                                     </button>
                                                     @if($answer->count!=1)
-                                                        <span id="favholder{{$answer->id}}">{{$answer->count}} Faves</span>
+                                                        <span id="favholder{{$answer->id}}">{{$answer->count}}
+                                                            Faves</span>
                                                     @else
-                                                        <span id="favholder{{$answer->id}}">{{$answer->count}} Fave</span>
+                                                        <span id="favholder{{$answer->id}}">{{$answer->count}}
+                                                            Fave</span>
                                                     @endif
                                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                     <input type="hidden" name="message_id" value="{{$answer->id}}">
@@ -148,7 +153,8 @@
             <div class="ui raised segment">
                 <div class="comment">
                     <a class="avatar">
-                        <img src="{{ route('user_images', ['filename' => Auth::user()->id]) }}" class="ui mini circular image">
+                        <img src="{{ route('user_images', ['filename' => Auth::user()->id]) }}"
+                             class="ui mini circular image">
                     </a>
                     <div class="content">
                         <a class="author">Elliot Fu</a>
@@ -161,7 +167,7 @@
                             <p>{{$post[1]->question}}</p>
                         </div>
                         <div id="choicesholder{{$post[1]->id}}"
-                        class="actions group">
+                             class="actions group">
 
                             <?php
                             $total = 0;
@@ -188,27 +194,39 @@
                             <?php $counter = 0 ?>
                             @foreach($post[1]->choices->sortByDesc('count') as $choice)
                                 @if(Auth::user()->banned())
-
+                                    <div id="choiceholder{{$choice->id}}"
+                                         class="ui indicating progress success progess_jquery"
+                                         data-percent={{$percArr[$counter]}}>
+                                        <button  class="choiceButton ui disabled icon button">
+                                            <i class="ban icon"></i>
+                                        </button>
+                                        <div class="bar">
+                                            <div class="progress"></div>
+                                        </div>
+                                        <div class="label">{{$choice->text}}</div>
+                                    </div>
                                 @else
                                     @if(Auth::user()->pollVotes()->where('poll_choice_id', $choice->id)->first())
-                                            <form method="POST" action="/votepoll">
-                                                <div id="choiceholder{{$choice->id}}" class="ui indicating progress success progess_jquery"
-                                                     data-percent={{$percArr[$counter]}}>
-                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                    <input type="hidden" name="poll_choice_id" value={{$choice->id}}>
-                                                    <input type="hidden" name="user_id" value={{Auth::user()->id}}>
-                                                    <button type="submit" class="choiceButton ui icon button">
-                                                        <i class="check circle outline icon"></i>
-                                                    </button>
-                                                    <div class="bar">
-                                                        <div class="progress"></div>
-                                                    </div>
-                                                    <div class="label">{{$choice->text}}</div>
+                                        <form method="POST" action="/votepoll">
+                                            <div id="choiceholder{{$choice->id}}"
+                                                 class="ui indicating progress success progess_jquery"
+                                                 data-percent={{$percArr[$counter]}}>
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                <input type="hidden" name="poll_choice_id" value={{$choice->id}}>
+                                                <input type="hidden" name="user_id" value={{Auth::user()->id}}>
+                                                <button type="submit" class="choiceButton ui icon button">
+                                                    <i class="check circle outline icon"></i>
+                                                </button>
+                                                <div class="bar">
+                                                    <div class="progress"></div>
                                                 </div>
-                                            </form>
+                                                <div class="label">{{$choice->text}}</div>
+                                            </div>
+                                        </form>
                                     @else
                                         <form method="POST" action="/votepoll">
-                                            <div id="choiceholder{{$choice->id}}" class="ui indicating progress success progess_jquery"
+                                            <div id="choiceholder{{$choice->id}}"
+                                                 class="ui indicating progress success progess_jquery"
                                                  data-percent={{$percArr[$counter]}}>
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                 <input type="hidden" name="poll_choice_id" value={{$choice->id}}>
