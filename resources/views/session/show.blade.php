@@ -15,6 +15,7 @@
 		{
 			if (data.question == null)
 			{
+
 				console.log(data.message);
 				var token = $('#token').val();
 				var e = '<div class="card">';

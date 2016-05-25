@@ -2,25 +2,94 @@
 
 @section('header')
 	<link rel="stylesheet" type="text/css" href="/css/messagewall.css">
-
+	<script src="/js/moment.min.js"></script>
+	<script src="/js/moment-timezone.min.js"></script>
 	<script src="http://10.3.50.20:1338/socket.io/socket.io.js"></script>
 	<script>
 		var socket = io('http://10.3.50.20:1338');
-
 		socket.on('msg1.msg.{{$wall->id}}:App\\Events\\NewMessageEvent', function (data)
 		{
-			console.log(data);
-			console.log("Message: " + data);
-			if (data.message.question_id == null)
+			var date = moment(data.message.created_at + '+0000').fromNow();
+			if (data.question == null)
 			{
-				var iets = "text:" + data.message.text + ".";
-				console.log(iets);
+
+				console.log('Message: ');
+				console.log(data);
+				var e = '<div id="messageholder'+data.message.id+'"class="ui comments">';
+				e += '<div class="ui raised segment">';
+				e += '<div class="comment">';
+				e += '<a class="avatar">';
+				e += '<img src="/user_images/'+data.user.id+'" class="ui mini circular image">';
+				e += '</a>';
+				e += '<div class="content">';
+				if(data.message.anonymous == 0){
+						e += '<a class="author">'+data.user.name+'</a>';
+				}else{
+						e += '<a class="author">Anoniem</a>';
+				}
+				e += '<div class="metadata">';
+				e += '<span class="date">'+date+'</span>';
+				e += '<div class="rating">';
+				e += '<i class="star icon"></i>';
+ 				e += data.message.count;
+				e += '</div>';//rating
+				e += '</div>';//metadata
+				e += '<div class="text">';
+				e += '<p>'+data.message.text+'</p>';
+				e += '</div>';//text
+				e += '</div>';//content
+				e += '<div id="commentsholder'+data.message.id+' "class="comments">';
+				e += '</div>';//comments
+				e += '</div>';//comment
+				e += '<form class="ui reply form">';
+				e += '<div class="field">';
+				e += '<div class="ui action input">';
+				e += '<div class="inline field" style="margin-bottom:7px;margin-top:7px;margin-right:14px;">';
+				e += '<div class="ui input checkbox">';
+				e += '<input type="hidden" name="anonymous value="0">';
+				e += '<input type="checkbox" name="anonymous" value="1" tabindex="0">';
+				e += '<label>Anonymous</label>';
+				e += '</div>';//checkbox
+				e += '</div>';//inlinefield
+				e += '<input type="text">';
+				e += '<button class="ui blue right labeled icon button">';
+				e += '<i class="edit icon"></i>';
+				e += 'Add Reply';
+				e += '</button>';
+				e += '</div>';//field;
+				e += '</div>';//actioninput
+				e += '</form>';
+				e += '</div>';//raisedsegment
+				e += '</div>';//comments
+				$(e).prependTo("#wallholder").hide().fadeIn(1500);
 			}
-			else if (data.message.question_id != null)
+			else if (data.question != null)
 			{
-				console.log(data.message.text);
-				console.log($("#answers" + data.message.question_id));
-				$("#answers" + data.message.question_id).after("<li>" + data.message.text + "</li>");
+				console.log('Answer: ');
+				console.log(data);
+				var e = '<div id="messageholder'+data.message.id+'" class="comment">';
+				e += '<a class="avatar">';
+				e += '<img src="/user_images/'+data.user.id+'" class="ui mini circular image">';
+				e += '</a>';
+				e += '<div class="content">';
+				if(data.message.anonymous == 0){
+						e += '<a class="author">'+data.user.name+'</a>';
+				}else{
+						e += '<a class="author">Anoniem</a>';
+				}
+				e += '<div class="metadata">';
+				e += '<span class="date">'+date+'</span>';
+				e += '<div class="rating">';
+				e += '<i class="star icon"></i>';
+				e += data.message.count + ' Faves';
+				e += '</div>';//rating
+				e += '</div>';//metadata
+				e += '<div class="text">';
+				e += '<p>'+data.message.text+'</p>';
+				e += '</div>';//text
+				e += '</div>';//content
+				e += '</div>';//comment
+				$(e).appendTo("#commentsholder"+data.question.id).hide().fadeIn(1500);
 			}
 		});
 		socket.on('msg1.vote.msg.{{$wall->id}}:App\\Events\\NewMessageVoteEvent', function (data)
@@ -174,9 +243,9 @@
 				</form>
 			</div>
 		</div>
-
-		@include("/wall/posts", array("posts" => $posts))
-
+		<div id="wallholder">
+			@include("/wall/posts", array("posts" => $posts))
+		</div>
 		<div id="append"></div>
 	</div>
 @stop

@@ -1,6 +1,6 @@
 @foreach($posts as $post)
 	@if($post[0]=='m' && empty($post[1]->question_id))
-		<div class="ui comments">
+		<div id="messageholder{{$post[1]->id}}" class="ui comments">
 			<div class="ui raised segment">
 				<div class="comment">
 					<a class="avatar">
@@ -18,7 +18,7 @@
 							<span class="date">{{\App\Http\Controllers\WallController::humanTimeDifference($post[1]->created_at)}}</span>
 							<div class="rating">
 
-								@if(Auth::user()->messageVotes()->with('message_id', $post[1]->id)->first()||Auth::user()!=$post[1]->user()->first())
+								@if(Auth::user()->messageVotes()->where('message_id', $post[1]->id)->first()||Auth::user()!=$post[1]->user()->first())
 									<i class="star icon red"></i>
 								@else
 									<form method="POST" action="/votemessage">
@@ -37,9 +37,9 @@
 						</div>
 					</div>
 					{{-- Answers on message --}}
-					<div class="comments">
+					<div id="commentsholder{{$post[1]->id}}" class="comments">
 						@foreach($post[1]->answers->where('moderation_level',0) as $answer)
-							<div class="comment">
+							<div id="messageholder{{$answer->id}}" class="comment">
 								<a class="avatar">
 									<img src="{{ route('user_images', ['filename' => $wall->id]) }}"
 										 class="ui mini circular image">
@@ -57,7 +57,7 @@
 										<div class="rating blue">
 											<!-- KAMIEL TO DO: blauw als het bijvoorbeeld is gefavorite, anders gewoon normaal grijs, zet cursor dan nog op zo clickable -->
 
-											@if(!Auth::user()->messageVotes()->with('message_id', $answer->id)->get()->isEmpty())
+											@if(!Auth::user()->messageVotes()->where('message_id', $answer->id)->get()->isEmpty())
 												<i class="star icon blue"></i>{{$answer->count}} Faves
 											@elseif(Auth::user()!=$answer->user()->first())
 												<form method="POST" action="/votemessage">
