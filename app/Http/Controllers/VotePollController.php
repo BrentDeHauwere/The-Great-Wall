@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Event;
 use App\Wall;
 use Illuminate\Http\Request;
@@ -87,7 +88,7 @@ class VotePollController extends Controller
                 $saved = $poll_vote->save();
             }
         }
-        
+
         if ($saved) {
             $pollchoice = PollChoice::where('id', $poll_vote->poll_choice_id)->first();
 
@@ -97,7 +98,26 @@ class VotePollController extends Controller
             if ($savedChoice) {
                 /*$client = new \Capi\Clients\GuzzleClient();
                 $response = $client->post('broadcast', 'msg1.polls.vote',['pollvote' => $poll_vote]);*/
-                //Event::fire(new NewPollVoteEvent($poll_vote));
+
+
+                $choices = PollChoice::where('poll_id',$pollchoice->poll->id)->get();
+                $count = 0;
+                foreach($choices as $choice){
+                  $count += $choice->count;
+                }
+                foreach($choices as $choice){
+                    $c = 0;
+                    if($count != 0){
+                      $c = $choice->count/$count;
+                    }
+                    if(PollVote::where('user_id',Auth::user())->where('poll_choice_id',$choice->id)->first()){
+                      Event::fire(new NewPollVoteEvent($choice,round($c*100),true));
+                    }
+                    else{
+                      Event::fire(new NewPollVoteEvent($choice,round($c*100),false));
+                    }
+
+                }
                 return redirect()->back()->with('success', 'Poll vote success.');
             } else {
                 $poll_vote->delete();

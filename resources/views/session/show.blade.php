@@ -27,8 +27,14 @@
 				e += '</div>';
 				e += '<div class="extra content">';
 				e += '<div class="ui three buttons">';
-				e += '<button type="submit" class="ui basic green button" form="M_'+data.message.id+'_A">Approve</button>';
-				e += '<button type="submit" class="ui basic red button" form="M_'+data.message.id+'_D">Decline</button>';
+				if(data.message.moderation_level == 0){
+					e += '<button type="submit" class="ui basic green button" form="M_'+data.message.id+'_A" disabled>Approve</button>';
+					e += '<button type="submit" class="ui basic red button" form="M_'+data.message.id+'_D">Decline</button>';
+				}
+				else{
+					e += '<button type="submit" class="ui basic green button" form="M_'+data.message.id+'_A">Approve</button>';
+					e += '<button type="submit" class="ui basic red button" form="M_'+data.message.id+'_D" disabled>Decline</button>';
+				}
 				e += '<button type="submit" class="ui basic grey button" form="M_'+data.message.id+'_B">Block</button>';
 				e += '</div>';
 				e += '<form method="post" action="/message/accept" id="M_'+data.message.id+'_A">';
@@ -62,8 +68,14 @@
 				e += '</div>';
 				e += '<div class="extra content">';
 				e += '<div class="ui three buttons">';
-				e += '<button type="submit" class="ui basic green button" form="M_'+data.message.id+'_A">Approve</button>';
-				e += '<button type="submit" class="ui basic red button" form="M_'+data.message.id+'_D">Decline</button>';
+				if(data.message.moderation_level == 0){
+					e += '<button type="submit" class="ui basic green button" form="M_'+data.message.id+'_A" disabled>Approve</button>';
+					e += '<button type="submit" class="ui basic red button" form="M_'+data.message.id+'_D">Decline</button>';
+				}
+				else{
+					e += '<button type="submit" class="ui basic green button" form="M_'+data.message.id+'_A">Approve</button>';
+					e += '<button type="submit" class="ui basic red button" form="M_'+data.message.id+'_D" disabled>Decline</button>';
+				}
 				e += '<button class="ui basic grey button" form="M_'+data.message.id+'_B">Block</button>';
 				e += '</div>';
 				e += '<form method="post" action="/message/accept" id="M_'+data.message.id+'_A">';
@@ -94,8 +106,14 @@
 			e += '</div></div>';
 			e += '<div class="extra content">';
 			e += '<div class="ui three buttons">';
-			e += '<button type="submit" class="ui basic green button" form="P_'+ data.poll.id +'_A">Approve</button>';
-			e += '<button type="submit" class="ui basic red button" form="P_'+data.poll.id+'_D">Decline</button>';
+			if(data.poll.moderation_level == 0){
+				e += '<button type="submit" class="ui basic green button" form="P_'+ data.poll.id +'_A" disabled>Approve</button>';
+				e += '<button type="submit" class="ui basic red button" form="P_'+data.poll.id+'_D">Decline</button>';
+			}
+			else{
+				e += '<button type="submit" class="ui basic green button" form="P_'+ data.poll.id +'_A">Approve</button>';
+				e += '<button type="submit" class="ui basic red button" form="P_'+data.poll.id+'_D" disabled>Decline</button>';
+			}
 			e += '<button class="ui basic grey button" form="P_'+data.poll.id+'_B">Block</button>';
 			e += '</div>';
 			e += '<form method="post" action="/poll/accept" id="P_'+data.poll.id+'_A">';
@@ -129,8 +147,14 @@
 			e += '</div>';
 			e += '<div class="extra content">';
 			e += '<div class="ui three buttons">';
-			e += '<button type="submit" class="ui basic green button" form="PC_'+data.poll_choice.id+'_A">Approve</button>';
-			e += '<button type="submit" class="ui basic red button" form="PC_'+data.poll_choice.id+'_D">Decline</button>';
+			if(data.poll.moderation_level == 0){
+				e += '<button type="submit" class="ui basic green button" form="PC_'+data.poll_choice.id+'_A" disabled>Approve</button>';
+				e += '<button type="submit" class="ui basic red button" form="PC_'+data.poll_choice.id+'_D">Decline</button>';
+			}
+			else{
+				e += '<button type="submit" class="ui basic green button" form="PC_'+data.poll_choice.id+'_A">Approve</button>';
+				e += '<button type="submit" class="ui basic red button" form="PC_'+data.poll_choice.id+'_D" disabled>Decline</button>';
+			}
 			e += '<button class="ui basic grey button" form="PC_'+data.poll_choice.id+'_B">Block</button>';
 			e += '</div>';
 			e += '<form method="post" action="/message/accept" id="PC_'+data.poll_choice.id+'_A">';
@@ -147,15 +171,17 @@
 			e += '</div>';
 			$(e).prependTo("#holder").hide().fadeIn(2000);
 		});
-</script>
+	</script>
 @else
 	@foreach($walls as $wall)
 	<script>
 		var socket = io("http://10.3.50.20:1338");
+
 		socket.on('msg1.msg.{{$wall->id}}:App\\Events\\NewMessageEvent', function (data)
 		{
 			if (data.question == null)
 			{
+
 				console.log(data.message);
 				var token = $('#token').val();
 				var e = '<div class="card">';
@@ -167,8 +193,14 @@
 				e += '</div>';
 				e += '<div class="extra content">';
 				e += '<div class="ui three buttons">';
-				e += '<button type="submit" class="ui basic green button" form="M_'+data.message.id+'_A">Approve</button>';
-				e += '<button type="submit" class="ui basic red button" form="M_'+data.message.id+'_D">Decline</button>';
+				if(data.message.moderation_level == 0){
+					e += '<button type="submit" class="ui basic green button" form="M_'+data.message.id+'_A" disabled>Approve</button>';
+					e += '<button type="submit" class="ui basic red button" form="M_'+data.message.id+'_D">Decline</button>';
+				}
+				else{
+					e += '<button type="submit" class="ui basic green button" form="M_'+data.message.id+'_A">Approve</button>';
+					e += '<button type="submit" class="ui basic red button" form="M_'+data.message.id+'_D" disabled>Decline</button>';
+				}
 				e += '<button type="submit" class="ui basic grey button" form="M_'+data.message.id+'_B">Block</button>';
 				e += '</div>';
 				e += '<form method="post" action="/message/accept" id="M_'+data.message.id+'_A">';
@@ -202,8 +234,14 @@
 				e += '</div>';
 				e += '<div class="extra content">';
 				e += '<div class="ui three buttons">';
-				e += '<button type="submit" class="ui basic green button" form="M_'+data.message.id+'_A">Approve</button>';
-				e += '<button type="submit" class="ui basic red button" form="M_'+data.message.id+'_D">Decline</button>';
+				if(data.message.moderation_level == 0){
+					e += '<button type="submit" class="ui basic green button" form="M_'+data.message.id+'_A" disabled>Approve</button>';
+					e += '<button type="submit" class="ui basic red button" form="M_'+data.message.id+'_D">Decline</button>';
+				}
+				else{
+					e += '<button type="submit" class="ui basic green button" form="M_'+data.message.id+'_A">Approve</button>';
+					e += '<button type="submit" class="ui basic red button" form="M_'+data.message.id+'_D" disabled>Decline</button>';
+				}
 				e += '<button class="ui basic grey button" form="M_'+data.message.id+'_B">Block</button>';
 				e += '</div>';
 				e += '<form method="post" action="/message/accept" id="M_'+data.message.id+'_A">';
@@ -234,8 +272,14 @@
 			e += '</div></div>';
 			e += '<div class="extra content">';
 			e += '<div class="ui three buttons">';
-			e += '<button type="submit" class="ui basic green button" form="P_'+ data.poll.id +'_A">Approve</button>';
-			e += '<button type="submit" class="ui basic red button" form="P_'+data.poll.id+'_D">Decline</button>';
+			if(data.poll.moderation_level == 0){
+				e += '<button type="submit" class="ui basic green button" form="P_'+ data.poll.id +'_A" disabled>Approve</button>';
+				e += '<button type="submit" class="ui basic red button" form="P_'+data.poll.id+'_D">Decline</button>';
+			}
+			else{
+				e += '<button type="submit" class="ui basic green button" form="P_'+ data.poll.id +'_A">Approve</button>';
+				e += '<button type="submit" class="ui basic red button" form="P_'+data.poll.id+'_D" disabled>Decline</button>';
+			}
 			e += '<button class="ui basic grey button" form="P_'+data.poll.id+'_B">Block</button>';
 			e += '</div>';
 			e += '<form method="post" action="/poll/accept" id="P_'+data.poll.id+'_A">';
@@ -269,8 +313,14 @@
 			e += '</div>';
 			e += '<div class="extra content">';
 			e += '<div class="ui three buttons">';
-			e += '<button type="submit" class="ui basic green button" form="PC_'+data.poll_choice.id+'_A">Approve</button>';
-			e += '<button type="submit" class="ui basic red button" form="PC_'+data.poll_choice.id+'_D">Decline</button>';
+			if(data.poll.moderation_level == 0){
+				e += '<button type="submit" class="ui basic green button" form="PC_'+data.poll_choice.id+'_A" disabled>Approve</button>';
+				e += '<button type="submit" class="ui basic red button" form="PC_'+data.poll_choice.id+'_D">Decline</button>';
+			}
+			else{
+				e += '<button type="submit" class="ui basic green button" form="PC_'+data.poll_choice.id+'_A">Approve</button>';
+				e += '<button type="submit" class="ui basic red button" form="PC_'+data.poll_choice.id+'_D" disabled>Decline</button>';
+			}
 			e += '<button class="ui basic grey button" form="PC_'+data.poll_choice.id+'_B">Block</button>';
 			e += '</div>';
 			e += '<form method="post" action="/message/accept" id="PC_'+data.poll_choice.id+'_A">';

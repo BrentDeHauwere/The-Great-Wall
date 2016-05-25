@@ -95,7 +95,7 @@ class WallController extends Controller
 			//Source: https://laracasts.com/discuss/channels/laravel/laravel-pagination-not-working-with-array-instead-of-collection
 
 			$page = Input::get('page', 1); // Get the current page or default to 1, this is what you miss!
-			$perPage = 5;
+			$perPage = 10;
 			$offset = ($page * $perPage) - $perPage;
 
 			$request = new Request();
@@ -312,30 +312,6 @@ class WallController extends Controller
 		return '';
 	}
 
-	public function ajaxMessage($id)
-	{
-		$wall = Wall::find($id);
-
-		if ($wall != null && empty($wall->password))
-		{
-			if (session()->has('wall' . $wall->id))
-			{
-				$messages = Message::with('votes')->where('created_at', session('wall' . $wall->id))->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
-				$polls = Poll::with('choices.votes')->where('created_at', session('wall' . $wall->id))->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
-			}
-			else
-			{
-				$polls = Poll::with('choices.votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
-				$messages = Message::with('votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
-			}
-
-			$posts = $this->getMessagesPollsChronologically($messages, $polls);
-			session(['wall' . $wall->id => date("Y-m-d H:i:s")]);
-
-			return view('ajax.messages')->with('posts', $posts)->with('wall', $wall);//->with('result',$result);
-		}
-	}
-
 	public function updateShow(Request $request, $id)
 	{
 		$wall = Wall::findOrFail($id);
@@ -355,16 +331,20 @@ class WallController extends Controller
 			}
 		}
 
-		if ($wall != null && empty($wall->password))
+		if ($wall != null)
 		{
-			$messages = Message::with('votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
-			$polls = Poll::with('choices.votes')->where('wall_id', $id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
+			//Check for tweets
+			//if ($wall->hashtag != null){
+			//	TwitterHelper::checkForTweets($wall->hashtag, $id);
+			//}
 
-			$posts = $this->getMessagesPollsChronologically($messages, $polls);
+			$posts = $this->getMessagesPollsChronologically($id);
+			//$posts = $this->getMessagesPollsSortedOnVotes($id);
 
 			//BEGIN CODE FOR PAGINATION
 			//Source: https://laracasts.com/discuss/channels/laravel/laravel-pagination-not-working-with-array-instead-of-collection
-			$page = $request->input('page'); // Get the current page or default to 1, this is what you miss!
+
+			$page = Input::get('page', 1); // Get the current page or default to 1, this is what you miss!
 			$perPage = 5;
 			$offset = ($page * $perPage) - $perPage;
 
@@ -373,7 +353,8 @@ class WallController extends Controller
 			$posts = new LengthAwarePaginator(array_slice($posts, $offset, $perPage, true), count($posts), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
 
 			//END CODE FOR Pagination
-			return view('wall.posts')->with('posts', $posts)->with('wall', $wall);//->with('result',$result);
+
+			return view('wall.posts')->with('posts', $posts)->with('wall', $wall);
 		}
 	}
 }
