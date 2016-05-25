@@ -86,7 +86,6 @@ class PollController extends Controller
 
 				if ($savedChoice)
 				{
-					Event::fire(new NewPollChoiceEvent($pollChoice));
 					$succes = true;
 				}
 				else
@@ -107,7 +106,9 @@ class PollController extends Controller
 			/*$client = new \Capi\Clients\GuzzleClient();
 			$response = $client->post('broadcast', 'msg1.polls',['poll' => $poll]);*/
 			Event::fire(new NewPollEvent($poll));
-
+      foreach($poll->choices as $choice){
+        Event::fire(new NewPollChoiceEvent($choice));
+      }
 			return redirect()->back()->with('success', 'Poll success');
 		}
 		else
