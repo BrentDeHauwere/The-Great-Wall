@@ -95,7 +95,7 @@ class WallController extends Controller
 			//Source: https://laracasts.com/discuss/channels/laravel/laravel-pagination-not-working-with-array-instead-of-collection
 
 			$page = Input::get('page', 1); // Get the current page or default to 1, this is what you miss!
-			$perPage = 5;
+			$perPage = 10;
 			$offset = ($page * $perPage) - $perPage;
 
 			$request = new Request();

@@ -21,10 +21,12 @@ class NewPollVoteEvent extends Event implements ShouldBroadcastNow
      */
      public $poll_choice;
      public $count;
-    public function __construct(PollChoice $choice,$count)
+     public $voted;
+    public function __construct(PollChoice $choice,$count,$voted)
     {
         $this->poll_choice = $choice;
         $this->count = $count;
+        $this->voted = $voted;
     }
 
     /**

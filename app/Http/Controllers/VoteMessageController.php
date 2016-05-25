@@ -40,6 +40,7 @@ class VoteMessageController extends Controller
 						->exists())
 		{
 			$saved = $message_vote->save();
+
 			if ($saved)
 			{
 				$message = Message::where('id', $message_vote->message_id)->first();
@@ -48,10 +49,8 @@ class VoteMessageController extends Controller
 
 				if ($savedM)
 				{
-					/*$client = new \Capi\Clients\GuzzleClient();
-					$response = $client->post('broadcast', 'msg1.msg.vote',['messagevote' => $message_vote]);*/
-
 					Event::fire(new NewMessageVoteEvent(User::find($message_vote->user_id),$message));
+
 					return redirect()->back()->with('success', 'Message vote success.');
 				}
 				else
@@ -77,8 +76,16 @@ class VoteMessageController extends Controller
 			$message->count--;
 			$savedM = $message->save();
 			
-			Event::fire(new NewMessageVoteEvent(User::find($message_vote->user_id),$message));
-			return redirect()->back()->with('succes', 'Message vote is revoked.');
+			if($savedM)
+			{
+				Event::fire(new NewMessageVoteEvent(User::find($message_vote->user_id),$message));
+				return redirect()->back()->with('succes', 'Message vote is revoked.');
+			}
+			else
+			{
+				return redirect()->back()->with('error', 'Message vote could not be revoked.');
+			}
+
 		}
 	}
 }
