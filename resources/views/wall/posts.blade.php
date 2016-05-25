@@ -4,7 +4,7 @@
             <div class="ui raised segment">
                 <div class="comment">
                     <a class="avatar">
-                        <img src="{{ route('user_images', ['filename' => $wall->id]) }}" class="ui mini circular image">
+                        <img src="{{ route('user_images', ['filename' => Auth::user()->id]) }}" class="ui mini circular image">
                     </a>
                     <div class="content">
                         <a class="author">
@@ -58,7 +58,7 @@
                         @foreach($post[1]->answers->where('moderation_level',0) as $answer)
                             <div id="messageholder{{$answer->id}}" class="comment">
                                 <a class="avatar">
-                                    <img src="{{ route('user_images', ['filename' => $wall->id]) }}"
+                                    <img src="{{ route('user_images', ['filename' => Auth::user()->id]) }}"
                                          class="ui mini circular image">
                                 </a>
                                 <div class="content">
@@ -148,7 +148,7 @@
             <div class="ui raised segment">
                 <div class="comment">
                     <a class="avatar">
-                        <img src="{{ route('user_images', ['filename' => $wall->id]) }}" class="ui mini circular image">
+                        <img src="{{ route('user_images', ['filename' => Auth::user()->id]) }}" class="ui mini circular image">
                     </a>
                     <div class="content">
                         <a class="author">Elliot Fu</a>
