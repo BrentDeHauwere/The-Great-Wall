@@ -8,6 +8,9 @@
 	@if (empty(Auth::user()->twitter_handle))
 		@info(Did you know that you can post messages via Twitter? What are you waiting for? Fill in your <a href="#" onclick="$( '#setTwitterHandle' ).trigger( 'click' );">Twitter handle</a>!)
 	@endif
+	@if (Auth::user()->banned())
+		@warning(You are on our blacklist. This means you can see posts but you won't be able to react to them or make them yourself!)
+	@endif
 
 	<div class="body_customized" style="height: 51px">
 		<div class="ui icon input search medium">
