@@ -87,8 +87,7 @@ class VotePollController extends Controller
                 $saved = $poll_vote->save();
             }
         }
-
-
+        
         if ($saved) {
             $pollchoice = PollChoice::where('id', $poll_vote->poll_choice_id)->first();
 
@@ -98,11 +97,10 @@ class VotePollController extends Controller
             if ($savedChoice) {
                 /*$client = new \Capi\Clients\GuzzleClient();
                 $response = $client->post('broadcast', 'msg1.polls.vote',['pollvote' => $poll_vote]);*/
-                Event::fire(new NewPollVoteEvent($poll_vote));
+                //Event::fire(new NewPollVoteEvent($poll_vote));
                 return redirect()->back()->with('success', 'Poll vote success.');
             } else {
                 $poll_vote->delete();
-
                 return redirect()->back()->with('error', 'Poll choice could not be incremented.');
             }
         } else {

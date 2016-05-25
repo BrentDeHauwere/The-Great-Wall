@@ -83,6 +83,19 @@
 /*
  ========== WALLS - View ==========
  */
+.ui.progress .bar{
+	display: inline-block;
+	position: absolute;
+	height: 100%;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+button.choiceButton.ui.icon.button{
+	margin: 0;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
 
 
 /*
