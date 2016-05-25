@@ -425,6 +425,7 @@
 	<div class="body_customized">
 		<h1>{{$wall->name}}</h1>
 
+		@unless(Auth::user()->banned())
         <div class="ui top attached tabular menu">
             <a class="item active" data-tab="message">Post Message</a>
             <a class="item" data-tab="poll">Post Poll</a>
@@ -484,6 +485,7 @@
                 </form>
             </div>
         </div>
+		@endunless
 		<br/>
 		<div id="wallholder">
 			@include("/wall/posts", array("posts" => $posts))
