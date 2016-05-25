@@ -33,6 +33,6 @@ class NewMessageVoteEvent extends Event implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return ['msg1.vote.msg.'.$this->wall->id];
+        return ['msg1.vote.msg.'.$this->message->wall->id];
     }
 }

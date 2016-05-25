@@ -25,7 +25,7 @@ class NewMessageEvent extends Event implements ShouldBroadcastNow
         $this->message = $message;
         $this->user = $message->user;
         $this->wall = $message->wall;
-        $this->question = $message->question;
+        $this->question = Message::find($message->question_id);
     }
 
     /**
