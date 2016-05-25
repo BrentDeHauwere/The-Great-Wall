@@ -142,8 +142,8 @@ class SessionController extends Controller
     {
         $userid = Auth::user()->id; //getfromloggedinuser
         $wall = Wall::findOrFail($id);
-        $messages = Message::with("votes", "user")->where("wall_id", "=", $id)->get();
-        $polls = Poll::with("choices.votes", "user")->where("wall_id", "=", $id)->get();
+        $messages = Message::with("votes", "user")->where("wall_id", "=", $id)->orderBy('created_at', 'desc')->get();
+        $polls = Poll::with("choices.votes", "user")->where("wall_id", "=", $id)->orderBy('created_at', 'desc')->get();
         $blacklistedUserIDs = array_column(Blacklist::all('user_id')->toArray(), 'user_id');
 
         $posts = $this->sortMessagesPollsChronologically($messages, $polls);
@@ -175,8 +175,8 @@ class SessionController extends Controller
         }
         $userid = Auth::user()->id;
         $walls = Wall::whereIn('id', $request->input('beheer'))->get();
-        $messages = Message::with("votes", "user")->whereIn("wall_id", $request->input('beheer'))->get();
-        $polls = Poll::with("choices.votes", "user")->whereIn("wall_id", $request->input('beheer'))->get();
+        $messages = Message::with("votes", "user")->whereIn("wall_id", $request->input('beheer'))->orderBy('created_at', 'desc')->get();
+        $polls = Poll::with("choices.votes", "user")->whereIn("wall_id", $request->input('beheer'))->orderBy('created_at', 'desc')->get();
         $blacklistedUserIDs = Blacklist::all('user_id')->toArray();
 
         $posts = $this->sortMessagesPollsChronologically($messages, $polls);
@@ -196,41 +196,52 @@ class SessionController extends Controller
 
     private function sortMessagesPollsChronologically($messages, $polls)
     {
-        /* Sort messages / poll into a chronologically ordered 2D array */
-        $posts = [];
+      /* Sort messages / poll into a chronologically ordered 2D array */
+      $posts = [];
 
-        if (!$messages->isEmpty()) {
-            foreach ($messages as $message) {
-                array_push($posts, array('m', $message));
-            }
-        } else {
-            foreach ($polls as $poll) {
-                array_push($posts, array('p', $poll));
-            }
-        }
+  		if (!$messages->isEmpty())
+  		{
+  			foreach ($messages as $message)
+  			{
+  				array_push($posts, array('m', $message));
+  			}
+  		}
+  		else
+  		{
+  			foreach ($polls as $poll)
+  			{
+  				array_push($posts, array('p', $poll));
+  			}
+  		}
 
-        $pollCounter = 0;
-        foreach ($polls as $poll) {
-            $append = true;
-            $counter = 0;
-            foreach ($posts as $post) {
-                if ($poll->created_at > $post[1]->created_at) {
-                    $arr = array('p', $poll);
-                    array_splice($posts, $counter, 0, array($arr));
-                    $append = false;
-                    break;
-                }
-                $counter += 1;
-            }
+  		$pollCounter = 0;
+  		foreach ($polls as $poll)
+  		{
+  			$append = true;
+  			$counter = 0;
+  			foreach ($posts as $post)
+  			{
+  				if ($poll->created_at > $post[1]->created_at)
+  				{
+  					$arr = array('p', $poll);
+  					array_splice($posts, $counter, 0, array($arr));
+  					$append = false;
+  					break;
+  				}
+  				$counter += 1;
+  			}
 
-            if ($append) {
-                array_push($posts, array('p', $poll));
-            }
+  			if ($append)
+  			{
+  				array_push($posts, array('p', $poll));
+  			}
 
-            $pollCounter += 1;
-        }
-        return $posts;
+  			$pollCounter += 1;
+  		}
+
+  		return $posts;
     }
+
 
     /**
      * Show the form for editing the specified wall.

@@ -38,6 +38,16 @@ redis.psubscribe('msg1.modd.msg.*', function(err, count) {
     console.log('Error:' + err);
     console.log('Count:' +count);
 });
+redis.psubscribe('msg1.moda.polls.*', function(err, count) {
+    console.log('Redis: msg1.moda.polls.* subscribed');
+    console.log('Error:' + err);
+    console.log('Count:' +count);
+});
+redis.psubscribe('msg1.modd.polls.*', function(err, count) {
+    console.log('Redis: msg1.modd.polls.* subscribed');
+    console.log('Error:' + err);
+    console.log('Count:' +count);
+});
 redis.psubscribe('msg1.vote.msg.*', function(err, count) {
     console.log('Redis: msg1.modd.msg.* subscribed');
     console.log('Error:' + err);

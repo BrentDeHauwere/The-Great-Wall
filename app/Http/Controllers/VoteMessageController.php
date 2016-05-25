@@ -17,6 +17,7 @@ use App\Events\NewMessageVoteEvent;
 
 use App\Message;
 use App\MessageVote;
+use App\User;
 
 use Validator;
 use Hash;
@@ -48,8 +49,7 @@ class VoteMessageController extends Controller
 
 				if ($savedM)
 				{
-
-					// Event::fire(new NewMessageVoteEvent($message_vote,$message));
+					Event::fire(new NewMessageVoteEvent(User::find($message_vote->user_id),$message));
 
 					return redirect()->back()->with('success', 'Message vote success.');
 				}
@@ -75,15 +75,17 @@ class VoteMessageController extends Controller
 			$message = Message::where('id', $message_vote->message_id)->first();
 			$message->count--;
 			$savedM = $message->save();
-
+			
 			if($savedM)
 			{
+				Event::fire(new NewMessageVoteEvent(User::find($message_vote->user_id),$message));
 				return redirect()->back()->with('succes', 'Message vote is revoked.');
 			}
 			else
 			{
 				return redirect()->back()->with('error', 'Message vote could not be revoked.');
 			}
+
 		}
 	}
 }

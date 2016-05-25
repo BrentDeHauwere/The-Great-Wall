@@ -4,6 +4,7 @@ namespace App\Events;
 
 use App\MessageVote;
 use App\Message;
+use App\User;
 
 use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
@@ -18,12 +19,12 @@ class NewMessageVoteEvent extends Event implements ShouldBroadcastNow
      *
      * @return void
      */
-     public $message_vote;
      public $message;
-    public function __construct(MessageVote $vote,Message $msg)
+     public $user;
+    public function __construct(User $user,Message $msg)
     {
-        $this->message_vote = $vote;
         $this->message = $msg;
+        $this->user = $user;
     }
 
     /**

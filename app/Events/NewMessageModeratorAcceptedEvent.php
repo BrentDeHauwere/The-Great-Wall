@@ -11,16 +11,21 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 class NewMessageModeratorAcceptedEvent extends Event implements ShouldBroadcastNow
 {
     use SerializesModels;
-    public $message;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-
+     public $message;
+     public $user;
+     public $wall;
+     public $question;
     public function __construct(Message $message)
     {
-        $this->message = $message;
+      $this->message = $message;
+      $this->user = $message->user;
+      $this->wall = $message->wall;
+      $this->question = Message::find($message->question_id);
     }
 
     /**
@@ -30,6 +35,6 @@ class NewMessageModeratorAcceptedEvent extends Event implements ShouldBroadcastN
      */
     public function broadcastOn()
     {
-        return ['msg1.modd.msg.'.$this->message->wall_id];
+        return ['msg1.moda.msg.'.$this->message->wall_id];
     }
 }

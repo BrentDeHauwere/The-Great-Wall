@@ -8,6 +8,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use App\PollVote;
 use App\PollChoice;
 use App\Poll;
+use App\User;
 
 class NewPollVoteEvent extends Event implements ShouldBroadcastNow
 {
@@ -18,10 +19,14 @@ class NewPollVoteEvent extends Event implements ShouldBroadcastNow
      *
      * @return void
      */
-     public $poll_vote;
-    public function __construct(PollVote $vote)
+     public $poll_choice;
+     public $count;
+     public $voted;
+    public function __construct(PollChoice $choice,$count,$voted)
     {
-        $this->poll_vote = $vote;
+        $this->poll_choice = $choice;
+        $this->count = $count;
+        $this->voted = $voted;
     }
 
     /**
@@ -31,6 +36,6 @@ class NewPollVoteEvent extends Event implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        return ['msg1.vote.polls.'.$this->poll_vote->choice->poll->wall_id];
+        return ['msg1.vote.polls.'.$this->poll_choice->poll->wall_id];
     }
 }
