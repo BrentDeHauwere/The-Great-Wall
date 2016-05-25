@@ -26,7 +26,7 @@
 				if(data.message.anonymous == 0){
 						e += '<a class="author">'+data.user.name+'</a>';
 				}else{
-						e += '<a class="author">Anoniem</a>';
+						e += '<a class="author">Anonymous</a>';
 				}
 				e += '<div class="metadata">';
 				e += '<span class="date">'+date+'</span>';
@@ -85,7 +85,7 @@
 				if(data.message.anonymous == 0){
 						e += '<a class="author">'+data.user.name+'</a>';
 				}else{
-						e += '<a class="author">Anoniem</a>';
+						e += '<a class="author">Anonymous</a>';
 				}
 				e += '<div class="metadata">';
 				e += '<span class="date">'+date+'</span>';
@@ -242,7 +242,7 @@
 				if(data.message.anonymous == 0){
 						e += '<a class="author">'+data.user.name+'</a>';
 				}else{
-						e += '<a class="author">Anoniem</a>';
+						e += '<a class="author">Anonymous</a>';
 				}
 				e += '<div class="metadata">';
 				e += '<span class="date">'+date+'</span>';
@@ -301,7 +301,7 @@
 				if(data.message.anonymous == 0){
 						e += '<a class="author">'+data.user.name+'</a>';
 				}else{
-						e += '<a class="author">Anoniem</a>';
+						e += '<a class="author">Anonymous</a>';
 				}
 				e += '<div class="metadata">';
 				e += '<span class="date">'+date+'</span>';
