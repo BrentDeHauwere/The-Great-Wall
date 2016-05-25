@@ -19,9 +19,13 @@ class NewPollModeratorAcceptEvent extends Event implements ShouldBroadcastNow
      * @return void
      */
      public $poll;
+     public $user;
+     public $wall;
     public function __construct(Poll $poll)
     {
-        $this->poll = $poll;
+      $this->poll = $poll;
+      $this->user = $poll->user;
+      $this->wall = $poll->wall;
     }
 
     /**

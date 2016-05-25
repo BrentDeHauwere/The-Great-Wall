@@ -19,17 +19,17 @@
 							<div class="rating">
 
 								@if(Auth::user()->messageVotes()->where('message_id', $post[1]->id)->first()||Auth::user()!=$post[1]->user()->first())
-									<i class="star icon red"></i>
+									<i id="iconholder{{$post[1]->id}}" class="star icon red"></i>
 								@else
 									<form method="POST" action="/votemessage">
-										<i class="star icon red">NOG WERKEND MAKEN</i>
+										<i id="iconholder{{$post[1]->id}}" class="star icon red">NOG WERKEND MAKEN</i>
 										<input type="hidden" name="_token" value="{{ csrf_token() }}">
 										<input type="hidden" name="message_id" value="{{$post[1]->id}}">
 										<input type="hidden" name="user_id" value="{{Auth::user()->id}}">
 									</form>
 								@endif
 
-								{{$post[1]->count}} Faves
+								<span id="favholder{{$post[1]->id}}">{{$post[1]->count}} Faves</span>
 							</div>
 						</div>
 						<div class="text">
@@ -110,7 +110,7 @@
 		</div>
 		@elseif($post[0]=='p')
 			<!-- Poll -->
-		<div class="ui comments">
+		<div id="pollholder{{$post[1]->id}}"class="ui comments">
 			<div class="ui raised segment">
 				<div class="comment">
 					<a class="avatar">
@@ -126,7 +126,7 @@
 						<div class="text">
 							<p>{{$post[1]->question}}</p>
 						</div>
-						<div class="actions group">
+						<div id="choicesholder{{$post[1]->id}}" class="actions group">
 
 							<?php
 							$total = 0;
@@ -158,7 +158,7 @@
 							?>
 							<?php $counter = 0 ?>
 							@foreach($post[1]->choices->sortByDesc('count') as $choice)
-								<div class="ui indicating progress success progess_jquery" data-percent={{$percArr[$counter]}}>
+								<div id="choiceholder{{$choice->id}}"class="ui indicating progress success progess_jquery" data-percent={{$percArr[$counter]}}>
 									<div class="bar">
 										<div class="progress"></div>
 									</div>
@@ -174,8 +174,8 @@
 					<form method="POST" action="{{ action("PollChoiceController@store") }} class=" ui reply form"
 					style="margin-top: 14px;">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
-					<input type="hidden" name="user_id" value={{1}}>
-					<input type="hidden" name="poll_id" value={{$post[1]->id}}>
+					<input type="hidden" name="user_id" value="{{1}}">
+					<input type="hidden" name="poll_id" value="{{$post[1]->id}}">
 
 					<div class="field">
 						<div class="ui action input">
