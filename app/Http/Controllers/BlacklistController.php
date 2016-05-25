@@ -117,6 +117,11 @@ class BlacklistController extends Controller
 		return redirect(action('BlacklistController@index'));
 	}
 
+	public static function storeUser(User $user)
+	{
+		DB::table('blacklists')->insert(['user_id' => $user->id, 'reason' => 'Banned by crm', 'created_at' => new DateTime()]);
+	}
+
 	/**
 	 * Show the form for editing the reason for blacklisting.
 	 *

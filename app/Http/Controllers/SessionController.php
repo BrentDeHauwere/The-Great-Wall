@@ -377,7 +377,6 @@ class SessionController extends Controller
             {
                 $res = $client->get('crm', 'person-get', ['page'=>$i]);
             }
-
             foreach ($res['data'] as $user) {
                 if (in_array('spreker', $user['roles'])) {
                     $u = new User();
@@ -385,12 +384,10 @@ class SessionController extends Controller
                         $u = User::where('email', $user['email'])->first();
                     }
                     $u->name = $user['fname'] . ' ' . $user['lname'];
-                    $u->role = 'Speaker';
+                    $u->role = 'speaker';
                     $u->email = $user['email'];
 
-                    if (!User::where('email', $user['email'])->first()) {
-                        $u->save();
-                    }
+                    $u->save();
                 }
             }
         }

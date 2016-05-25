@@ -38,9 +38,10 @@ class UserController extends Controller
         $email = $request->input('email');
         $password = $request->input('password');
 
-        //SessionController::updateSpeakers();
-
-        if ($this->ldapAuth($email,$password)) {
+        if ($this->ldapAuth($email, $password)) {
+           if(!self::checkCRMbanned(Auth::user())){
+                return redirect('login')->with('error', 'An error occured. Please try again.');
+            }
             return redirect()->intended('/');
         } else {
             return redirect('login')->with('error', 'Wrong mail and/or password. Please try again.');
@@ -122,6 +123,35 @@ class UserController extends Controller
     }
 
     /**
+     * If the user is banned in crm then it's banned in the messagewall.
+     *
+     */
+    public static function checkCRMbanned(User $u)
+    {
+        $client = new GuzzleClient();
+        try {
+            $res = $client->get('crm', 'person-get', ['email' => $u->email]);
+            $user = $res['data'][0];
+            if (in_array('locked', $user['roles'])) {
+                if (User::where('email', $user['email'])->first()) {
+                    $u = User::where('email', $user['email'])->first();
+                    if (!$u->banned()) {
+                        BlacklistController::storeUser($u);
+                    }
+                    return true;
+                }
+                else {
+                    return true;
+                }
+            }
+            return true;
+        } catch (BadResponseException $e) {
+            return false;
+        }
+        return false;
+    }
+
+    /**
      * Authenticates a user with ldap
      * If the user is unknown to the messagewall it is saved in
      * the great wall's database. A known user's information
@@ -140,10 +170,9 @@ class UserController extends Controller
                 'password' => $password,
             ]);
 
-            $user = User::where('email',$email)->first();
+            $user = User::where('email', $email)->first();
 
-            if(!$user)
-            {
+            if (!$user) {
                 $user = new User();
             }
 
@@ -152,8 +181,7 @@ class UserController extends Controller
 
             if (in_array('Messagewall-Admin', $res['roles'])) {
                 $user->role = 'Moderator';
-            }
-            elseif (in_array('Speaker', $res['roles'])) {
+            } elseif (in_array('Speaker', $res['roles'])) {
                 $user->role = 'Speaker';
             } else {
                 $user->role = 'Visitor';
@@ -166,11 +194,15 @@ class UserController extends Controller
 
             $user->save();
 
-            if(Auth::attempt(['email' => $email, 'password' => $password]))
-            {
+            if (Auth::attempt(['email' => $email, 'password' => $password])) {
                 return true;
             }
         } catch (BadResponseException $e) {
+            if ($e->getCode() == '404') {
+                if (Auth::attempt(['email' => $email, 'password' => $password])) {
+                    return true;
+                }
+            }
             return false;
         }
         return false;
