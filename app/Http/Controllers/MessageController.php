@@ -25,7 +25,6 @@ use Hash;
 
 class MessageController extends Controller
 {
-
 	/**
 	 * Store a newly created message in storage.
 	 *
@@ -33,6 +32,7 @@ class MessageController extends Controller
 	 */
 	public function store(StoreMessageRequest $request)
 	{
+		
     $message = new Message();
 		$message->user_id = $request->input('user_id');
 		$message->wall_id = $request->input('wall_id');

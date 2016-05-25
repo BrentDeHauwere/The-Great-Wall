@@ -1,113 +1,197 @@
-<!-- Messages -->
-<div class="ui comments">
-	<div class="ui raised segment">
-		<div class="comment">
-			<a class="avatar">
-				<img src="{{ route('user_images', ['filename' => $wall->id]) }}" class="ui mini circular image">
-			</a>
-			<div class="content">
-				<a class="author">Elliot Fu</a>
-				<div class="metadata">
-					<span class="date">Yesterday at 12:30AM</span>
-					<div class="rating">
-						<i class="star icon"></i>
-						5 Faves
-					</div>
-				</div>
-				<div class="text">
-					<p>This has been very useful for my research. Thanks as well!</p>
-				</div>
-			</div>
-			<div class="comments">
+@foreach($posts as $post)
+	@if($post[0]=='m' && empty($post[1]->question_id))
+		<div class="ui comments">
+			<div class="ui raised segment">
 				<div class="comment">
 					<a class="avatar">
 						<img src="{{ route('user_images', ['filename' => $wall->id]) }}" class="ui mini circular image">
 					</a>
 					<div class="content">
-						<a class="author">Jenny Hess</a>
+						<a class="author">
+							@if($post[1]->anonymous==0)
+								{{$post[1]->user()->first()->name}}
+							@else
+								Anonymous
+							@endif
+						</a>
 						<div class="metadata">
-							<span class="date">Just now</span>
-							<div class="rating blue">
-								<!-- KAMIEL TO DO: blauw als het bijvoorbeeld is gefavorite, anders gewoon normaal grijs, zet cursor dan nog op zo clickable -->
-								<i class="star icon blue"></i>
-								5 Faves
+							<span class="date">{{\App\Http\Controllers\WallController::humanTimeDifference($post[1]->created_at)}}</span>
+							<div class="rating">
+
+								@if(Auth::user()->messageVotes()->with('message_id', $post[1]->id)->first()||Auth::user()!=$post[1]->user()->first())
+									<i class="star icon red"></i>
+								@else
+									<form method="POST" action="/votemessage">
+										<i class="star icon red">NOG WERKEND MAKEN</i>
+										<input type="hidden" name="_token" value="{{ csrf_token() }}">
+										<input type="hidden" name="message_id" value="{{$post[1]->id}}">
+										<input type="hidden" name="user_id" value="{{Auth::user()->id}}">
+									</form>
+								@endif
+
+								{{$post[1]->count}} Faves
 							</div>
 						</div>
 						<div class="text">
-							Elliot you are always so right :)
+							<p>{{$post[1]->text}}</p>
 						</div>
 					</div>
-				</div>
-			</div>
-		</div>
-		<form class="ui reply form">
-			<div class="field">
-				<div class="ui action input">
-					<div class="inline field" style="margin-bottom: 7px;margin-top: 7px;margin-right: 14px;">
-						<div class="ui input checkbox">
-							<input type="checkbox" name="anonymous" value="1" tabindex="0">
-							<label>Anonymous</label>
-						</div>
-					</div>
-					<input type="text">
-					<button class="ui blue right labeled icon button">
-						<i class="edit icon"></i>
-						Add Reply
-					</button>
-				</div>
-			</div>
-		</form>
-	</div>
-</div>
+					{{-- Answers on message --}}
+					<div class="comments">
+						@foreach($post[1]->answers->where('moderation_level',0) as $answer)
+							<div class="comment">
+								<a class="avatar">
+									<img src="{{ route('user_images', ['filename' => $wall->id]) }}"
+										 class="ui mini circular image">
+								</a>
+								<div class="content">
+									<a class="author">
+										@if($answer->anonymous==0)
+											{{$answer->user()->first()->name}}
+										@else
+											Anonymous
+										@endif
+									</a>
+									<div class="metadata">
+										<span class="date">{{\App\Http\Controllers\WallController::humanTimeDifference($answer->created_at)}}</span>
+										<div class="rating blue">
+											<!-- KAMIEL TO DO: blauw als het bijvoorbeeld is gefavorite, anders gewoon normaal grijs, zet cursor dan nog op zo clickable -->
 
-<!-- Polls -->
-<div class="ui comments">
-	<div class="ui raised segment">
-		<div class="comment">
-			<a class="avatar">
-				<img src="{{ route('user_images', ['filename' => $wall->id]) }}" class="ui mini circular image">
-			</a>
-			<div class="content">
-				<a class="author">Elliot Fu</a>
-				<div class="metadata">
-					<span class="date">Yesterday at 12:30AM</span>
-					<div class="rating">
-						<i class="star icon"></i>
-						5 Faves
-					</div>
+											@if(!Auth::user()->messageVotes()->with('message_id', $answer->id)->get()->isEmpty())
+												<i class="star icon blue"></i>{{$answer->count}} Faves
+											@elseif(Auth::user()!=$answer->user()->first())
+												<form method="POST" action="/votemessage">
+													<i class="star icon"></i>{{$answer->count}} Faves
+													<input type="hidden" name="user_id" value="{{Auth::user()->id}}">
+													<input type="hidden" name="message_id" value="{{$answer->id}}">
+												</form>
+											@else
+												{{$answer->count}} Faves
+											@endif
+										</div>
+									</div>
+									<div class="text">
+										{{$answer->text}}
+									</div>
+								</div>
+							</div>
+						@endforeach
 				</div>
-				<div class="text">
-					<p>Here comes a question. Is it true?</p>
-				</div>
-				<div class="actions group">
-					<div class="ui indicating progress success progess_jquery" data-percent="26">
-						<div class="bar">
-							<div class="progress"></div>
+			</div>
+
+			{{-- Antwoorden op een message --}}
+			@unless(Auth::user()->banned())
+				<form class="ui reply form" method="POST" action="{{action("MessageController@store")}}">
+					<div class="field">
+						<div class="ui action input">
+							<div class="inline field" style="margin-bottom: 7px;margin-top: 7px;margin-right: 14px;">
+								<input type="hidden" name="_token" value="{{ csrf_token() }}">
+								<input type="hidden" name="question_id" value="{{$post[1]->id}}">
+								<input type="hidden" name="channel_id" value="{{1}}">
+								<input type="hidden" name="user_id" value="{{Auth::user()->id}}">
+								<input type="hidden" name="wall_id" value="{{$wall->id}}">
+
+								<div class="ui input checkbox">
+									<input type="hidden" name="anonymous" value="0" tabindex="0">
+									<input type="checkbox" name="anonymous" value="1" tabindex="0">
+									<label>Anonymous</label>
+								</div>
+							</div>
+							<input type="text" name="text">
+							<button type="submit" class="ui blue right labeled icon button">
+								<i class="edit icon"></i>
+								Add Reply
+							</button>
 						</div>
-						<div class="label">Yes. It is true.</div>
 					</div>
-					<div class="ui indicating progress success progess_jquery" data-percent="74">
-						<div class="bar">
-							<div class="progress"></div>
+				</form>
+			@endunless
+		</div>
+		</div>
+		@elseif($post[0]=='p')
+			<!-- Poll -->
+		<div class="ui comments">
+			<div class="ui raised segment">
+				<div class="comment">
+					<a class="avatar">
+						<img src="{{ route('user_images', ['filename' => $wall->id]) }}" class="ui mini circular image">
+					</a>
+					<div class="content">
+						<a class="author">Elliot Fu</a>
+						<div class="metadata">
+                            <span class="date">
+                                {{\App\Http\Controllers\WallController::humanTimeDifference($post[1]->created_at)}}
+                            </span>
 						</div>
-						<div class="label">No. It is not true.</div>
+						<div class="text">
+							<p>{{$post[1]->question}}</p>
+						</div>
+						<div class="actions group">
+
+							<?php
+							$total = 0;
+							foreach ($post[1]->choices->where('moderation_level', 0) as $choice)
+							{
+								$total += $choice->count;
+							}
+							$already = 0;
+
+							$percArr = array();
+							foreach ($post[1]->choices as $choice)
+							{
+								if ( $total != 0 )
+								{
+									$percentage = round($choice->count / $total * 100);
+									$already += $percentage;
+								}
+								else
+								{
+									$percentage = 0;
+								}
+								array_push($percArr, $percentage);
+							}
+							arsort($percArr);
+							if ( $already > 100 )
+							{
+								$percArr[0] -= $already - 100;
+							}
+							?>
+							<?php $counter = 0 ?>
+							@foreach($post[1]->choices->sortByDesc('count') as $choice)
+								<div class="ui indicating progress success progess_jquery" data-percent={{$percArr[$counter]}}>
+									<div class="bar">
+										<div class="progress"></div>
+									</div>
+									<div class="label">{{$choice->text}}</div>
+								</div>
+								<?php $counter += 1 ?>
+							@endforeach
+
+						</div>
 					</div>
 				</div>
+				@if($post[1]->addable && !Auth::user()->banned())
+					<form method="POST" action="{{ action("PollChoiceController@store") }} class=" ui reply form"
+					style="margin-top: 14px;">
+					<input type="hidden" name="_token" value="{{ csrf_token() }}">
+					<input type="hidden" name="user_id" value={{1}}>
+					<input type="hidden" name="poll_id" value={{$post[1]->id}}>
+
+					<div class="field">
+						<div class="ui action input">
+							<input type="text" name="text">
+							<button type="submit" class="ui blue right labeled icon button">
+								<i class="edit icon"></i>
+								Add Option
+							</button>
+						</div>
+					</div>
+					</form>
+				@endif
 			</div>
 		</div>
-		<form class="ui reply form" style="margin-top: 14px;">
-			<div class="field">
-				<div class="ui action input">
-					<input type="text">
-					<button class="ui blue right labeled icon button">
-						<i class="edit icon"></i>
-						Add Option
-					</button>
-				</div>
-			</div>
-		</form>
-	</div>
-</div>
+	@endif
+@endforeach
 
 <script>
 
@@ -116,6 +200,10 @@
 		$('.progess_jquery').progress();
 	})
 </script>
+
+
+<!-- OLD SHIIIIT -->
+<h1>OLD</h1>
 
 @foreach($posts as $post)
 
@@ -279,7 +367,7 @@
 					<div class="col-md-6 col-sm-6">
 						<div class="progress">
 							<?php
-							if ($total != 0)
+							if ( $total != 0 )
 							{
 								$percentage = round($choice->count / $total * 100);
 							}
@@ -289,7 +377,8 @@
 							}
 							?>
 
-							<div class="progress-bar" role="progressbar" aria-valuenow="{{$percentage}}" aria-valuemin="0"
+							<div class="progress-bar" role="progressbar" aria-valuenow="{{$percentage}}"
+								 aria-valuemin="0"
 								 aria-valuemax="100" style="width: {{$percentage}}%;">
 								{{$percentage}}%
 							</div>

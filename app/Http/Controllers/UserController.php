@@ -140,36 +140,39 @@ class UserController extends Controller
                 'password' => $password,
             ]);
 
-            if(Auth::attempt(['email' => $email, 'password' => $password]))
+            $user = User::where('email',$email)->first();
+
+            if(!$user)
             {
-                $u = Auth::user();
-            }
-            else
-            {
-                $u = new User();
+                $user = new User();
             }
 
-            $u->name = $res['fname'] . ' ' . $res['lname'];
-            $u->password = bcrypt($password);
+            $user->name = $res['fname'] . ' ' . $res['lname'];
+            $user->password = bcrypt($password);
 
             if (in_array('Messagewall-Admin', $res['roles'])) {
-                $u->role = 'Moderator';
+                $user->role = 'Moderator';
             }
             elseif (in_array('Speaker', $res['roles'])) {
-                $u->role = 'Speaker';
+                $user->role = 'Speaker';
             } else {
-                $u->role = 'Visitor';
+                $user->role = 'Visitor';
             }
-            $u->email = $res['email'];
+            $user->email = $res['email'];
 
-            if (!$u->email || !$u->name || !$u->password || !$u->role) {
+            if (!$user->email || !$user->name || !$user->password || !$user->role) {
                 return false;
             }
-            $u->save();
 
-            return true;
+            $user->save();
+
+            if(Auth::attempt(['email' => $email, 'password' => $password]))
+            {
+                return true;
+            }
         } catch (BadResponseException $e) {
             return false;
         }
+        return false;
     }
 }
