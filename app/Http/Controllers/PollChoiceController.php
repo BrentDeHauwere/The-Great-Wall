@@ -38,14 +38,7 @@ class PollChoiceController extends Controller
 		$pollChoice->user_id = $request->input('user_id');
 		$pollChoice->text = $request->input('text');
 		$pollChoice->created_at = date('Y-m-d H:i:s');
-
-		/* // NOT IMPLEMENTED YET
-		if ( $request->has('moderator_id') )
-		{
-			$pollChoice->moderator_id = $request->input('moderator_id');
-		}
-		*/
-
+		
 		$succes = false;
 		$banned = $pollChoice->user()->first()->banned();
 		if($pollChoice->poll()->first()->addable && !$banned)

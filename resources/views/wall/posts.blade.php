@@ -175,7 +175,6 @@
                                 $total += $choice->count;
                             }
                             $already = 0;
-
                             $percArr = array();
                             foreach ($post[1]->choices as $choice) {
                                 if ($total != 0) {
@@ -186,12 +185,15 @@
                                 }
                                 array_push($percArr, $percentage);
                             }
-                            arsort($percArr);
+
+                            $percArr = array_reverse($percArr);
+
                             if ($already > 100) {
                                 $percArr[0] -= $already - 100;
                             }
                             ?>
                             <?php $counter = 0 ?>
+
                             @foreach($post[1]->choices->sortByDesc('count') as $choice)
                                 @if(Auth::user()->banned())
                                     <div id="choiceholder{{$choice->id}}"

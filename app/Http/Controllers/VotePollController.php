@@ -35,18 +35,17 @@ class VotePollController extends Controller
         $poll_vote = new PollVote();
         $poll_vote->poll_choice_id = $request->input('poll_choice_id');
         $poll_vote->user_id = $request->input('user_id');
-
         $saved = false;
 
         // clicked choice
         $pollChoice = PollChoice::where('id', $poll_vote->poll_choice_id)->first();
 
-        // corresponding poll
+        // corresponding poll with votes of this user
         $poll = Poll::with(['choices.votes' => function ($query) use ($poll_vote) {
             $query->where('user_id', $poll_vote->user_id);
         }])->where('id', $pollChoice->poll_id)->first();
 
-        // check if multiple votes already exist, if so --> delete them
+        // check if multiple votes already exist
         $existingVotes = 0;
         foreach ($poll->choices as $choice) {
             foreach ($choice->votes as $vote) {
@@ -61,11 +60,16 @@ class VotePollController extends Controller
         if ($existingVotes > 0) {
             foreach ($poll->choices as $choice) {
                 foreach ($choice->votes as $vote) {
-                    // kga hier toch nen pv van moeten opstellen
+                    $same = false;
+
+                    if($poll_vote->equals($vote))
+                    {
+                        $same=true;
+                    }
+
                     $pv = $choice->votes->filter(function ($v) use ($poll_vote) {
                         return ($v->user_id == $poll_vote->user_id);
-                    })
-                        ->first();
+                    })->first();
 
                     DB::delete('delete from poll_votes where poll_choice_id = ? and user_id = ?',
                         array($pv->poll_choice_id, $pv->user_id));
@@ -74,19 +78,13 @@ class VotePollController extends Controller
                     $choice->save();
                 }
             }
+            if($same)
+            {
+                return redirect()->back()->with('success', 'Poll vote revoked.');
+            }
             $saved = $poll_vote->save();
         } else {
-            $savenew = true;
-            foreach ($poll->choices as $choice) {
-                if ($choice->votes->contains($poll_vote)) {
-                    // if contains -> get out and do nothing :)
-                    $savenew = false;
-                    break;
-                }
-            }
-            if ($savenew) {
-                $saved = $poll_vote->save();
-            }
+            $saved = $poll_vote->save();
         }
 
         if ($saved) {
@@ -124,6 +122,7 @@ class VotePollController extends Controller
                 return redirect()->back()->with('error', 'Poll choice could not be incremented.');
             }
         } else {
+            dd('KAK');
             return redirect()->back()->with('error', 'New poll vote could not be saved.');
         }
     }

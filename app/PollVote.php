@@ -28,4 +28,16 @@ class PollVote extends Model
     {
         return $this->hasOne('App\User', 'id', 'user_id');
     }
+
+    /**
+     * checks if other poll vote is the same
+     */
+    public function equals(PollVote $pv)
+    {
+        if($pv->poll_choice_id==$this->poll_choice_id && $pv->user_id==$this->user_id)
+        {
+            return true;
+        }
+        return false;
+    }
 }

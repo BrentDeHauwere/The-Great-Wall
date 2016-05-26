@@ -33,7 +33,7 @@ class User extends Authenticatable
 
     /**
      * Get the votes on polls for this user.
-     */
+     */ 
     public function pollVotes()
     {
         return $this->hasMany('App\PollVote');
