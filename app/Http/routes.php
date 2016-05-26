@@ -77,7 +77,7 @@ Route::group(['middleware' => 'web'], function () {
 		Route::get('wall/update/{id}','WallController@updateShow');
 		Route::resource('wall', 'WallController',['only' => ['index','show']]);
 		// Wall - Actions to perform on a wall
-		Route::get('wall/enter','WallController@enterWallWithPassword');
+		Route::post('wall/enter','WallController@enterWallWithPassword');
 		Route::get('wall/update/{id}','WallController@updateShow');
 		Route::resource('message', 'MessageController',['only' => ['store', 'destroy']]);
 		Route::resource('poll', 'PollController',['only' => ['store', 'destroy']]);

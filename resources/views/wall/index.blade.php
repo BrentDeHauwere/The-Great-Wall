@@ -40,7 +40,7 @@
 						</div>
 						<div class="extra">
 							@if (!empty($wall->password))
-								<form action="{{ action('WallController@enterWallWithPassword') }}" method="GET" class="passwordForm">
+								<form action="{{ action('WallController@enterWallWithPassword') }}" method="POST" class="passwordForm">
 									<div class="ui action input right floated">
 										{{ csrf_field() }}
 										<input type="hidden" name="wall_id" value="{{$wall->id}}">
