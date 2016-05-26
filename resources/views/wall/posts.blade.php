@@ -157,7 +157,7 @@
                              class="ui mini circular image">
                     </a>
                     <div class="content">
-                        <a class="author">Elliot Fu</a>
+                        <a class="author">{{$post[1]->user()->first()->name}}</a>
                         <div class="metadata">
                             <span class="date">
                                 {{\App\Http\Controllers\WallController::humanTimeDifference($post[1]->created_at)}}
