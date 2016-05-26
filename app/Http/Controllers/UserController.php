@@ -72,7 +72,7 @@ class UserController extends Controller
             abort(403);
 
         $this->validate($request, [
-            'twitter_handle' => 'required',
+            'twitter_handle' => 'required|exists:users',
         ]);
 
         $user = Auth::user();
