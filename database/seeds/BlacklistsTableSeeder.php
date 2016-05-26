@@ -11,10 +11,6 @@ class BlacklistsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('blacklists')->insert([
-            'user_id' => 1,
-            'reason' => 'Spam',
-            'created_at' => date("Y-m-d H:i:s")
-        ]);
+        DB::table('blacklists')->insert([]);
     }
 }

@@ -124,17 +124,49 @@ class WallController extends Controller
 		$wall_id = $request->input("wall_id");
 		$wall = Wall::find($wall_id);
 
+		//404 als wall verwijderd is
+		if ($wall->deleted_at != null)
+		{
+			abort(404);
+		}
+
+		//als er een einddatum is ingesteld en verstreken --> 404
+		if ($wall->open_until != null)
+		{
+			if ($wall->open_until < date('Y-m-d H:i:s'))
+			{
+				abort(404);
+			}
+		}
+
 		if ($wall != null && Hash::check($password, $wall->password))
 		{
-			$messages = Message::with('votes')->where('wall_id', $wall_id)->where('question_id', NULL)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
-			$polls = Poll::with('choices.votes')->where('wall_id', $wall_id)->where('moderation_level', 0)->orderBy('created_at', 'desc')->get();
-			$posts = $this->getMessagesPollsChronologically($messages, $polls);
+			//Check for tweets
+			//if ($wall->hashtag != null){
+			//	TwitterHelper::checkForTweets($wall->hashtag, $id);
+			//}
+
+			$posts = $this->getMessagesPollsChronologically($wall_id);
+			//$posts = $this->getMessagesPollsSortedOnVotes($id);
+
+			//BEGIN CODE FOR PAGINATION
+			//Source: https://laracasts.com/discuss/channels/laravel/laravel-pagination-not-working-with-array-instead-of-collection
+
+			$page = Input::get('page', 1); // Get the current page or default to 1, this is what you miss!
+			$perPage = 10;
+			$offset = ($page * $perPage) - $perPage;
+
+			$request = new Request();
+
+			$posts = new LengthAwarePaginator(array_slice($posts, $offset, $perPage, true), count($posts), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
+
+			//END CODE FOR Pagination
 
 			return view('wall.show')->with('posts', $posts)->with('wall', $wall);
 		}
 		else
 		{
-			return redirect('wall/')->with('error', "Wrong password. Please try again.");
+			return redirect()->action('WallController@index')->with("error", "Wrong password.");
 		}
 	}
 
