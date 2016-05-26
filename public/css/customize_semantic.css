@@ -28,7 +28,7 @@
 }
 
 .bar {
-	width: calc(100% - 38.52px);
+	width: calc(100% - 38.52px) !important;
 }
 
 /*
