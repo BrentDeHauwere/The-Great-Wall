@@ -18,35 +18,23 @@
                         <div class="metadata">
                             <span class="date">{{\App\Http\Controllers\WallController::humanTimeDifference($post[1]->created_at)}}</span>
                             <div class="rating">
-                                @if(Auth::user()->messageVotes()->where('message_id', $post[1]->id)->first())
-                                    <form method="POST" action="/votemessage">
-                                        <button type="submit" class="ui icon button">
+                                <form method="POST" action="/votemessage">
+                                    <button type="button" class="submitButton ui icon button">
+                                        @if(Auth::user()->messageVotes()->where('message_id', $post[1]->id)->first())
                                             <i id="iconholder{{$post[1]->id}}" class="star icon blue"></i>
-                                        </button>
-                                        @if($post[1]->count!=1)
-                                            <span id="favholder{{$post[1]->id}}">{{$post[1]->count}} Faves</span>
                                         @else
-                                            <span id="favholder{{$post[1]->id}}">{{$post[1]->count}} Fave</span>
-                                        @endif
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="hidden" name="message_id" value="{{$post[1]->id}}">
-                                        <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
-                                    </form>
-                                @else
-                                    <form method="POST" action="/votemessage">
-                                        <button type="submit" class="ui icon button">
                                             <i id="iconholder{{$post[1]->id}}" class="star icon grey"></i>
-                                        </button>
-                                        @if($post[1]->count!=1)
-                                            <span id="favholder{{$post[1]->id}}">{{$post[1]->count}} Faves</span>
-                                        @else
-                                            <span id="favholder{{$post[1]->id}}">{{$post[1]->count}} Fave</span>
                                         @endif
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="hidden" name="message_id" value="{{$post[1]->id}}">
-                                        <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
-                                    </form>
-                                @endif
+                                    </button>
+                                    @if($post[1]->count!=1)
+                                        <span id="favholder{{$post[1]->id}}">{{$post[1]->count}} Faves</span>
+                                    @else
+                                        <span id="favholder{{$post[1]->id}}">{{$post[1]->count}} Fave</span>
+                                    @endif
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <input type="hidden" name="message_id" value="{{$post[1]->id}}">
+                                    <input type="hidden" name="user_id" value="{{Auth::user()->id}}">
+                                </form>
                             </div>
                         </div>
                         <div class="text">
@@ -75,7 +63,7 @@
                                         <div class="rating blue">
                                             @if(Auth::user()->messageVotes()->where('message_id', $answer->id)->first())
                                                 <form method="POST" action="/votemessage">
-                                                    <button type="submit" class="ui icon button">
+                                                    <button type="button" class="submitButton ui icon button">
                                                         <i class="star icon blue"></i>
                                                     </button>
                                                     @if($answer->count!=1)
@@ -91,7 +79,7 @@
                                                 </form>
                                             @else
                                                 <form method="POST" action="/votemessage">
-                                                    <button type="submit" class="ui icon button">
+                                                    <button type="button" class="submitButton ui icon button">
                                                         <i class="star icon grey"></i>
                                                     </button>
                                                     @if($answer->count!=1)
@@ -138,7 +126,7 @@
                                     </div>
                                 </div>
                                 <input type="text" name="text">
-                                <button type="submit" class="ui blue right labeled icon button">
+                                <button type="button" class="submitButton ui blue right labeled icon button">
                                     <i class="edit icon"></i>
                                     Add Reply
                                 </button>
@@ -199,7 +187,7 @@
                                     <div id="choiceholder{{$choice->id}}"
                                          class="ui indicating progress success progess_jquery"
                                          data-percent={{$percArr[$counter]}}>
-                                        <button  class="choiceButton ui disabled icon button">
+                                        <button class="choiceButton ui disabled icon button">
                                             <i class="ban icon"></i>
                                         </button>
                                         <div class="bar">
@@ -216,7 +204,7 @@
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                 <input type="hidden" name="poll_choice_id" value={{$choice->id}}>
                                                 <input type="hidden" name="user_id" value={{Auth::user()->id}}>
-                                                <button type="submit" class="choiceButton ui icon button">
+                                                <button type="button" class="submitButton choiceButton ui icon button">
                                                     <i class="check circle outline icon"></i>
                                                 </button>
                                                 <div class="bar">
@@ -233,7 +221,7 @@
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                 <input type="hidden" name="poll_choice_id" value={{$choice->id}}>
                                                 <input type="hidden" name="user_id" value={{Auth::user()->id}}>
-                                                <button type="submit" class="choiceButton ui icon button">
+                                                <button type="button" class="submitButton choiceButton ui icon button">
                                                     <i class="radio icon"></i>
                                                 </button>
                                                 <div class="bar">
@@ -262,7 +250,7 @@
                         <div class="field">
                             <div class="ui action input">
                                 <input type="text" name="text">
-                                <button type="submit" class="ui blue right labeled icon button">
+                                <button type="button" class="submitButton ui blue right labeled icon button">
                                     <i class="edit icon"></i>
                                     Add Option
                                 </button>

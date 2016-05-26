@@ -81,7 +81,6 @@ class PollController extends Controller
 				$pollChoice->text = $choice;
 				$pollChoice->created_at = date('Y-m-d H:i:s');
 
-
 				$savedChoice = $pollChoice->save();
 
 				if ($savedChoice)
