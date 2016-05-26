@@ -27,6 +27,10 @@
 	max-width: none !important;
 }
 
+.bar {
+	width: calc(100% - 38.52px);
+}
+
 /*
  ========== NAVIGATION ==========
  */
