@@ -62,6 +62,7 @@ class SessionController extends Controller
      */
     public function create()
     {
+        self::updateSpeakers();
         $speakers = User::where('role', 'Speaker')->get();
         return View::make('session.create')->withSpeakers($speakers);
     }
@@ -73,8 +74,6 @@ class SessionController extends Controller
      */
     public function store(Request $request)
     {
-        self::updateSpeakers();
-
         // Server-side validation
         $validator = Validator::make($request->all(), [
             'name' => 'required',
