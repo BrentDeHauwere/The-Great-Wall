@@ -27,8 +27,8 @@
 	max-width: none !important;
 }
 
-.bar {
-	width: calc(100% - 38.52px) !important;
+.action.group form {
+	margin-right: 38.52px;
 }
 
 /*
