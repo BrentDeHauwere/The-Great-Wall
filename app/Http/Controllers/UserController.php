@@ -71,9 +71,13 @@ class UserController extends Controller
         if (Auth::user()->twitter_handle != null)
             abort(403);
 
-        $this->validate($request, [
-            'twitter_handle' => 'required|exists:users',
+        $validator = Validator::make($request->all(), [
+            'twitter_handle' => 'required|unique:users,twitter_handle',
         ]);
+
+        if($validator->fails()){
+            return redirect()->back()->with('error', 'Please provide a unique twitter handle.');
+        }
 
         $user = Auth::user();
         $user->twitter_handle = $request->input('twitter_handle');
