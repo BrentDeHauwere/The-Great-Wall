@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use Capi\Clients\GuzzleClient;
 use Event;
 use App\Events\NewMessageEvent;
 use App\Jobs\Job;
@@ -58,7 +59,7 @@ class ProcessTweet extends Job implements ShouldQueue
 				$transformedTweet->text = $tweet['text'];
 				$transformedTweet->created_at = new \DateTime();
 				$transformedTweet->anonymous = 0;
-				$transformedTweet->moderation_level = 0;
+				$transformedTweet->moderation_level = $user->banned();
 				$transformedTweet->count = 0;
 
 				if (!empty($tweet_hashtags))
