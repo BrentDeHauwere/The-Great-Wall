@@ -146,9 +146,9 @@ class UserController extends Controller
             }
             return true;
         } catch (BadResponseException $e) {
-            return false;
+            // wanneer crm down of user niet vindt -> so be it.
+            return true;
         }
-        return false;
     }
 
     /**
