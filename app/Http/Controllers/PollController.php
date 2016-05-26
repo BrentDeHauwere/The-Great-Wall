@@ -41,7 +41,7 @@ class PollController extends Controller
 		$poll->channel_id = $request->input('channel_id');
 
 		$poll->question = $request->input('question');
-		$poll->addable = true;
+		$poll->addable = $request->input('addable');;
 		$poll->created_at = date('Y-m-d H:i:s');
 		$poll->channel_id = $request->input('channel_id');
 
@@ -92,13 +92,7 @@ class PollController extends Controller
 				{
 					$succes = false;
 				}
-			}
-
-			if ($succes)
-			{
-				$poll->addable = $request->input('addable');
-				$succes = $poll->save();
-			}
+			 }
 		}
 
 		if ($succes == true)
