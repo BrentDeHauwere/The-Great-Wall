@@ -40,7 +40,7 @@
 						<div class="meta">
 							{{ App\Http\Controllers\WallController::humanTimeDifference($message->created_at) }}
 							,
-							{{$message->count}} upvotes
+							{{$message->count}} favourites
 						</div>
 						<div class="description">
 							{{ $message->text }}
