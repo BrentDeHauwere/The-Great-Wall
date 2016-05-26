@@ -52,6 +52,6 @@ class User extends Authenticatable
      */
     public function banned()
     {
-        return Blacklist::where('user_id', $this->id) ->exists();
+        return Blacklist::where('user_id', $this->id)->exists();
     }
 }
