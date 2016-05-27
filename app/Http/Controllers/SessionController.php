@@ -211,6 +211,7 @@ class SessionController extends Controller
   			{
   				array_push($posts, array('p', $poll));
   			}
+            return $posts;
   		}
 
   		$pollCounter = 0;
