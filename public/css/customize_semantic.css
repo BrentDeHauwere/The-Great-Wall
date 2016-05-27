@@ -89,7 +89,7 @@
  */
 .ui.progress .bar{
 	display: inline-block;
-	position: absolute;
+	position: absolute !important;
 	height: 100%;
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
