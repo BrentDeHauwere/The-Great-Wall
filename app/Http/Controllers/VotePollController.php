@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View;
 
+use App\User;
 use App\Poll;
 use App\PollChoice;
 use App\PollVote;
@@ -34,7 +35,7 @@ class VotePollController extends Controller
     {
         $poll_vote = new PollVote();
         $poll_vote->poll_choice_id = $request->input('poll_choice_id');
-        $poll_vote->user_id = $request->input('user_id');
+        $poll_vote->user_id = Auth::user()->id;
         $saved = false;
 
         // clicked choice

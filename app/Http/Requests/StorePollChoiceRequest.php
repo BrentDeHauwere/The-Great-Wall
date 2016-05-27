@@ -25,7 +25,6 @@ class StorePollChoiceRequest extends Request
     {
         return [
             'poll_id' => 'required|exists:polls,id',
-            'user_id' => 'required|exists:users,id',
             'text' => 'required|string',
             // 'moderator_id' => 'exists:users,id',
             'moderation_level' => 'integer',

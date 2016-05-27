@@ -8,6 +8,7 @@
     <script>
         var socket = io('http://10.3.50.20:1338');
         var userid = {{Auth::user()->id}};
+        console.log(userid);
         socket.on('msg1.msg.{{$wall->id}}:App\\Events\\NewMessageEvent', function (data) {
             var date = moment(data.message.created_at + '+0000').fromNow();
             if (data.question == null) {
@@ -35,7 +36,7 @@
                 e += '</button>';
                 e += '<input type="hidden" name="_token" value="' + token + '">';
                 e += '<input type=hidden name="message_id" value="' + data.message.id + '">';
-                e += '<input type=hidden name="user_id" value="' + userid + '">';
+                e += '<input type=hidden name="user_id" value="' + {{ Auth::user()->id }} + '">';
                 e += '<span id="favholder' + data.message.id + '">' + data.message.count + ' Faves</span>';
                 e += '</form>';
                 e += '</div>';//rating
@@ -94,7 +95,7 @@
                 e += '<span id="favholder' + data.message.id + '">' + data.message.count + ' Faves</span>';
                 e += '<input type="hidden" name="_token" value="' + token + '">';
                 e += '<input type=hidden name="message_id" value="' + data.message.id + '">';
-                e += '<input type=hidden name="user_id" value="' + userid + '">';
+                e += '<input type=hidden name="user_id" value="' + {{ Auth::user()->id }} + '">';
                 e += '</form>';
                 e += '</div>';//rating
                 e += '</div>';//metadata
@@ -176,7 +177,8 @@
             e += '<div id="choiceholder' + data.poll_choice.id + '" class="ui indicating progress success progress_jquery" data-percent="' + data.poll_choice.count + '">';
             e += '<input type="hidden" name="_token" value="' + token + '">';
             e += '<input type="hidden" name="poll_choice_id" value="' + data.poll_choice.id + '">';
-            e += '<input type="hidden" name="user_id" value="' + userid + '">';
+            console.log(userid);
+            e += '<input type="hidden" name="user_id" value="' + {{  Auth::user()->id }} + '">';
             if (data.voted == true) {
                 e += '<button type="submit" class="choiceButton ui icon button" disabled>';
                 e += '<i class="check cirlce outline icon"></i>';
@@ -244,7 +246,7 @@
                 e += '</button>';
                 e += '<input type="hidden" name="_token" value="' + token + '">';
                 e += '<input type=hidden name="message_id" value="' + data.message.id + '">';
-                e += '<input type=hidden name="user_id" value="' + userid + '">';
+                e += '<input type=hidden name="user_id" value="' + {{ Auth::user()->id }} + '">';
                 e += '<span id="favholder' + data.message.id + '">' + data.message.count + ' Faves</span>';
                 e += '</form>';
                 e += '</div>';//rating
@@ -303,7 +305,7 @@
                 e += '<span id="favholder' + data.message.id + '">' + data.message.count + ' Faves</span>';
                 e += '<input type="hidden" name="_token" value="' + token + '">';
                 e += '<input type=hidden name="message_id" value="' + data.message.id + '">';
-                e += '<input type=hidden name="user_id" value="' + userid + '">';
+                e += '<input type=hidden name="user_id" value="' + {{ Auth::user()->id }} + '">';
                 e += '</form>';
                 e += '</div>';//rating
                 e += '</div>';//metadata

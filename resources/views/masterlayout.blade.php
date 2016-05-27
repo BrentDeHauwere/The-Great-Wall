@@ -15,7 +15,7 @@
 		<link rel="stylesheet" href="/css/style.css"/>
 		-->
 
-		<!-- Semantic UI - CSS -->
+		<!-- Semantic UI - CSS --->
 		<link rel="stylesheet" type="text/css" href="/semantic/dist/semantic.min.css">
 		<link rel="stylesheet" type="text/css" href="/css/customize_semantic.css">
 
