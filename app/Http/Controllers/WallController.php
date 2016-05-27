@@ -62,7 +62,7 @@ class WallController extends Controller
 	 * @param  int $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show(Request $request, $id)
 	{
 		$wall = Wall::findOrFail($id);
 
@@ -81,7 +81,14 @@ class WallController extends Controller
 			}
 		}
 
-		if ($wall != null && empty($wall->password))
+		//Check of de wall in walls_list session variable zit
+		if($wall->password != null){
+			if ($wall->id != session('wall_id')){
+				return redirect()->action('WallController@index')->with("error", "You must provide a password before you can access this wall.");
+			}
+		}
+
+		if ($wall != null)
 		{
 			//Check for tweets
 			//if ($wall->hashtag != null){
@@ -141,28 +148,8 @@ class WallController extends Controller
 
 		if ($wall != null && Hash::check($password, $wall->password))
 		{
-			//Check for tweets
-			//if ($wall->hashtag != null){
-			//	TwitterHelper::checkForTweets($wall->hashtag, $id);
-			//}
-
-			$posts = $this->getMessagesPollsChronologically($wall_id);
-			//$posts = $this->getMessagesPollsSortedOnVotes($id);
-
-			//BEGIN CODE FOR PAGINATION
-			//Source: https://laracasts.com/discuss/channels/laravel/laravel-pagination-not-working-with-array-instead-of-collection
-
-			$page = Input::get('page', 1); // Get the current page or default to 1, this is what you miss!
-			$perPage = 10;
-			$offset = ($page * $perPage) - $perPage;
-
-			$request = new Request();
-
-			$posts = new LengthAwarePaginator(array_slice($posts, $offset, $perPage, true), count($posts), $perPage, $page, ['path' => $request->url(), 'query' => $request->query()]);
-
-			//END CODE FOR Pagination
-
-			return view('wall.show')->with('posts', $posts)->with('wall', $wall);
+			$request->session()->put('wall_id', $wall->id);
+			return redirect()->action('WallController@show', [$wall->id]);
 		}
 		else
 		{
