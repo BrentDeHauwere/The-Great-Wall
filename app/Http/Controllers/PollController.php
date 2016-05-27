@@ -52,7 +52,7 @@ class PollController extends Controller
 
 		if (count($request->choices) <= 1)
 		{
-			return redirect()->back()->with('danger', 'It is not possible to create a poll with only one option.');
+			return redirect()->back()->with('error', 'It is not possible to create a poll with only one option.');
 		}
 
 		$banned = $poll->user()->first()->banned();
@@ -63,7 +63,7 @@ class PollController extends Controller
 		}
 		else
 		{
-			return redirect()->back()->with('danger', 'You were banned. You cannot post polls.');
+			return redirect()->back()->with('error', 'You were banned. You cannot post polls.');
 		}
 
 		$succes = false;
@@ -96,8 +96,6 @@ class PollController extends Controller
 
 		if ($succes == true)
 		{
-			/*$client = new \Capi\Clients\GuzzleClient();
-			$response = $client->post('broadcast', 'msg1.polls',['poll' => $poll]);*/
 			Event::fire(new NewPollEvent($poll));
       foreach($poll->choices as $choice){
         Event::fire(new NewPollChoiceEvent($choice));
@@ -106,7 +104,7 @@ class PollController extends Controller
 		}
 		else
 		{
-			return redirect()->back()->with('danger', 'New poll could not be saved');
+			return redirect()->back()->with('error', 'New poll could not be saved');
 		}
 	}
 
@@ -153,7 +151,6 @@ class PollController extends Controller
 			if ($saved)
 			{
 				Event::fire(new NewPollModeratorAcceptEvent($poll));
-
 				return redirect()->back()->with("success", "poll was accepted.");
 			}
 			else
