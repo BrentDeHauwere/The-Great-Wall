@@ -89,7 +89,7 @@
                 e += '<div class="rating">';
                 e += '<form method="POST" action="/votemessage">';
                 e += '<button type="submit" class="ui icon button">';
-                e += '<i id="iconholder' + data.message.id + '" class="star icon"></i>';
+                e += '<i id="iconholder' + data.message.id + '" class="star icon grey"></i>';
                 e += '</button>';
                 e += '<span id="favholder' + data.message.id + '">' + data.message.count + ' Faves</span>';
                 e += '<input type="hidden" name="_token" value="' + token + '">';
