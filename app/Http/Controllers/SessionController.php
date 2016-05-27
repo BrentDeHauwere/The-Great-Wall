@@ -379,28 +379,36 @@ class SessionController extends Controller
 
     public static function updateSpeakers()
     {
-        $client = new GuzzleClient();
-        $res = $client->get('crm', 'person-get');
+        try
+        {
+            $client = new GuzzleClient();
+            $res = $client->get('crm', 'person-get');
 
-        for($i = 0;$i < $res['last_page'];$i++)
-		{
-            if($i!=0)
+            for ($i = 0; $i < $res['last_page']; $i++)
             {
-                $res = $client->get('crm', 'person-get', ['page'=>$i]);
-            }
-            foreach ($res['data'] as $user) {
-                if (in_array('spreker', $user['roles'])) {
-                    $u = new User();
-                    if (User::where('email', $user['email'])->first()) {
-                        $u = User::where('email', $user['email'])->first();
-                    }
-                    $u->name = $user['fname'] . ' ' . $user['lname'];
-                    $u->role = 'speaker';
-                    $u->email = $user['email'];
+                if ( $i != 0 )
+                {
+                    $res = $client->get('crm', 'person-get', [ 'page' => $i ]);
+                }
+                foreach ($res['data'] as $user)
+                {
+                    if ( in_array('spreker', $user['roles']) )
+                    {
+                        $u = new User();
+                        if ( User::where('email', $user['email'])->first() )
+                        {
+                            $u = User::where('email', $user['email'])->first();
+                        }
+                        $u->name = $user['fname'] . ' ' . $user['lname'];
+                        $u->role = 'speaker';
+                        $u->email = $user['email'];
 
-                    $u->save();
+                        $u->save();
+                    }
                 }
             }
+        } catch(BadResponseException $e){
+            // fail silently
         }
 	}
 }
