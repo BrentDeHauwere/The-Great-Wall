@@ -35,7 +35,7 @@ class PollChoiceController extends Controller
 	{
 		$pollChoice = new PollChoice();
 		$pollChoice->poll_id = $request->input('poll_id');
-		$pollChoice->user_id = $request->input('user_id');
+		$pollChoice->user_id = Auth::user()->id;
 		$pollChoice->text = $request->input('text');
 		$pollChoice->created_at = date('Y-m-d H:i:s');
 		
